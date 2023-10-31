@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">BookingAppTeam17</string>
+    <string name="app_name">Booking App</string>
+    <string name="booking_app_name">Booking App</string>
 </resources>
