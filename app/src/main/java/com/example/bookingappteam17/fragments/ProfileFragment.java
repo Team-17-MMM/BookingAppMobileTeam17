@@ -1,15 +1,19 @@
 package com.example.bookingappteam17.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.EditProfileActivity;
 
 public class ProfileFragment extends Fragment {
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -27,6 +31,20 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        ImageView profileEditIcon = view.findViewById(R.id.profileEditIcon);
+        profileEditIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editIconClicked();
+            }
+        });
+        return view;
+    }
+
+    // on edit icon clicked open edit profile activity
+    private void editIconClicked() {
+        Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+        startActivity(intent);
     }
 }
