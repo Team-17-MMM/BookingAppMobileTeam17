@@ -5,8 +5,13 @@
     <string name="reservations">Reservations</string>
     <string name="profile">Profile</string>
     <string name="notifications">Notifications</string>
-    <string name="user_name">User Name</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="phone">Phone</string>
+    <string name="address">Address</string>
 </resources>
