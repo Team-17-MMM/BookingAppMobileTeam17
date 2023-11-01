@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.EditProfileActivity">
+
+    <!--    Profile image with with edit button in bottom right side of image-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewProfileImage"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="60dp"
+        android:foregroundGravity="center"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/profile_image"
+            android:src="@mipmap/ic_profile_foreground" />
+    </androidx.cardview.widget.CardView>
+    <!--    Change button in vertical center of profile image and right from profile image-->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewChangeProfileImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:foregroundGravity="center"
+        app:cardCornerRadius="100dp"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toTopOf="@+id/cardViewProfileImage">
+
+        <ImageView
+            android:id="@+id/imageViewChangeProfileImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/change_profile_image"
+            android:src="@drawable/ic_edit_round" />
+    </androidx.cardview.widget.CardView>
+
+    <!--    Field for name on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewProfileImage" />
+
+    <!--    Field for last name on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/last_name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+
+    <!--    Field for email on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
+
+    <!--    Field for password on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+    <!--    Field for phone number on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextPhone"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/phone_number"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <!--    Field for address on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextAddress"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/address"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+
+    <!--    Save button on the horizontal center -->
+    <Button
+        android:id="@+id/btnSave"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="25dp"
+        android:text="@string/save"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
