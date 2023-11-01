@@ -5,4 +5,8 @@
     <string name="reservations">Reservations</string>
     <string name="profile">Profile</string>
     <string name="notifications">Notifications</string>
+    <string name="user_name">User Name</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 </resources>
