@@ -4,4 +4,7 @@
     <string name="reservations">Reservations</string>
     <string name="profile">Profile</string>
     <string name="notifications">Notifications</string>
+    <string name="edit">Edit</string>
+    <string name="phone_number">Phone number</string>
+    <string name="logout">Log out</string>
 </resources>

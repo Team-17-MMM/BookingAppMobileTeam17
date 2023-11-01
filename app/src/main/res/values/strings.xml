@@ -14,4 +14,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="phone">Phone</string>
     <string name="address">Address</string>
+    <string name="edit">Edit</string>
+    <string name="phone_number">Phone number</string>
+    <string name="logout">Log out</string>
 </resources>
