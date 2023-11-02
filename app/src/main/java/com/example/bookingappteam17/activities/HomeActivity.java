@@ -14,7 +14,6 @@ import com.example.bookingappteam17.fragments.HomeFragment;
 import com.example.bookingappteam17.fragments.NotificationsListFragment;
 import com.example.bookingappteam17.fragments.ProfileFragment;
 import com.example.bookingappteam17.fragments.ReservationsListFragment;
-
 public class HomeActivity extends AppCompatActivity {
     private boolean isPermissions = true;
     private String [] permissions = {
