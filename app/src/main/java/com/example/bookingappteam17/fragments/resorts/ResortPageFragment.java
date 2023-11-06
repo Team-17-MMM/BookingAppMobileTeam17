@@ -1,4 +1,4 @@
-package com.example.bookingappteam17.fragments;
+package com.example.bookingappteam17.fragments.resorts;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
@@ -20,28 +21,27 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
-import com.example.bookingappteam17.databinding.ActivityHomeBinding;
-import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
-import com.example.bookingappteam17.fragments.resorts.ResortListFragment;
-import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
-import com.example.bookingappteam17.fragments.resorts.ResortPageViewModel;
 import com.example.bookingappteam17.model.Resort;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
+import com.example.bookingappteam17.fragments.FragmentTransition;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class ResortPageFragment extends Fragment {
+
     public static ArrayList<Resort> resorts = new ArrayList<Resort>();
     private ResortPageViewModel productsViewModel;
-    private ActivityHomeBinding binding;
+    private FragmentResortsPageBinding binding;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static ResortPageFragment newInstance() {
+        return new ResortPageFragment();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         productsViewModel = new ViewModelProvider(this).get(ResortPageViewModel.class);
 
-        binding = ActivityHomeBinding.inflate(inflater, container, false);
+        binding = FragmentResortsPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         prepareProductList(resorts);
