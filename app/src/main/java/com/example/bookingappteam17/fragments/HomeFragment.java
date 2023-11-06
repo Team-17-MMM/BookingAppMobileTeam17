@@ -30,87 +30,14 @@ import com.example.bookingappteam17.model.Resort;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
-    public static ArrayList<Resort> resorts = new ArrayList<Resort>();
-    private ResortPageViewModel productsViewModel;
-    private ActivityHomeBinding binding;
-
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
-    }
-
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        productsViewModel = new ViewModelProvider(this).get(ResortPageViewModel.class);
-
-        binding = ActivityHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
-
-        prepareProductList(resorts);
-
-        SearchView searchView = binding.searchText;
-        productsViewModel.getText().observe(getViewLifecycleOwner(), searchView::setQueryHint);
-
-        Button btnFilters = binding.btnFilters;
-//        btnFilters.setOnClickListener(v -> {
-//            Log.i("ShopApp", "Bottom Sheet Dialog");
-//            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.FullScreenBottomSheetDialog);
-//            View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null);
-//            bottomSheetDialog.setContentView(dialogView);
-//            bottomSheetDialog.show();
-//        });
-
-        Spinner spinner = binding.btnSort;
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item,
-                getResources().getStringArray(R.array.sort_array));
-        // Specify the layout to use when the list of choices appears
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setMessage("Change the sort option?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Log.v("ShopApp", (String) parent.getItemAtPosition(position));
-                                ((TextView) parent.getChildAt(0)).setTextColor(Color.MAGENTA);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = dialog.create();
-                alert.show();
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
-
-
-        FragmentTransition.to(ResortListFragment.newInstance(resorts), getActivity(), false, R.id.scroll_products_list);
-
-        return root;
-    }
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.activity_home, container, false);
 
-    private void prepareProductList(ArrayList<Resort> products){
-        products.add(new Resort(1L, "Grand Hotel Kopaonik", "\"@string/kopaonik_hotel_desc\"","Kopaonik", R.drawable.hotel_grand_kop));
-        products.add(new Resort(2L, "\"@string/zlatibor_hotel\"", "\"@string/zlatibor_desc\"","Zlatibor", R.drawable.zlatibor));
-        products.add(new Resort(3L, "\"@string/tara_hotel\"", "\"@string/tara_desc\"","Tara", R.drawable.tara));
+        // Instantiate PageFragment and add it to the layout
+        FragmentTransition.to(ResortPageFragment.newInstance(), getActivity(), false, R.id.home_frame_layout);
+        return view;
     }
 }
