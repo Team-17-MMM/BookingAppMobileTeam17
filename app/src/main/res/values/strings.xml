@@ -21,4 +21,5 @@
     <string name="profile_image">Profile image</string>
     <string name="change_profile_image">Change profile image</string>
     <string name="last_name">Last name</string>
+    <string name="delete_account">Delete account</string>
 </resources>
