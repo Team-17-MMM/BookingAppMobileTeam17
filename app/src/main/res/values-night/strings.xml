@@ -12,4 +12,6 @@
     <string name="change_profile_image">Change profile image</string>
     <string name="last_name">Last name</string>
     <string name="delete_account">Delete account</string>
+    <string name="notification_title">Title</string>
+    <string name="notification_description">Description</string>
 </resources>
