@@ -12,7 +12,7 @@
         android:id="@+id/cardViewProfileImage"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:foregroundGravity="center"
         app:cardCornerRadius="100dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,6 +60,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/cardViewProfileImage" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextName"
+        android:paddingEnd="5dp"/>
 
     <!--    Field for last name on the horizontal center -->
     <EditText
@@ -73,6 +81,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextName" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextLastName"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextLastName"
+        android:paddingEnd="5dp"/>
 
     <!--    Field for email on the horizontal center -->
     <EditText
@@ -86,6 +102,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextLastName" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextEmail"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextEmail"
+        android:paddingEnd="5dp"/>
 
     <!--    Field for password on the horizontal center -->
     <EditText
@@ -99,6 +123,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextPassword"
+        android:paddingEnd="5dp"/>
 
     <!--    Field for phone number on the horizontal center -->
     <EditText
@@ -112,6 +144,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPhone"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextPhone"
+        android:paddingEnd="5dp"/>
 
     <!--    Field for address on the horizontal center -->
     <EditText
@@ -125,6 +165,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextPhone" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="*"
+        android:textColor="@color/red"
+        app:layout_constraintEnd_toStartOf="@+id/editTextAddress"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editTextAddress"
+        android:paddingEnd="5dp"/>
 
     <!--    Save button on the horizontal center -->
     <Button
@@ -139,5 +187,17 @@
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
 
-
+    <!-- Delete Account button -->
+    <Button
+        android:id="@+id/btnDeleteAccount"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/delete_account"
+        android:backgroundTint="@color/red"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/btnSave" />
 </androidx.constraintlayout.widget.ConstraintLayout>
