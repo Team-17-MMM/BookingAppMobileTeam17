@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/border_background"
+    android:elevation="4dp"
+    android:layout_margin="10dp"
+    android:paddingVertical="5dp"
+    android:id="@+id/notification_card_item">
+
+    <!-- Bell Icon -->
+    <ImageView
+        android:id="@+id/notification_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:src="@drawable/baseline_notifications_active_24"
+        android:layout_margin="8dp"/>
+
+    <!-- Title and Description Container -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
+
+        <!-- Title of notification -->
+        <TextView
+            android:id="@+id/notification_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_title"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <!-- Description of notification -->
+        <TextView
+            android:id="@+id/notification_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notification_description"
+            android:textSize="14sp"
+            android:textStyle="italic"/>
+    </LinearLayout>
+
+</LinearLayout>
