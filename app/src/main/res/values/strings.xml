@@ -29,8 +29,5 @@
     <string name="detalji">Detalji</string>
     <string name="filters">Filters</string>
     <string name="sort">Sort</string>
-    <string name="zlatibor_hotel">Krila Zlatibora</string>
-    <string name="zlatibor_desc">Objekat Krila Zlatibora nudi smeštaj sa besplatnim privatnim parkingom, a nalazi se na Zlatiboru, u regionu Centralne Srbije.</string>
-    <string name="tara_desc">Objekat Brvnara Miris Bora se nalazi u Šljivovici i nudi vrt, pribor za pripremu roštilja i terasu. Sve sobe imaju kuhinju, flat-screen TV sa satelitskim kanalima i sopstveno kupatilo.</string>
-    <string name="tara_hotel">Brvnara Miris Bora</string>
+
 </resources>

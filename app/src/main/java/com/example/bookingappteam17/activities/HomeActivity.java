@@ -14,6 +14,9 @@ import com.example.bookingappteam17.fragments.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.NotificationsListFragment;
 import com.example.bookingappteam17.fragments.ProfileFragment;
 import com.example.bookingappteam17.fragments.ReservationsListFragment;
+import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
+import com.example.bookingappteam17.model.Resort;
+
 public class HomeActivity extends AppCompatActivity {
     private boolean isPermissions = true;
     private String [] permissions = {
@@ -27,10 +30,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
+        replaceFragment(new ResortPageFragment());
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.home) {
-                replaceFragment(new HomeFragment());
+                replaceFragment(new ResortPageFragment());
             } else if (item.getItemId() == R.id.notifications) {
                 replaceFragment(new NotificationPageFragment());
             } else if (item.getItemId() == R.id.profile) {

@@ -9,7 +9,6 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import com.example.bookingappteam17.adapters.ResortListAdapter;
 
 import com.example.bookingappteam17.databinding.FragmentResortListBinding;
 import com.example.bookingappteam17.model.Resort;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class ResortListFragment extends ListFragment {
     private ResortListAdapter adapter;
     private static final String ARG_PARAM = "param";
-    private ArrayList<Resort> mProducts;
+    private ArrayList<Resort> mResorts;
     private FragmentResortListBinding binding;
 
     public static ResortListFragment newInstance(ArrayList<Resort> resorts){
@@ -41,8 +40,8 @@ public class ResortListFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mProducts = getArguments().getParcelableArrayList(ARG_PARAM);
-            adapter = new ResortListAdapter(getActivity(), mProducts);
+            mResorts = getArguments().getParcelableArrayList(ARG_PARAM);
+            adapter = new ResortListAdapter(getActivity(), mResorts);
             setListAdapter(adapter);
         }
     }

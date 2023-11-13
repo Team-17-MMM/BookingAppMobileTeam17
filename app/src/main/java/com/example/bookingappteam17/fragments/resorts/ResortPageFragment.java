@@ -60,41 +60,41 @@ public class ResortPageFragment extends Fragment {
 
         Spinner spinner = binding.btnSort;
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_spinner_item,
-                getResources().getStringArray(R.array.sort_array));
-        // Specify the layout to use when the list of choices appears
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setMessage("Change the sort option?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Log.v("ShopApp", (String) parent.getItemAtPosition(position));
-                                ((TextView) parent.getChildAt(0)).setTextColor(Color.MAGENTA);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alert = dialog.create();
-                alert.show();
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // TODO Auto-generated method stub
-            }
-        });
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+//                android.R.layout.simple_spinner_item,
+//                getResources().getStringArray(R.array.sort_array));
+//        // Specify the layout to use when the list of choices appears
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        // Apply the adapter to the spinner
+//        spinner.setAdapter(arrayAdapter);
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+//                dialog.setMessage("Change the sort option?")
+//                        .setCancelable(false)
+//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                Log.v("ShopApp", (String) parent.getItemAtPosition(position));
+//                                ((TextView) parent.getChildAt(0)).setTextColor(Color.MAGENTA);
+//                            }
+//                        })
+//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                AlertDialog alert = dialog.create();
+//                alert.show();
+//            }
+//
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                // TODO Auto-generated method stub
+//            }
+//        });
 
 
         FragmentTransition.to(ResortListFragment.newInstance(resorts), getActivity(), false, R.id.scroll_products_list);
@@ -109,8 +109,8 @@ public class ResortPageFragment extends Fragment {
     }
 
     private void prepareProductList(ArrayList<Resort> products){
-        products.add(new Resort(1L, "Grand Hotel Kopaonik", "\"@string/kopaonik_hotel_desc\"","Kopaonik", R.drawable.hotel_grand_kop));
-        products.add(new Resort(2L, "\"@string/zlatibor_hotel\"", "\"@string/zlatibor_desc\"","Zlatibor", R.drawable.zlatibor));
-        products.add(new Resort(3L, "\"@string/tara_hotel\"", "\"@string/tara_desc\"","Tara", R.drawable.tara));
+        products.add(new Resort(1L, "Grand Hotel Kopaonik", "Moderan i udoban hotel Grand Kopaonik se nalazi na 1.770 metara nadmorske visine u samom centru Kopaonika i nudi veličanstveni pogled na Nacionalni park Kopaonik.","Kopaonik", R.drawable.hotel_grand_kop));
+        products.add(new Resort(2L, "Krila Zlatibora", "Objekat Krila Zlatibora nudi smeštaj sa besplatnim privatnim parkingom, a nalazi se na Zlatiboru, u regionu Centralne Srbije.","Zlatibor", R.drawable.zlatibor));
+        products.add(new Resort(3L, "Brvnara Miris Bora", "Objekat Brvnara Miris Bora se nalazi u Šljivovici i nudi vrt, pribor za pripremu roštilja i terasu. Sve sobe imaju kuhinju, flat-screen TV sa satelitskim kanalima i sopstveno kupatilo.","Tara", R.drawable.tara));
     }
 }

@@ -30,14 +30,5 @@ import com.example.bookingappteam17.model.Resort;
 import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_home, container, false);
 
-        // Instantiate PageFragment and add it to the layout
-        FragmentTransition.to(ResortPageFragment.newInstance(), getActivity(), false, R.id.home_frame_layout);
-        return view;
-    }
 }
