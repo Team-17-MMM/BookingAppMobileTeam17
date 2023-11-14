@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.fragments.FilterFragment;
 import com.example.bookingappteam17.model.Resort;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
@@ -50,13 +51,11 @@ public class ResortPageFragment extends Fragment {
         productsViewModel.getText().observe(getViewLifecycleOwner(), searchView::setQueryHint);
 
         Button btnFilters = binding.btnFilters;
-//        btnFilters.setOnClickListener(v -> {
-//            Log.i("ShopApp", "Bottom Sheet Dialog");
-//            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.FullScreenBottomSheetDialog);
-//            View dialogView = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null);
-//            bottomSheetDialog.setContentView(dialogView);
-//            bottomSheetDialog.show();
-//        });
+        btnFilters.setOnClickListener(v -> {
+            // Show the FilterFragment as a BottomSheetDialogFragment
+            FilterFragment filterFragment = new FilterFragment();
+            filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+        });
 
         Spinner spinner = binding.btnSort;
         // Create an ArrayAdapter using the string array and a default spinner layout

@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".fragments.products.ProductsPageFragment"
         >
         <LinearLayout
             android:id="@+id/linear1"
@@ -27,7 +26,7 @@
                 app:queryHint="Search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/border_background"
+                android:background="@drawable/border_background_blue"
 
 
                 />
@@ -48,20 +47,21 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.7"
                 android:text="@string/filters"
-                tools:ignore="TextContrastCheck" />
+                android:fontFamily="@font/righteous"
+                style="@style/blue_button" />
 
 
             <Spinner
                 android:id="@+id/btnSort"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_height="match_parent"
+                android:padding="3sp"
+                android:layout_marginHorizontal="10sp"
+                android:layout_marginVertical="3sp"
                 android:layout_weight="0.3"
-                android:text="@string/sort"
-                android:tooltipText="@string/sort"
                 android:contentDescription="@string/sort"
-                />
-            <!--            android:background="?android:attr/colorPrimary"-->
+                android:text="@string/sort"
+                android:tooltipText="@string/sort" />
         </LinearLayout>
 
         <RelativeLayout
