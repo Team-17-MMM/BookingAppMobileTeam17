@@ -11,13 +11,15 @@ public class Resort implements Parcelable {
     private String description;
     private String city;
     private int image;
+    private int price;
 
-    public Resort(Long id, String name, String description, String city, int image) {
+    public Resort(Long id, String name, String description, String city, int image, int price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.city = city;
         this.image = image;
+        this.price = price;
     }
 
     public Resort(){}
@@ -28,6 +30,7 @@ public class Resort implements Parcelable {
         description = in.readString();
         city = in.readString();
         image = in.readInt();
+        price = in.readInt();
     }
 
     public Long getId() {
@@ -69,7 +72,8 @@ public class Resort implements Parcelable {
     public void setImage(int image) {
         this.image = image;
     }
-
+    public int getPrice(){return price;}
+    public void setPrice(int price){this.price=price;}
     @Override
     public int describeContents() {
         return 0;

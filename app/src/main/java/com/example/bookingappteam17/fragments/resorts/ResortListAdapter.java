@@ -42,16 +42,18 @@ public class ResortListAdapter extends ArrayAdapter<Resort> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.resort_card,
                     parent, false);
         }
-        LinearLayout productCard = convertView.findViewById(R.id.resort_card_item);
-        TextView productTitle = convertView.findViewById(R.id.resort_name);
-        TextView productDescription = convertView.findViewById(R.id.resort_description);
-        ImageView productImage = convertView.findViewById(R.id.resort_image);
+        LinearLayout resortCard = convertView.findViewById(R.id.resort_card_item);
+        TextView resortName = convertView.findViewById(R.id.resort_name);
+        TextView resortDescription = convertView.findViewById(R.id.resort_description);
+        ImageView resortImage = convertView.findViewById(R.id.resort_image);
+        TextView resortPrice = convertView.findViewById(R.id.resort_price);
 
         if(resort != null){
-            productTitle.setText(resort.getName());
-            productDescription.setText(resort.getDescription());
-            productImage.setImageResource(resort.getImage());
-            productCard.setOnClickListener(v -> {
+            resortName.setText(resort.getName());
+            resortDescription.setText(resort.getDescription());
+            resortImage.setImageResource(resort.getImage());
+            resortPrice.setText(String.valueOf(resort.getPrice()));
+            resortCard.setOnClickListener(v -> {
                 // Handle click on the item at 'position'
                 Log.i("ShopApp", "Clicked: " + resort.getName() + ", id: " +
                         resort.getId().toString());
