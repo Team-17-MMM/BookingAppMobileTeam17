@@ -20,6 +20,10 @@ public class ResortListFragment extends ListFragment {
     private ArrayList<Resort> mResorts;
     private FragmentResortListBinding binding;
 
+    public ResortListAdapter getAdapter() {
+        return adapter;
+    }
+
     public static ResortListFragment newInstance(ArrayList<Resort> resorts){
         ResortListFragment fragment = new ResortListFragment();
         Bundle args = new Bundle();

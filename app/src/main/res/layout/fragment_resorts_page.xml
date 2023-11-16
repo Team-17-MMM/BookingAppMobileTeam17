@@ -48,7 +48,7 @@
                 android:layout_weight="0.7"
                 android:text="@string/filters"
                 android:fontFamily="@font/righteous"
-                style="@style/blue_button" />
+                />
 
 
             <Spinner

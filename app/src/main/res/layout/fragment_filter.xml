@@ -45,8 +45,8 @@
                 android:fontFamily="@font/righteous"
                 android:textSize="18sp"
                 android:focusable="false"
-                android:textColorHint="#2D569D"
-                android:textColor="#2D569D"/>
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -66,8 +66,8 @@
                 android:fontFamily="@font/righteous"
                 android:textSize="18sp"
                 android:focusable="false"
-                android:textColorHint="#2D569D"
-                android:textColor="#2D569D"/>
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -28,13 +28,15 @@ import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ResortPageFragment extends Fragment {
 
     public static ArrayList<Resort> resorts = new ArrayList<Resort>();
     private ResortPageViewModel productsViewModel;
+    private ResortListFragment resortListFragment;
     private FragmentResortsPageBinding binding;
-
     public static ResortPageFragment newInstance() {
         return new ResortPageFragment();
     }
@@ -60,44 +62,48 @@ public class ResortPageFragment extends Fragment {
 
         Spinner spinner = binding.btnSort;
         // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item,
-//                getResources().getStringArray(R.array.sort_array));
-//        // Specify the layout to use when the list of choices appears
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // Apply the adapter to the spinner
-//        spinner.setAdapter(arrayAdapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-//                dialog.setMessage("Change the sort option?")
-//                        .setCancelable(false)
-//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                Log.v("ShopApp", (String) parent.getItemAtPosition(position));
-//                                ((TextView) parent.getChildAt(0)).setTextColor(Color.MAGENTA);
-//                            }
-//                        })
-//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int id) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//                AlertDialog alert = dialog.create();
-//                alert.show();
-//            }
-//
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.sort_array));
+        // Specify the layout to use when the list of choices appears
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                boolean isAscending = (position == 0);
+
+                // Update the data directly in the ResortListFragment's adapter
+                if (resortListFragment != null) {
+                    ResortListAdapter adapter = resortListFragment.getAdapter();
+                    if (adapter != null) {
+                        adapter.sort(new Comparator<Resort>() {
+                            @Override
+                            public int compare(Resort resort1, Resort resort2) {
+                                int result = Double.compare(resort1.getPrice(), resort2.getPrice());
+                                return isAscending ? result : -result;
+                            }
+                        });
+
+                        // Notify the adapter to update the UI
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
 
 
-        FragmentTransition.to(ResortListFragment.newInstance(resorts), getActivity(), false, R.id.scroll_products_list);
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        resortListFragment = ResortListFragment.newInstance(resorts);
+        FragmentTransition.to(resortListFragment, getActivity(), false, R.id.scroll_products_list);
 
         return root;
     }
