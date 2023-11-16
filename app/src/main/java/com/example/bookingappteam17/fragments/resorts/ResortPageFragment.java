@@ -41,6 +41,7 @@ public class ResortPageFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         productsViewModel = new ViewModelProvider(this).get(ResortPageViewModel.class);
+        resorts.clear();
 
         binding = FragmentResortsPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
