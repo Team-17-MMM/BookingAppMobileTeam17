@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.EditProfileActivity;
+import com.example.bookingappteam17.activities.HomeActivity;
+import com.example.bookingappteam17.activities.LoginActivity;
 
 public class ProfileFragment extends Fragment {
 
@@ -39,6 +42,13 @@ public class ProfileFragment extends Fragment {
                 editIconClicked();
             }
         });
+
+        Button buttonLogout = view.findViewById(R.id.btnLogout);
+        buttonLogout.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent);
+        });
+
         return view;
     }
 
