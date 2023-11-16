@@ -24,4 +24,10 @@
     <string name="delete_account">Delete account</string>
     <string name="notification_title">Title</string>
     <string name="notification_description">Description</string>
+    <string name="kopaonik_hotel">Hotel Grand Kopaonik</string>
+    <string name="kopaonik_hotel_desc">Moderan i udoban hotel Grand Kopaonik se nalazi na 1.770 metara nadmorske visine u samom centru Kopaonika i nudi veličanstveni pogled na Nacionalni park Kopaonik.</string>
+    <string name="detalji">Detalji</string>
+    <string name="filters">Filters</string>
+    <string name="sort">Sort</string>
+
 </resources>
