@@ -48,6 +48,10 @@
                 android:value="" />
 
         </activity>
+        <activity
+            android:name=".activities.ResortDetailActivity"
+            android:label="Resort Details"
+            android:theme="@style/Theme.BookingAppTeam17"/>
     </application>
 
 </manifest>

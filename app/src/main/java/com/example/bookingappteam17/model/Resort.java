@@ -94,9 +94,10 @@ public class Resort implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeLong(id);
         dest.writeString(name);
-        dest.writeString(city);
         dest.writeString(description);
+        dest.writeString(city);
         dest.writeInt(image);
+        dest.writeInt(price);
     }
     public static final Creator<Resort> CREATOR = new Creator<Resort>() {
         @Override
