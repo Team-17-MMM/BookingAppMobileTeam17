@@ -21,7 +21,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.enums.ResortType;
 import com.example.bookingappteam17.fragments.FilterFragment;
+import com.example.bookingappteam17.model.Capacity;
 import com.example.bookingappteam17.model.Resort;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
@@ -50,8 +52,6 @@ public class ResortPageFragment extends Fragment {
 
         prepareProductList(resorts);
 
-        SearchView searchView = binding.searchText;
-        productsViewModel.getText().observe(getViewLifecycleOwner(), searchView::setQueryHint);
 
         Button btnFilters = binding.btnFilters;
         btnFilters.setOnClickListener(v -> {
@@ -115,8 +115,8 @@ public class ResortPageFragment extends Fragment {
     }
 
     private void prepareProductList(ArrayList<Resort> products){
-        products.add(new Resort(1L, "Grand Hotel Kopaonik", "The modern and comfortable Grand Hotel Kopaonik is located at an altitude of 1,770 meters in the very center of Kopaonik and offers a magnificent view of the Kopaonik National Park.","Kopaonik", R.drawable.hotel_grand_kop, 2500));
-        products.add(new Resort(2L, "Krila Zlatibora", "The establishment Krila Zlatibora offers accommodation with free private parking and is located in Zlatibor, in the region of Central Serbia.","Zlatibor", R.drawable.zlatibor, 1800));
-        products.add(new Resort(3L, "Brvnara Miris Bora", "The object Brvnara Miris Bora is located in Šljivovica and offers a garden, barbecue facilities, and a terrace. All rooms have a kitchen, flat-screen TV with satellite channels, and a private bathroom.","Tara", R.drawable.tara, 3400));
+        products.add(new Resort(1L, "Grand Hotel Kopaonik", "The modern and comfortable Grand Hotel Kopaonik is located at an altitude of 1,770 meters in the very center of Kopaonik and offers a magnificent view of the Kopaonik National Park.","Kopaonik", R.drawable.hotel_grand_kop, 2500, new ArrayList<>(), ResortType.APARTMENT, new ArrayList<>(), new Capacity(1,4), new ArrayList<>() ));
+        products.add(new Resort(2L, "Krila Zlatibora", "The establishment Krila Zlatibora offers accommodation with free private parking and is located in Zlatibor, in the region of Central Serbia.","Zlatibor", R.drawable.zlatibor, 1800,new ArrayList<>(), ResortType.APARTMENT, new ArrayList<>(), new Capacity(1,4), new ArrayList<>()));
+        products.add(new Resort(3L, "Brvnara Miris Bora", "The object Brvnara Miris Bora is located in Šljivovica and offers a garden, barbecue facilities, and a terrace. All rooms have a kitchen, flat-screen TV with satellite channels, and a private bathroom.","Tara", R.drawable.tara, 3400, new ArrayList<>(), ResortType.APARTMENT, new ArrayList<>(), new Capacity(1,4), new ArrayList<>()));
     }
 }

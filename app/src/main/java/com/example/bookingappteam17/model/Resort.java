@@ -5,6 +5,13 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
+import com.example.bookingappteam17.enums.Amenities;
+import com.example.bookingappteam17.enums.ResortType;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Resort implements Parcelable {
     private Long id;
     private String name;
@@ -12,26 +19,47 @@ public class Resort implements Parcelable {
     private String city;
     private int image;
     private int price;
-
-    public Resort(Long id, String name, String description, String city, int image, int price) {
+    private List<List<LocalDate>> reservedDates;
+    private ResortType type;
+    private List<Amenities> amenities;
+    private Capacity capacity;
+    private List<Review> reviews;
+    public Resort(Long id, String name, String description, String city, int image, int price, List<List<LocalDate>> reservedDates, ResortType type, List<Amenities> amenities, Capacity capacity, List<Review> reviews) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.city = city;
         this.image = image;
         this.price = price;
+        this.reservedDates = reservedDates;
+        this.type = type;
+        this.amenities = amenities;
+        this.capacity = capacity;
+        this.reviews = reviews;
+        //dodaj capacity neki i uradi filtriranje po tome, treba da se urade i recenzije neke ili ocene da metnem na resort, lista ocena npr
+        //napravi komentar klasu isto, da ima id resorta
     }
 
-    public Resort(){}
-
-    protected Resort(Parcel in){
-        id = in.readLong();
-        name = in.readString();
-        description = in.readString();
-        city = in.readString();
-        image = in.readInt();
-        price = in.readInt();
+    public Resort(Long id, String name, String description, String city, int image, int price, Capacity capacity, List<Amenities> amenitites, ResortType type) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.city = city;
+        this.image = image;
+        this.price = price;
+        this.capacity = capacity;
+        this.amenities = amenitites;
+        this.type = type;
+        this.reservedDates = new ArrayList<>();
+        this.reviews = new ArrayList<>();
     }
+
+    public Resort(){
+        reservedDates = new ArrayList<>();
+        amenities = new ArrayList<>();
+    }
+
+
 
     public Long getId() {
         return id;
@@ -74,22 +102,85 @@ public class Resort implements Parcelable {
     }
     public int getPrice(){return price;}
     public void setPrice(int price){this.price=price;}
+
+    public List<List<LocalDate>> getReservedDates() {
+        return reservedDates;
+    }
+
+    public void setReservedDates(List<List<LocalDate>> reservedDates) {
+        this.reservedDates = reservedDates;
+    }
+
+    public ResortType getType() {
+        return type;
+    }
+
+    public void setType(ResortType type) {
+        this.type = type;
+    }
+
+    public List<Amenities> getAmenities() {
+        return amenities;
+    }
+
+    public void setAmenities(List<Amenities> amenities) {
+        this.amenities = amenities;
+    }
+
+    public Capacity getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Capacity capacity) {
+        this.capacity = capacity;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
     @Override
     public int describeContents() {
         return 0;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "Resort{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", image='" + image + '\'' +
                 ", city='" + city + '\'' +
+                ", image=" + image +
+                ", price=" + price +
+                ", reservedDates=" + reservedDates +
                 '}';
     }
 
+    protected Resort(Parcel in){
+        id = in.readLong();
+        name = in.readString();
+        description = in.readString();
+        city = in.readString();
+        image = in.readInt();
+        price = in.readInt();
+
+        // Reading reservedDates
+        int numPeriods = in.readInt();
+        reservedDates = new ArrayList<>();
+        for (int i = 0; i < numPeriods; i++) {
+            int numDates = in.readInt();
+            List<LocalDate> period = new ArrayList<>();
+            for (int j = 0; j < numDates; j++) {
+                period.add((LocalDate) in.readSerializable());
+            }
+            reservedDates.add(period);
+        }
+    }
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeLong(id);
@@ -98,6 +189,14 @@ public class Resort implements Parcelable {
         dest.writeString(city);
         dest.writeInt(image);
         dest.writeInt(price);
+
+        dest.writeInt(reservedDates.size()); // Write the size of the outer list
+        for (List<LocalDate> period : reservedDates) {
+            dest.writeInt(period.size()); // Write the size of each inner list
+            for (LocalDate date : period) {
+                dest.writeSerializable(date); // Write each date as serializable
+            }
+        }
     }
     public static final Creator<Resort> CREATOR = new Creator<Resort>() {
         @Override
