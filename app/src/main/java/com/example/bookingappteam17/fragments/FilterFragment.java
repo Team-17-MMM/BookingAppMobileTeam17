@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,19 +22,31 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.enums.Amenities;
 import com.example.bookingappteam17.enums.ResortType;
+import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
 import com.example.bookingappteam17.listener.CircleTouchListener;
+import com.example.bookingappteam17.model.FilterData;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.time.format.DateTimeFormatter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class FilterFragment extends BottomSheetDialogFragment {
+
+    public interface FilterListener {
+        void onFilterApplied(FilterData filterData);
+    }
+    public void setFilterListener(FilterListener listener) {
+        this.filterListener = listener;
+    }
 
     private Button buttonApplyFilter;
     private TextInputLayout textInputLayoutStartDate;
@@ -52,6 +65,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private EditText editTextCity;
     private Spinner spinnerPeopleCount;
     private MaterialDatePicker<Long> materialDatePicker;
+    private FilterListener filterListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,22 +147,28 @@ public class FilterFragment extends BottomSheetDialogFragment {
                 materialDatePickerEndDate.show(getParentFragmentManager(), "END_DATE_PICKER_TAG"));
 
         // Set a click listener for the Apply Filter button
-        buttonApplyFilter.setOnClickListener(v -> applyFilter());
+        buttonApplyFilter.setOnClickListener(v -> applyFilter(view));
 
         return view;
     }
 
-    private void applyFilter() {
-        String startDate = editTextStartDate.getText().toString();
-        String endDate = editTextEndDate.getText().toString();
+    private void applyFilter(View view) {
+        //TODO: add date inside of filters, add both button for resortType, add city to match substring, add review grade to be included inside filters
 
         String enteredCity = editTextCity.getText().toString();
-        int selectedPeopleCount = Integer.parseInt(spinnerPeopleCount.getSelectedItem().toString());
+        int occupancy = Integer.parseInt(spinnerPeopleCount.getSelectedItem().toString());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        LocalDate startDate = LocalDate.parse(editTextStartDate.getText().toString(), formatter);
+//        LocalDate endDate = LocalDate.parse(editTextEndDate.getText().toString(), formatter);
+        int minPrice = (int) minValue;
+        int maxPrice = (int) maxValue;
+        List<Amenities> amenities = checkSelectedCheckBoxes(view);
 
-        // For demonstration purposes, show a Toast with the filter values
-        String message = "Start Date: " + startDate + "\nEnd Date: " + endDate;
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+        FilterData filterData = new FilterData(enteredCity,minPrice,maxPrice,occupancy,null,null,amenities,chosenResortType);
 
+        if (filterListener != null) {
+            filterListener.onFilterApplied(filterData);
+        }
         // Dismiss the BottomSheetDialogFragment after applying the filter
         dismiss();
     }
@@ -203,4 +223,46 @@ public class FilterFragment extends BottomSheetDialogFragment {
         }
     }
 
+    private List<Amenities> checkSelectedCheckBoxes(View view) {
+
+        List<Amenities> chosenAmenities = new ArrayList<>();
+        CheckBox wifiCheckBox = view.findViewById(R.id.checkbox_wifi);
+        CheckBox parkingCheckBox = view.findViewById(R.id.checkbox_parking);
+        CheckBox tvCheckBox = view.findViewById(R.id.checkbox_TV);
+        CheckBox poolCheckBox = view.findViewById(R.id.checkbox_pool);
+        CheckBox balconyCheckBox = view.findViewById(R.id.checkbox_balcony);
+        CheckBox kitchenCheckBox = view.findViewById(R.id.checkbox_kitchen);
+        CheckBox airConditionerCheckBox = view.findViewById(R.id.checkbox_air_conditioner);
+
+        // Check which checkboxes are checked
+        if (wifiCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.WIFI);
+        }
+
+        if (parkingCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.PARKING);
+        }
+
+        if (tvCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.TV);
+        }
+
+        if (poolCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.POOL);
+        }
+
+        if (balconyCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.BALCONY);
+        }
+
+        if (kitchenCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.KITCHEN);
+        }
+
+        if (airConditionerCheckBox.isChecked()) {
+            chosenAmenities.add(Amenities.AIR_CONDITIONER);
+        }
+
+        return chosenAmenities;
+    }
 }

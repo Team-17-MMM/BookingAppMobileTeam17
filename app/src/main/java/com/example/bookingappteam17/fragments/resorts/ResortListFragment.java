@@ -32,6 +32,13 @@ public class ResortListFragment extends ListFragment {
         return fragment;
     }
 
+    public void updateResorts(ArrayList<Resort> resorts) {
+        this.mResorts = resorts;
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

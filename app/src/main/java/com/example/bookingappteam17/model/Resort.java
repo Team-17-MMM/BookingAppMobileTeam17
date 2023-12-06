@@ -180,6 +180,14 @@ public class Resort implements Parcelable {
             }
             reservedDates.add(period);
         }
+        type = ResortType.valueOf(in.readString());
+        amenities = new ArrayList<>();
+        int numAmenities = in.readInt();
+        for (int i = 0; i < numAmenities; i++) {
+            amenities.add(Amenities.valueOf(in.readString()));
+        }
+        capacity = in.readParcelable(Capacity.class.getClassLoader());
+        reviews = in.createTypedArrayList(Review.CREATOR);
     }
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
@@ -197,6 +205,10 @@ public class Resort implements Parcelable {
                 dest.writeSerializable(date); // Write each date as serializable
             }
         }
+        dest.writeString(type.name()); // Assuming ResortType is an enum
+        dest.writeList(amenities);
+        dest.writeParcelable(capacity, flags);
+        dest.writeTypedList(reviews);
     }
     public static final Creator<Resort> CREATOR = new Creator<Resort>() {
         @Override
