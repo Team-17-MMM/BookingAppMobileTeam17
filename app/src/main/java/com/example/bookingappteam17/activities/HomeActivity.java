@@ -25,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSIONS = 200;
     private ActivityHomeBinding binding;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -115,8 +115,8 @@ public class ResortPageFragment extends Fragment {
     }
 
     private void prepareProductList(ArrayList<Resort> products){
-        products.add(new Resort(1L, "Grand Hotel Kopaonik", "Moderan i udoban hotel Grand Kopaonik se nalazi na 1.770 metara nadmorske visine u samom centru Kopaonika i nudi veličanstveni pogled na Nacionalni park Kopaonik.","Kopaonik", R.drawable.hotel_grand_kop, 2500));
-        products.add(new Resort(2L, "Krila Zlatibora", "Objekat Krila Zlatibora nudi smeštaj sa besplatnim privatnim parkingom, a nalazi se na Zlatiboru, u regionu Centralne Srbije.","Zlatibor", R.drawable.zlatibor, 1800));
-        products.add(new Resort(3L, "Brvnara Miris Bora", "Objekat Brvnara Miris Bora se nalazi u Šljivovici i nudi vrt, pribor za pripremu roštilja i terasu. Sve sobe imaju kuhinju, flat-screen TV sa satelitskim kanalima i sopstveno kupatilo.","Tara", R.drawable.tara, 3400));
+        products.add(new Resort(1L, "Grand Hotel Kopaonik", "The modern and comfortable Grand Hotel Kopaonik is located at an altitude of 1,770 meters in the very center of Kopaonik and offers a magnificent view of the Kopaonik National Park.","Kopaonik", R.drawable.hotel_grand_kop, 2500));
+        products.add(new Resort(2L, "Krila Zlatibora", "The establishment Krila Zlatibora offers accommodation with free private parking and is located in Zlatibor, in the region of Central Serbia.","Zlatibor", R.drawable.zlatibor, 1800));
+        products.add(new Resort(3L, "Brvnara Miris Bora", "The object Brvnara Miris Bora is located in Šljivovica and offers a garden, barbecue facilities, and a terrace. All rooms have a kitchen, flat-screen TV with satellite channels, and a private bathroom.","Tara", R.drawable.tara, 3400));
     }
 }

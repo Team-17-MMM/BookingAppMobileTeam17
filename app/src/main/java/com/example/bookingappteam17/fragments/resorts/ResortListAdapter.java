@@ -1,11 +1,13 @@
 package com.example.bookingappteam17.fragments.resorts;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.ResortDetailActivity;
 import com.example.bookingappteam17.model.Resort;
 
 import java.util.ArrayList;
@@ -53,14 +56,15 @@ public class ResortListAdapter extends ArrayAdapter<Resort> {
             resortDescription.setText(resort.getDescription());
             resortImage.setImageResource(resort.getImage());
             resortPrice.setText(String.valueOf(resort.getPrice()));
-            resortCard.setOnClickListener(v -> {
-                // Handle click on the item at 'position'
-                Log.i("ShopApp", "Clicked: " + resort.getName() + ", id: " +
-                        resort.getId().toString());
-                Toast.makeText(getContext(), "Clicked: " + resort.getName()  +
-                        ", id: " + resort.getId().toString(), Toast.LENGTH_SHORT).show();
-            });
+
         }
+        Button detaljiButton = convertView.findViewById(R.id.resort_detalji);
+        detaljiButton.setOnClickListener(v -> {
+            // Handle click on "Detalji" button
+            Intent intent = new Intent(getContext(), ResortDetailActivity.class);
+            intent.putExtra("selected_resort", resort);
+            getContext().startActivity(intent);
+        });
 
         return convertView;
     }

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.EditProfileActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <!--    Profile image with with edit button in bottom right side of image-->
     <androidx.cardview.widget.CardView
@@ -174,7 +178,46 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/editTextAddress"
         android:paddingEnd="5dp"/>
 
-    <!--    Save button on the horizontal center -->
+    <!-- Field for old password on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextOldPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/old_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+
+    <!-- Field for new password on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextNewPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/new_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextOldPassword" />
+
+    <!-- Field for confirm password on the horizontal center -->
+    <EditText
+        android:id="@+id/editTextConfirmPassword"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:hint="@string/confirm_password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNewPassword" />
+
+    <!-- Save button on the horizontal center -->
     <Button
         android:id="@+id/btnSave"
         android:layout_width="300dp"
@@ -185,7 +228,7 @@
         app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/editTextAddress" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextConfirmPassword" />
 
     <!-- Delete Account button -->
     <Button
@@ -201,3 +244,4 @@
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
         app:layout_constraintTop_toBottomOf="@+id/btnSave" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
