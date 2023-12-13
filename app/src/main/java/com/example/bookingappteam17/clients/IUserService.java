@@ -89,4 +89,11 @@ public interface IUserService {
     })
     @PUT("user/update/{userID}")
     Call<UserInfoDTO> updateUserInfo(@Path("userID") Long userID, @Body UserUpdateDTO userUpdateDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("user/delete/{userID}")
+    Call<Void> deleteAccount(@Path("userID") Long userID);
 }

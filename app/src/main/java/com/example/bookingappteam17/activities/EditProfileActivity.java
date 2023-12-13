@@ -1,5 +1,8 @@
 package com.example.bookingappteam17.activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -13,6 +16,7 @@ import com.example.bookingappteam17.dto.UserLoginDTO;
 import com.example.bookingappteam17.dto.UserUpdateDTO;
 import com.example.bookingappteam17.model.AuthResponse;
 import com.example.bookingappteam17.model.User;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
@@ -49,6 +53,47 @@ public class EditProfileActivity extends AppCompatActivity {
         Button saveButton = findViewById(R.id.btnSaveUser);
         saveButton.setOnClickListener(v -> {
             updateUser();
+        });
+
+        // handle click on delete button
+        Button deleteButton = findViewById(R.id.btnDeleteAccount);
+        deleteButton.setOnClickListener(v -> {
+            Call<Void> call = ClientUtils.userService.deleteAccount(userInfoDTO.getUserID());
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    // Display a success message using Snackbar
+                    Snackbar.make(findViewById(android.R.id.content), "User deleted successfully", Snackbar.LENGTH_SHORT).show();
+                    // Clear token and username from SharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    // print token and username from editor
+                    Log.d("EditProfileActivity", "editor: " + editor.toString());
+//                    editor.remove("token");
+                    editor.clear().apply();
+//                    editor.remove("username");
+                    // print editor kay value pairs
+                    Log.d("EditProfileActivity", "editor: " + editor.toString());
+                    editor.apply();
+
+                    // Clear UserInfoDTO from SharedViewModel
+                    SharedViewModel sharedViewModel = new SharedViewModel();
+                    sharedViewModel.setUserInfoDTO(null);
+
+                    // logout and navigate to login activity
+                    Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    // Display an error message using Snackbar
+                    Snackbar.make(findViewById(android.R.id.content), "Error deleting user", Snackbar.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 
