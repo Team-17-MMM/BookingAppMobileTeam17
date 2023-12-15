@@ -41,6 +41,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
 
         ImageView profileEditIcon = view.findViewById(R.id.profileEditIcon);
         profileEditIcon.setOnClickListener(v -> editIconClicked());
@@ -56,13 +57,15 @@ public class ProfileFragment extends Fragment {
     // Open edit profile activity
     private void editIconClicked() {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+        UserInfoDTO userInfoDTO = sharedViewModel.getUserInfoDTO();
+        intent.putExtra("userInfoDTO", userInfoDTO);
         startActivity(intent);
     }
 
     // Logout and navigate to login activity
     private void logout() {
         // Clear token and username from SharedPreferences
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("com.example.bookingappteam17", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove("token");
         editor.remove("username");
@@ -77,13 +80,9 @@ public class ProfileFragment extends Fragment {
         requireActivity().finish(); // Optional: Close the current activity
     }
 
-
-
-
     // Set up user data in the UI
     private void setupData(View view) {
 
-        sharedViewModel = new ViewModelProvider(requireActivity()).get(SharedViewModel.class);
         UserInfoDTO userInfoDTO = sharedViewModel.getUserInfoDTO();
 
         TextView textViewUsername = view.findViewById(R.id.txtName);

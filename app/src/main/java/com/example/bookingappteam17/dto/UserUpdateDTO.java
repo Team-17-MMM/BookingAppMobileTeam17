@@ -1,34 +1,12 @@
 package com.example.bookingappteam17.dto;
 
-import java.io.Serializable;
-
-public class UserInfoDTO implements Serializable {
-    private Long userID;
+public class UserUpdateDTO {
     private String username;
+    private String password;
     private String name;
     private String lastname;
     private String address;
     private String phone;
-
-    public UserInfoDTO() {
-    }
-
-    public UserInfoDTO(Long userID, String username, String name, String lastname, String address, String phone) {
-        this.userID = userID;
-        this.username = username;
-        this.name = name;
-        this.lastname = lastname;
-        this.address = address;
-        this.phone = phone;
-    }
-
-    public Long getUserID() {
-        return userID;
-    }
-
-    public void setUserID(Long userID) {
-        this.userID = userID;
-    }
 
     public String getUsername() {
         return username;
@@ -36,6 +14,14 @@ public class UserInfoDTO implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -69,4 +55,16 @@ public class UserInfoDTO implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    public UserUpdateDTO(String username, String password, String name, String lastname, String address, String phone) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.lastname = lastname;
+        this.address = address;
+        this.phone = phone;
+    }
+
+    public UserUpdateDTO(){}
+
 }

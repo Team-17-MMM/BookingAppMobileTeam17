@@ -2,7 +2,9 @@ package com.example.bookingappteam17.clients;
 
 import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.dto.UserLoginDTO;
+import com.example.bookingappteam17.dto.UserUpdateDTO;
 import com.example.bookingappteam17.model.AuthResponse;
+import com.example.bookingappteam17.model.DeleteUserResponse;
 import com.example.bookingappteam17.model.User;
 
 import java.util.ArrayList;
@@ -72,4 +74,27 @@ public interface IUserService {
     })
     @GET("user/userInfo/{username}")
     Call<UserInfoDTO> getUserInfo(@Path("username") String username);
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("user/userInfo/{userID}")
+    Call<UserInfoDTO> updateUserInfo(@Path("userID") Long userID, @Body UserInfoDTO userInfoDTO);
+
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @PUT("user/update/{userID}")
+    Call<UserInfoDTO> updateUserInfo(@Path("userID") Long userID, @Body UserUpdateDTO userUpdateDTO);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @DELETE("user/delete/{userID}")
+    Call<Void> deleteAccount(@Path("userID") Long userID);
 }

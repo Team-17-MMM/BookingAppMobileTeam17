@@ -115,27 +115,6 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/editTextEmail"
         android:paddingEnd="5dp"/>
 
-    <!--    Field for password on the horizontal center -->
-    <EditText
-        android:id="@+id/editTextPassword"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="*"
-        android:textColor="@color/red"
-        app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
-        app:layout_constraintBaseline_toBaselineOf="@+id/editTextPassword"
-        android:paddingEnd="5dp"/>
-
     <!--    Field for phone number on the horizontal center -->
     <EditText
         android:id="@+id/editTextPhone"
@@ -147,7 +126,7 @@
         app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -219,7 +198,7 @@
 
     <!-- Save button on the horizontal center -->
     <Button
-        android:id="@+id/btnSave"
+        android:id="@+id/btnSaveUser"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -242,6 +221,6 @@
         app:layout_constraintEnd_toEndOf="@+id/cardViewProfileImage"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardViewProfileImage"
-        app:layout_constraintTop_toBottomOf="@+id/btnSave" />
+        app:layout_constraintTop_toBottomOf="@+id/btnSaveUser" />
 </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
