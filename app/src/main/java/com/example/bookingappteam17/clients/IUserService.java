@@ -4,6 +4,7 @@ import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.dto.UserLoginDTO;
 import com.example.bookingappteam17.dto.UserUpdateDTO;
 import com.example.bookingappteam17.model.AuthResponse;
+import com.example.bookingappteam17.model.DeleteUserResponse;
 import com.example.bookingappteam17.model.User;
 
 import java.util.ArrayList;
