@@ -101,6 +101,14 @@
             android:layout_gravity="center_horizontal"
             android:inputType="text"
             android:hint="@string/address" />
+        <EditText
+            android:id="@+id/editTextRegisterCountry"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:ems="13"
+            android:layout_gravity="center_horizontal"
+            android:inputType="text"
+            android:hint="@string/country" />
     </LinearLayout>
 
     <LinearLayout
