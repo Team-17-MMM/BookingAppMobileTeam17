@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,31 +16,31 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityHomeBinding;
 import com.example.bookingappteam17.dto.UserInfoDTO;
-import com.example.bookingappteam17.fragments.HomeFragment;
+import com.example.bookingappteam17.enums.UserRoleType;
 import com.example.bookingappteam17.fragments.NotificationPageFragment;
-import com.example.bookingappteam17.fragments.NotificationsListFragment;
 import com.example.bookingappteam17.fragments.ProfileFragment;
 import com.example.bookingappteam17.fragments.ReservationsListFragment;
-import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
-import com.example.bookingappteam17.model.Resort;
+import com.example.bookingappteam17.fragments.accommodations.AccommodationPageFragment;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
-    private boolean isPermissions = true;
-    private String [] permissions = {
-            android.Manifest.permission.INTERNET
-    };
-    private static final int REQUEST_PERMISSIONS = 200;
-    private ActivityHomeBinding binding;
 
+    private static final String USER_PREFS_KEY = "user_prefs";
+    private static final String USERNAME_KEY = "username";
+    private static final String ROLE_KEY = "role";
+    private static final String USER_ID_KEY = "userId";
+    private ActivityHomeBinding binding;
     private SharedViewModel sharedViewModel;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = getSharedPreferences(USER_PREFS_KEY, Context.MODE_PRIVATE);
         loadUserData();
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
@@ -47,20 +48,29 @@ public class HomeActivity extends AppCompatActivity {
 
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
-        replaceFragment(new ResortPageFragment());
-        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.home) {
-                replaceFragment(new ResortPageFragment());
-            } else if (item.getItemId() == R.id.notifications) {
-                replaceFragment(new NotificationPageFragment());
-            } else if (item.getItemId() == R.id.profile) {
-                replaceFragment(new ProfileFragment());
-            } else if (item.getItemId() == R.id.reservations) {
-                replaceFragment(new ReservationsListFragment());
-            }
+        setupBottomNavigationView();
+        replaceFragment(new AccommodationPageFragment());
+    }
+
+    private void setupBottomNavigationView() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            handleBottomNavigationItemSelected(item.getItemId());
             return true;
         });
     }
+
+    private void handleBottomNavigationItemSelected(int itemId) {
+        if (itemId == R.id.profile) {
+            replaceFragment(new ProfileFragment());
+        } else if (itemId == R.id.notifications) {
+            replaceFragment(new NotificationPageFragment());
+        } else if (itemId == R.id.reservations) {
+            replaceFragment(new ReservationsListFragment());
+        } else if (itemId == R.id.accommodations) {
+            replaceFragment(new AccommodationPageFragment());
+        }
+    }
+
 
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -69,11 +79,8 @@ public class HomeActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    // Load user data from the server
     private void loadUserData() {
-        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-
-        String username = sharedPreferences.getString("username", "");
+        String username = sharedPreferences.getString(USERNAME_KEY, "");
 
         Call<UserInfoDTO> call = ClientUtils.userService.getUserInfo(username);
         call.enqueue(new Callback<UserInfoDTO>() {
@@ -81,7 +88,10 @@ public class HomeActivity extends AppCompatActivity {
             public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     UserInfoDTO userInfoDTO = response.body();
+                    // add userId to shared preferences
+                    sharedPreferences.edit().putLong("userId", userInfoDTO.getUserID()).apply();
                     sharedViewModel.setUserInfoDTO(userInfoDTO);
+                    updateMenuVisibility();
                 } else {
                     Log.d("Error", "Failed to retrieve user data");
                 }
@@ -92,5 +102,25 @@ public class HomeActivity extends AppCompatActivity {
                 Log.e("Error", "Network request failed", t);
             }
         });
+    }
+
+    private void updateMenuVisibility() {
+        BottomNavigationView bottomNavigationView = binding.bottomNavigationView;
+        Menu menu = bottomNavigationView.getMenu();
+
+        menu.findItem(R.id.profile).setVisible(true);
+        menu.findItem(R.id.notifications).setVisible(true);
+
+        String role = sharedPreferences.getString(ROLE_KEY, "");
+        switch (UserRoleType.valueOf(role)) {
+            case GUEST:
+                menu.findItem(R.id.reservations).setVisible(true);
+                menu.findItem(R.id.accommodations).setVisible(true);
+                break;
+            case HOST:
+                menu.findItem(R.id.reservations).setVisible(true);
+                menu.findItem(R.id.accommodations).setVisible(true);
+                break;
+        }
     }
 }

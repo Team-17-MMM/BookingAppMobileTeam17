@@ -1,5 +1,7 @@
 package com.example.bookingappteam17.dto;
 
+import com.example.bookingappteam17.enums.UserRoleType;
+
 import java.io.Serializable;
 
 public class UserInfoDTO implements Serializable {
@@ -69,4 +71,5 @@ public class UserInfoDTO implements Serializable {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 }

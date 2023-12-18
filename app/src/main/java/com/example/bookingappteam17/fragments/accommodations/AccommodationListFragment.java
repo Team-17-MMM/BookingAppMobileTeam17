@@ -1,7 +1,6 @@
-package com.example.bookingappteam17.fragments.resorts;
+package com.example.bookingappteam17.fragments.accommodations;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,24 +9,25 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
 
-import com.example.bookingappteam17.databinding.FragmentResortListBinding;
-import com.example.bookingappteam17.model.Resort;
+import com.example.bookingappteam17.databinding.FragmentAccommodationListBinding;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.model.Accommodation;
 import java.util.ArrayList;
 
-public class ResortListFragment extends ListFragment {
-    private ResortListAdapter adapter;
+public class AccommodationListFragment extends ListFragment {
+    private AccommodationListAdapter adapter;
     private static final String ARG_PARAM = "param";
-    private ArrayList<Resort> mResorts;
-    private FragmentResortListBinding binding;
+    private ArrayList<AccommodationCardDTO> mAccommodations;
+    private FragmentAccommodationListBinding binding;
 
-    public ResortListAdapter getAdapter() {
+    public AccommodationListAdapter getAdapter() {
         return adapter;
     }
 
-    public static ResortListFragment newInstance(ArrayList<Resort> resorts){
-        ResortListFragment fragment = new ResortListFragment();
+    public static AccommodationListFragment newInstance(ArrayList<AccommodationCardDTO> accommodations){
+        AccommodationListFragment fragment = new AccommodationListFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList(ARG_PARAM, resorts);
+        args.putParcelableArrayList(ARG_PARAM, accommodations);
         fragment.setArguments(args);
         return fragment;
     }
@@ -35,7 +35,7 @@ public class ResortListFragment extends ListFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentResortListBinding.inflate(inflater, container, false);
+        binding = FragmentAccommodationListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         return root;
     }
@@ -44,8 +44,8 @@ public class ResortListFragment extends ListFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mResorts = getArguments().getParcelableArrayList(ARG_PARAM);
-            adapter = new ResortListAdapter(getActivity(), mResorts);
+            mAccommodations = getArguments().getParcelableArrayList(ARG_PARAM);
+            adapter = new AccommodationListAdapter(getActivity(), mAccommodations);
             setListAdapter(adapter);
         }
     }

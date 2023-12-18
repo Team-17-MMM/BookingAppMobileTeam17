@@ -1,4 +1,4 @@
-package com.example.bookingappteam17.clients;
+package com.example.bookingappteam17.services;
 
 import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.dto.UserLoginDTO;

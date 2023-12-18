@@ -57,9 +57,9 @@
 
         </activity>
         <activity
-            android:name=".activities.ResortDetailActivity"
+            android:name=".activities.AccommodationDetailActivity"
             android:screenOrientation="portrait"
-            android:label="Resort Details"
+            android:label="Accommodation Details"
             android:theme="@style/Theme.BookingAppTeam17"/>
     </application>
 
