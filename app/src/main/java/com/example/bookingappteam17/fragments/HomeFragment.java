@@ -21,11 +21,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.databinding.ActivityHomeBinding;
-import com.example.bookingappteam17.databinding.FragmentResortsPageBinding;
-import com.example.bookingappteam17.fragments.resorts.ResortListFragment;
-import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
-import com.example.bookingappteam17.fragments.resorts.ResortPageViewModel;
-import com.example.bookingappteam17.model.Resort;
+import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
+import com.example.bookingappteam17.fragments.accommodations.AccommodationListFragment;
+import com.example.bookingappteam17.fragments.accommodations.AccommodationPageFragment;
+import com.example.bookingappteam17.fragments.accommodations.AccommodationPageViewModel;
+import com.example.bookingappteam17.model.Accommodation;
 
 import java.util.ArrayList;
 

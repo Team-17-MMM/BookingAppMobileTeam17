@@ -1,49 +1,40 @@
-package com.example.bookingappteam17.model;
+package com.example.bookingappteam17.dto.accommodation;
 
 
-import com.example.bookingappteam17.dto.accommodation.CapacityDTO;
+import com.example.bookingappteam17.model.Capacity;
 
-public class Capacity {
+public class CapacityDTO {
+    private int minGuests;
+    private int maxGuests;
 
-    public Capacity() {}
+    public CapacityDTO() {}
 
-    public Capacity(int minGuests, int maxGuests) {
+    public CapacityDTO(int minGuests, int maxGuests) {
         this.minGuests = minGuests;
         this.maxGuests = maxGuests;
     }
 
-    public Capacity(CapacityDTO capacity) {
+    public CapacityDTO(Capacity capacity) {
         this.minGuests = capacity.getMinGuests();
         this.maxGuests = capacity.getMaxGuests();
     }
-
-    public Capacity(Capacity capacity) {
-        this.minGuests = capacity.getMinGuests();
-        this.maxGuests = capacity.getMaxGuests();
-    }
-    private int minGuests;
-    private int maxGuests;
-
 
     public int getMinGuests() {
         return minGuests;
     }
-
     public void setMinGuests(int minGuests) {
         this.minGuests = minGuests;
     }
-
     public int getMaxGuests() {
         return maxGuests;
     }
-
     public void setMaxGuests(int maxGuests) {
         this.maxGuests = maxGuests;
     }
 
     @Override
     public String toString() {
-        return "Capacity{" +
+        return "CapacityDTO{" +
                 ", minGuests=" + minGuests +
                 ", maxGuests=" + maxGuests +
                 '}';

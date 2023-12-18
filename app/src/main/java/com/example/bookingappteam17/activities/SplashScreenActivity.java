@@ -36,7 +36,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         catch (NullPointerException e){}
         int SPLASH_TIME_OUT = 5000; // time to launch the another activity
         Animation animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
-        findViewById(R.id.appName).setVisibility(android.view.View.VISIBLE);
+        findViewById(R.id.appName).setVisibility(View.VISIBLE);
         findViewById(R.id.appName).startAnimation(animFadeIn);
         if (isConnectedToInternet(this)) {
             // If connected to the internet, proceed with the regular splash screen logic

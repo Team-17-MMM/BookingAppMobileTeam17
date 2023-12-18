@@ -14,4 +14,9 @@
     <string name="delete_account">Delete account</string>
     <string name="notification_title">Title</string>
     <string name="notification_description">Description</string>
+    <string name="old_password">Old password</string>
+    <string name="new_password">New password</string>
+    <string name="Accommodations">Accommodations</string>
+    <string name="accommodations">Accommodations</string>
+    <string name="host_accommodations">Host accommodations</string>
 </resources>
