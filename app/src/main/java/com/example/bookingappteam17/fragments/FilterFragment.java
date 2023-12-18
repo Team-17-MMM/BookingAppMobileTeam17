@@ -59,7 +59,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private TextView minPriceTextView;
     private TextView maxPriceTextView;
     private float minValue = 0;
-    private float maxValue = 100;
+    private float maxValue = 100000;
     private RadioGroup radioGroupResortType;
     private ResortType chosenResortType;
     private EditText editTextCity;
@@ -173,20 +173,20 @@ public class FilterFragment extends BottomSheetDialogFragment {
         dismiss();
     }
     public void updateTextViews() {
-        minPriceTextView.setText("Min: $" + (int) minValue);
-        maxPriceTextView.setText("Max: $" + (int) maxValue);
+        minPriceTextView.setText("Min: " + (int) minValue + " RSD");
+        maxPriceTextView.setText("Max: " + (int) maxValue + " RSD");
     }
 
     public float calculateValueFromPositionMin(float x) {
         float percent = x / connectionLine.getWidth();
-        float calculatedValue = getMinValue() + (percent * 100);
-        return Math.max(0, Math.min(getMaxValue(), calculatedValue)); // Ensure the value is within the range [0, 100]
+        float calculatedValue = getMinValue() + (percent * 100000);
+        return Math.max(0, Math.min(getMaxValue(), calculatedValue));
     }
 
     public float calculateValueFromPositionMax(float x) {
         float percent = x / connectionLine.getWidth();
-        float calculatedValue = getMaxValue() + (percent * 100);
-        return Math.max(getMinValue(), Math.min(100, calculatedValue)); // Ensure the value is within the range [getMinValue(), 100]
+        float calculatedValue = getMaxValue() + (percent * 100000);
+        return Math.max(getMinValue(), Math.min(100000, calculatedValue));
     }
 
 

@@ -251,7 +251,7 @@
                         android:id="@+id/maxPriceTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Max: $100" />
+                        android:text="Max: $100000" />
 
                 </LinearLayout>
 
