@@ -1,12 +1,13 @@
 package com.example.bookingappteam17.authentication;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.bookingappteam17.clients.IUserService;
+import com.example.bookingappteam17.services.IUserService;
+import com.example.bookingappteam17.clients.JwtUtils;
 import com.example.bookingappteam17.dto.UserLoginDTO;
 import com.example.bookingappteam17.model.AuthResponse;
-import com.example.bookingappteam17.model.User;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +49,12 @@ public class AuthenticationManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("token", token.getToken());
         editor.putString("username", username);
+
+        // Extract role from the token
+        String role = JwtUtils.getRoleFromToken(token.getToken());
+
+        System.out.println("Role: " + role);
+        editor.putString("role", role);
 
         editor.apply();
     }

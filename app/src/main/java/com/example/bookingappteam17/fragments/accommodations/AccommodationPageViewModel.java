@@ -1,12 +1,12 @@
-package com.example.bookingappteam17.fragments.resorts;
+package com.example.bookingappteam17.fragments.accommodations;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class ResortPageViewModel extends ViewModel {
+public class AccommodationPageViewModel extends ViewModel {
     private final MutableLiveData<String> searchText;
-    public ResortPageViewModel(){
+    public AccommodationPageViewModel(){
         searchText = new MutableLiveData<>();
         searchText.setValue("This is search help!");
     }

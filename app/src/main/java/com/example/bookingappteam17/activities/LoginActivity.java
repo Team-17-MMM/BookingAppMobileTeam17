@@ -17,10 +17,9 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.authentication.AuthenticationCallback;
 import com.example.bookingappteam17.authentication.AuthenticationManager;
 import com.example.bookingappteam17.clients.ClientUtils;
-import com.example.bookingappteam17.clients.IUserService;
+import com.example.bookingappteam17.services.IUserService;
 import com.example.bookingappteam17.dto.UserLoginDTO;
 import com.example.bookingappteam17.model.AuthResponse;
-import com.example.bookingappteam17.model.User;
 
 public class LoginActivity extends AppCompatActivity {
 
