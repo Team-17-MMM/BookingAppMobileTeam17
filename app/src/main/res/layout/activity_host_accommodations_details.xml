@@ -143,75 +143,77 @@
                         android:onClick="showAccommodationTypeDialog"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Price Range Slider -->
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/priceRangeSlider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:valueFrom="0"
-                    android:valueTo="10000"
-                    app:layout_constraintTop_toBottomOf="@+id/accommodationTypeLayout"/>
-
                 <!-- Price Input Container -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@+id/priceRangeSlider">
+                    app:layout_constraintTop_toBottomOf="@+id/accommodationTypeLayout">
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Min">
+                        android:hint="Min persons">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/minPersonsEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:focusable="false"/>
+                            android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="Max">
+                        android:hint="Max persons">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/maxPersonsEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:focusable="false"/>
+                            android:inputType="number"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!--        <LinearLayout-->
-        <!--            android:id="@+id/mapLayout"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintTop_toBottomOf="@+id/cardView"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent">-->
+        <LinearLayout
+            android:id="@+id/mapLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <!--            <org.osmdroid.views.MapView-->
-        <!--                android:id="@+id/mapView"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="200dp" />-->
-        <!--        </LinearLayout>-->
+            <org.osmdroid.views.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="250dp" />
+        </LinearLayout>
 
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/updateButton"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Update"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/mapLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+<!--         button for upload image-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadImageButton"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Upload Image"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/updateButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

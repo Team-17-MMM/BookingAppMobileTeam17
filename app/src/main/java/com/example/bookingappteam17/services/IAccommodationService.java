@@ -3,6 +3,7 @@ package com.example.bookingappteam17.services;
 
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodRangeDTO;
 
@@ -34,7 +35,7 @@ public interface IAccommodationService {
     Call<AccommodationDTO> createAccommodation(@Body AccommodationDTO accommodationDTO);
 
     @PUT("accommodation/{id}")
-    Call<AccommodationDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
+    Call<AccommodationUpdateDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
 
     @PUT("accommodation/{id}/availabilityPeriods")
     Call<AccommodationDTO> updateAccommodationAvailabilityPeriods(@Body List<AvailabilityPeriodDTO> availabilityPeriods, @Path("id") Long id);
@@ -75,4 +76,7 @@ public interface IAccommodationService {
 
     @GET("amenity")
     Call<List<String>> getAllAmenities();
+
+    @GET("accommodationType")
+    Call<List<String>> getAllAccommodationTypes();
 }
