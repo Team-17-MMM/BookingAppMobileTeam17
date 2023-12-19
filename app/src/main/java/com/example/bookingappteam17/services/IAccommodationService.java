@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -70,5 +71,8 @@ public interface IAccommodationService {
     Call<Void> uploadAccommodationPicture(@Path("Id") Long Id, @Part MultipartBody.Part image);
 
     @GET("accommodation/{Id}/picture")
-    Call<byte[]> getAccommodationImage(@Path("Id") Long Id);
+    Call<ResponseBody> getAccommodationImage(@Path("Id") Long Id);
+
+    @GET("amenity")
+    Call<List<String>> getAllAmenities();
 }
