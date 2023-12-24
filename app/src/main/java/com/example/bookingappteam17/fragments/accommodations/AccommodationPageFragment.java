@@ -28,7 +28,9 @@ import com.example.bookingappteam17.model.Accommodation;
 import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
 import com.example.bookingappteam17.services.IAccommodationService;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -45,11 +47,18 @@ public class AccommodationPageFragment extends Fragment {
     private FragmentAccommodationsPageBinding binding;
     private SharedPreferences sharedPreferences;
     private IAccommodationService accommodationService = ClientUtils.accommodationService;
+    private SharedViewModel sharedViewModel;
+
     public static AccommodationPageFragment newInstance() {
         return new AccommodationPageFragment();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getActivity() != null && getActivity() instanceof HomeActivity) {
+            sharedViewModel = ((HomeActivity) getActivity()).getSharedViewModel();
+        }
+
+
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         productsViewModel = new ViewModelProvider(this).get(AccommodationPageViewModel.class);
         accommodations.clear();
@@ -59,14 +68,18 @@ public class AccommodationPageFragment extends Fragment {
 
         prepareProductList(accommodations);
 
-        SearchView searchView = binding.searchText;
-        productsViewModel.getText().observe(getViewLifecycleOwner(), searchView::setQueryHint);
+
 
         Button btnFilters = binding.btnFilters;
         btnFilters.setOnClickListener(v -> {
-            // Show the FilterFragment as a BottomSheetDialogFragment
             FilterFragment filterFragment = new FilterFragment();
+            filterFragment.setOnDismissListener(() -> {
+                AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
+                List<AccommodationCardDTO> filteredAccommodations = sharedViewModel.getAccommodationCards();
+                adapter.updateData(filteredAccommodations);
+            });
             filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+
         });
 
         Spinner spinner = binding.btnSort;
@@ -141,6 +154,8 @@ public class AccommodationPageFragment extends Fragment {
                         for (AccommodationCardDTO accommodationCardDTO : accommodations) {
                             products.add(accommodationCardDTO);
                         }
+                        sharedViewModel.setAccommodationCards(products);
+
                     }
                 }
 
@@ -161,6 +176,8 @@ public class AccommodationPageFragment extends Fragment {
                         for (AccommodationCardDTO accommodationCardDTO : accommodations) {
                             products.add(accommodationCardDTO);
                         }
+                        sharedViewModel.setAccommodationCards(products);
+
                     }
                 }
 
@@ -172,8 +189,11 @@ public class AccommodationPageFragment extends Fragment {
             );
         }
 
+
+
 //        products.add(new Accommodation(1L, "Grand Hotel Kopaonik", "The modern and comfortable Grand Hotel Kopaonik is located at an altitude of 1,770 meters in the very center of Kopaonik and offers a magnificent view of the Kopaonik National Park.","Kopaonik", R.drawable.hotel_grand_kop, 2500, 1L));
 //        products.add(new Accommodation(2L, "Krila Zlatibora", "The establishment Krila Zlatibora offers accommodation with free private parking and is located in Zlatibor, in the region of Central Serbia.","Zlatibor", R.drawable.zlatibor, 1800, 1L));
 //        products.add(new Accommodation(3L, "Brvnara Miris Bora", "The object Brvnara Miris Bora is located in Šljivovica and offers a garden, barbecue facilities, and a terrace. All rooms have a kitchen, flat-screen TV with satellite channels, and a private bathroom.","Tara", R.drawable.tara, 3400, 1L));
     }
+
 }

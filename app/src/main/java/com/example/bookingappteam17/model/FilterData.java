@@ -1,7 +1,7 @@
 package com.example.bookingappteam17.model;
 
 import com.example.bookingappteam17.enums.Amenities;
-import com.example.bookingappteam17.enums.ResortType;
+import com.example.bookingappteam17.enums.AccommodationType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,9 +14,9 @@ public class FilterData {
     private LocalDate startDate;
     private LocalDate endDate;
     private List<Amenities> amenities;
-    private ResortType resortType;
+    private AccommodationType AccommodationType;
 
-    public FilterData(String city, int minPrice, int maxPrice, int occupancy, LocalDate startDate, LocalDate endDate, List<Amenities> amenities, ResortType resortType) {
+    public FilterData(String city, int minPrice, int maxPrice, int occupancy, LocalDate startDate, LocalDate endDate, List<Amenities> amenities, AccommodationType AccommodationType) {
         this.city = city;
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
@@ -24,7 +24,7 @@ public class FilterData {
         this.startDate = startDate;
         this.endDate = endDate;
         this.amenities = amenities;
-        this.resortType = resortType;
+        this.AccommodationType = AccommodationType;
     }
 
     public String getCity() {
@@ -83,11 +83,11 @@ public class FilterData {
         this.amenities = amenities;
     }
 
-    public ResortType getResortType() {
-        return resortType;
+    public AccommodationType getAccommodationType() {
+        return AccommodationType;
     }
 
-    public void setResortType(ResortType resortType) {
-        this.resortType = resortType;
+    public void setAccommodationType(AccommodationType AccommodationType) {
+        this.AccommodationType = AccommodationType;
     }
 }

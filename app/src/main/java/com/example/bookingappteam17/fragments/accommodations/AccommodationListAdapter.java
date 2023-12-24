@@ -20,6 +20,7 @@ import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.model.Accommodation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO> {
     private ArrayList<AccommodationCardDTO> aAccommodations;
@@ -67,5 +68,11 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
         });
 
         return convertView;
+    }
+
+    public void updateData(List<AccommodationCardDTO> newAccommodations) {
+        aAccommodations.clear();
+        aAccommodations.addAll(newAccommodations);
+        notifyDataSetChanged();
     }
 }

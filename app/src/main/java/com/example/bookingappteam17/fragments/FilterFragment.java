@@ -1,53 +1,62 @@
 package com.example.bookingappteam17.fragments;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.SeekBar;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+
 
 import com.example.bookingappteam17.R;
-import com.example.bookingappteam17.enums.Amenities;
-import com.example.bookingappteam17.enums.ResortType;
-import com.example.bookingappteam17.fragments.resorts.ResortPageFragment;
+import com.example.bookingappteam17.activities.HomeActivity;
+import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.listener.CircleTouchListener;
 import com.example.bookingappteam17.model.FilterData;
+import com.example.bookingappteam17.services.IAccommodationService;
+import com.example.bookingappteam17.services.IAmenitiesService;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.time.format.DateTimeFormatter;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class FilterFragment extends BottomSheetDialogFragment {
 
-    public interface FilterListener {
-        void onFilterApplied(FilterData filterData);
+    public interface OnDismissListener {
+        void onDismiss();
     }
-    public void setFilterListener(FilterListener listener) {
-        this.filterListener = listener;
-    }
-
+    private OnDismissListener dismissListener;
     private Button buttonApplyFilter;
     private TextInputLayout textInputLayoutStartDate;
     private TextInputEditText editTextStartDate;
@@ -60,17 +69,24 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private TextView maxPriceTextView;
     private float minValue = 0;
     private float maxValue = 100000;
-    private RadioGroup radioGroupResortType;
-    private ResortType chosenResortType;
+    private List<String> chosenAccommodationTypes;
     private EditText editTextCity;
     private Spinner spinnerPeopleCount;
-    private MaterialDatePicker<Long> materialDatePicker;
-    private FilterListener filterListener;
+    private List<String> allAmenities = new ArrayList<>();
+    private SharedViewModel sharedViewModel;
+    private IAccommodationService accommodationService = ClientUtils.accommodationService;
+    private List<AccommodationCardDTO> filteredAccommodations = new ArrayList<>();
+
+    private IAmenitiesService amenitiesService = ClientUtils.amenitiesService;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filter, container, false);
         setStyle(STYLE_NORMAL, R.style.Theme_BookingAppTeam17);
+
+        if (getActivity() != null && getActivity() instanceof HomeActivity) {
+            sharedViewModel = ((HomeActivity) getActivity()).getSharedViewModel();
+        }
 
         buttonApplyFilter = view.findViewById(R.id.btnApplyFilter);
         textInputLayoutStartDate = view.findViewById(R.id.textInputLayoutStartDate);
@@ -82,10 +98,8 @@ public class FilterFragment extends BottomSheetDialogFragment {
         maxThumb = view.findViewById(R.id.maxThumb);
         minPriceTextView = view.findViewById(R.id.minPriceTextView);
         maxPriceTextView = view.findViewById(R.id.maxPriceTextView);
-        radioGroupResortType = view.findViewById(R.id.radioGroupResortType);
         spinnerPeopleCount = view.findViewById(R.id.spinnerPeopleCount);
         editTextCity = view.findViewById(R.id.editTextCity);
-        chosenResortType = ResortType.APARTMENT;
 
         updateTextViews();
         minThumb.setOnTouchListener(new CircleTouchListener(this,true));
@@ -104,15 +118,6 @@ public class FilterFragment extends BottomSheetDialogFragment {
         int defaultSelection = 2;
         spinnerPeopleCount.setSelection(adapter.getPosition(String.valueOf(defaultSelection)));
 
-        // Set a listener for the RadioGroup
-        radioGroupResortType.setOnCheckedChangeListener((group, checkedId) -> {
-            // Check which radio button was selected
-            if (checkedId == R.id.radioButtonApartment) {
-                chosenResortType = ResortType.APARTMENT;
-            } else if (checkedId == R.id.radioButtonStudio) {
-                chosenResortType = ResortType.STUDIO;
-            }
-        });
 
         // Set up MaterialDatePicker for start date
         MaterialDatePicker<Long> materialDatePickerStartDate = MaterialDatePicker.Builder.datePicker()
@@ -146,6 +151,10 @@ public class FilterFragment extends BottomSheetDialogFragment {
         editTextEndDate.setOnClickListener(v ->
                 materialDatePickerEndDate.show(getParentFragmentManager(), "END_DATE_PICKER_TAG"));
 
+
+        allAmenities = getAllAmenities(view);
+
+
         // Set a click listener for the Apply Filter button
         buttonApplyFilter.setOnClickListener(v -> applyFilter(view));
 
@@ -153,25 +162,70 @@ public class FilterFragment extends BottomSheetDialogFragment {
     }
 
     private void applyFilter(View view) {
-        //TODO: add date inside of filters, add both button for resortType, add city to match substring, add review grade to be included inside filters
+        LocalDate startDate;
+        LocalDate endDate;
+        String city = editTextCity.getText().toString();
+
+        System.out.println(editTextStartDate.getText().toString());
+        if(editTextCity.getText().toString() == ""){
+            showLongToast(this.getContext(),"City name is required");
+            return;
+        }
+        if(editTextStartDate.getText().toString() != "" && editTextEndDate.getText().toString()!= ""){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            startDate = LocalDate.parse(editTextStartDate.getText().toString(), formatter);
+            endDate = LocalDate.parse(editTextEndDate.getText().toString(), formatter);
+        }else{
+            showLongToast(this.getContext(),"Date range is required");
+            return;
+        }
+        chosenAccommodationTypes = getSelectedAccommodationTypes(view);
+        if (chosenAccommodationTypes.isEmpty()){
+            chosenAccommodationTypes.addAll(Arrays.asList("STUDIO","APARTMENT","ROOM"));
+        }
 
         String enteredCity = editTextCity.getText().toString();
-        int occupancy = Integer.parseInt(spinnerPeopleCount.getSelectedItem().toString());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-//        LocalDate startDate = LocalDate.parse(editTextStartDate.getText().toString(), formatter);
-//        LocalDate endDate = LocalDate.parse(editTextEndDate.getText().toString(), formatter);
-        int minPrice = (int) minValue;
-        int maxPrice = (int) maxValue;
-        List<Amenities> amenities = checkSelectedCheckBoxes(view);
+        Long occupancy = Long.parseLong(spinnerPeopleCount.getSelectedItem().toString());
 
-        FilterData filterData = new FilterData(enteredCity,minPrice,maxPrice,occupancy,null,null,amenities,chosenResortType);
+        Long minPrice = (long) minValue;
+        Long maxPrice = (long) maxValue;
+        List<String> checkedAmenities = getCheckedAmenities(view);
 
-        if (filterListener != null) {
-            filterListener.onFilterApplied(filterData);
-        }
-        // Dismiss the BottomSheetDialogFragment after applying the filter
+        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,startDate.toString(),endDate.toString(),occupancy,minPrice,maxPrice,checkedAmenities,chosenAccommodationTypes);
+        call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
+             @Override
+             public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
+                 if (response.isSuccessful()) {
+                     HashSet<AccommodationCardDTO> accommodations = response.body();
+                     for (AccommodationCardDTO accommodationCardDTO : accommodations) {
+                         filteredAccommodations.add(accommodationCardDTO);
+                     }
+                     sharedViewModel.setAccommodationCards(filteredAccommodations);
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<HashSet<AccommodationCardDTO>> call, Throwable t) {
+                 Log.d("Error", t.getMessage());
+             }
+         }
+        );
+
         dismiss();
     }
+
+    public void setOnDismissListener(OnDismissListener listener) {
+        this.dismissListener = listener;
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if (dismissListener != null) {
+            dismissListener.onDismiss();
+        }
+    }
+
     public void updateTextViews() {
         minPriceTextView.setText("Min: " + (int) minValue + " RSD");
         maxPriceTextView.setText("Max: " + (int) maxValue + " RSD");
@@ -223,46 +277,94 @@ public class FilterFragment extends BottomSheetDialogFragment {
         }
     }
 
-    private List<Amenities> checkSelectedCheckBoxes(View view) {
+    private List<String> getSelectedAccommodationTypes(View view){
+        CheckBox checkboxRoom = view.findViewById(R.id.checkboxRoom);
+        CheckBox checkboxStudio = view.findViewById(R.id.checkboxStudio);
+        CheckBox checkboxApartment = view.findViewById(R.id.checkboxApartment);
+        List<String> selectedTypes = new ArrayList<>();
 
-        List<Amenities> chosenAmenities = new ArrayList<>();
-        CheckBox wifiCheckBox = view.findViewById(R.id.checkbox_wifi);
-        CheckBox parkingCheckBox = view.findViewById(R.id.checkbox_parking);
-        CheckBox tvCheckBox = view.findViewById(R.id.checkbox_TV);
-        CheckBox poolCheckBox = view.findViewById(R.id.checkbox_pool);
-        CheckBox balconyCheckBox = view.findViewById(R.id.checkbox_balcony);
-        CheckBox kitchenCheckBox = view.findViewById(R.id.checkbox_kitchen);
-        CheckBox airConditionerCheckBox = view.findViewById(R.id.checkbox_air_conditioner);
-
-        // Check which checkboxes are checked
-        if (wifiCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.WIFI);
+        if (checkboxRoom.isChecked()) {
+            selectedTypes.add(checkboxRoom.getText().toString());
         }
 
-        if (parkingCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.PARKING);
+        if (checkboxStudio.isChecked()) {
+            selectedTypes.add(checkboxStudio.getText().toString());
         }
 
-        if (tvCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.TV);
+        if (checkboxApartment.isChecked()) {
+            selectedTypes.add(checkboxApartment.getText().toString());
         }
 
-        if (poolCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.POOL);
+        return selectedTypes;
+    }
+
+    private List<String> getAllAmenities(View view){
+        List<String> allAmenities = new ArrayList<>();
+
+        Call<List<String>> call = amenitiesService.getAllAmenities();
+        call.enqueue(new Callback<List<String>>() {
+             @Override
+             public void onResponse(Call<List<String>> call, Response<List<String>> response) {
+                 if (response.isSuccessful()) {
+                     GridLayout checkboxContainer = view.findViewById(R.id.checkboxContainer);
+                     List<String> amenities = response.body();
+                     allAmenities.addAll(amenities);
+
+                     for (String amenity : allAmenities) {
+                         CheckBox checkBox = new CheckBox(view.getContext());
+                         checkBox.setText(amenity);
+
+                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                             checkBox.setButtonTintList(ContextCompat.getColorStateList(view.getContext(), R.color.blue));
+                         }
+
+                         GridLayout.Spec rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Row weight
+                         GridLayout.Spec colSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Column weight
+
+                         GridLayout.LayoutParams params = new GridLayout.LayoutParams(rowSpec, colSpec);
+                         params.width = 0;
+                         params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+
+
+                         checkBox.setLayoutParams(params);
+
+                         checkboxContainer.addView(checkBox);
+                     }
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<List<String>> call, Throwable t) {
+                 Log.d("Error", t.getMessage());
+
+             }
+         }
+        );
+
+        return allAmenities;
+    }
+
+    private List<String> getCheckedAmenities(View view) {
+        List<String> checkedAmenities = new ArrayList<>();
+
+        // Iterate through the dynamically created CheckBox instances
+        for (int i = 0; i < allAmenities.size(); i++) {
+            CheckBox checkBox = (CheckBox) ((LinearLayout) view.findViewById(R.id.checkboxContainer)).getChildAt(i);
+
+            // Check if the CheckBox is checked
+            if (checkBox.isChecked()) {
+                checkedAmenities.add(allAmenities.get(i));
+            }
         }
 
-        if (balconyCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.BALCONY);
-        }
+        return checkedAmenities;
+    }
 
-        if (kitchenCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.KITCHEN);
-        }
+    private static void showShortToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
 
-        if (airConditionerCheckBox.isChecked()) {
-            chosenAmenities.add(Amenities.AIR_CONDITIONER);
-        }
-
-        return chosenAmenities;
+    private static void showLongToast(Context context, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }

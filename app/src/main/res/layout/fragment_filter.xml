@@ -155,65 +155,15 @@
                 android:fontFamily="@font/righteous"
                 android:textSize="16sp"
                 android:layout_marginVertical="10sp" />
-            <LinearLayout
+
+            <GridLayout
+                android:id="@+id/checkboxContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:columnCount="2"
                 android:orientation="horizontal"
-                android:fontFamily="@font/righteous"
-
-                >
-                <CheckBox
-                    android:id="@+id/checkbox_wifi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Wi-Fi" />
-                <CheckBox
-                    android:id="@+id/checkbox_parking"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Parking" />
-                <CheckBox
-                    android:id="@+id/checkbox_TV"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="TV" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:fontFamily="@font/righteous"
-
-                >
-                <CheckBox
-                    android:id="@+id/checkbox_pool"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Pool" />
-
-                <CheckBox
-                    android:id="@+id/checkbox_balcony"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Balcony" />
-
-                <CheckBox
-                    android:id="@+id/checkbox_kitchen"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Kitchen" />
-            </LinearLayout>
-            <CheckBox
-                android:id="@+id/checkbox_air_conditioner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Air conditioner" />
+                android:fontFamily="@font/righteous">
+        </GridLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -294,27 +244,34 @@
 
 
 
-            <RadioGroup
-                android:id="@+id/radioGroupResortType"
+            <LinearLayout
+                android:id="@+id/checkboxGroupAccommodationType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/radioButtonApartment"
+                <CheckBox
+                    android:id="@+id/checkboxApartment"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Apartment"
-                    android:checked="true"/>
+                    android:text="Apartment" />
 
-                <RadioButton
-                    android:id="@+id/radioButtonStudio"
+
+                <CheckBox
+                    android:id="@+id/checkboxStudio"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Studio"/>
-            </RadioGroup>
+
+                <CheckBox
+                    android:id="@+id/checkboxRoom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Room"/>
+            </LinearLayout>
 
             <!-- Apply Button -->
             <Button

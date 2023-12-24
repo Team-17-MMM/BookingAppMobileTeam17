@@ -2,6 +2,7 @@ package com.example.bookingappteam17.clients;
 
 import com.example.bookingappteam17.BuildConfig;
 import com.example.bookingappteam17.services.IAccommodationService;
+import com.example.bookingappteam17.services.IAmenitiesService;
 import com.example.bookingappteam17.services.IUserService;
 
 import java.util.concurrent.TimeUnit;
@@ -36,4 +37,6 @@ public class ClientUtils {
 
     public static IUserService userService = retrofit.create(IUserService.class);
     public static IAccommodationService accommodationService = retrofit.create(IAccommodationService.class);
+
+    public static IAmenitiesService amenitiesService = retrofit.create(IAmenitiesService.class);
 }

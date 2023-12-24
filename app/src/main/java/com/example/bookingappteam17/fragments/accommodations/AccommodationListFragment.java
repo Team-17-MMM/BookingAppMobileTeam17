@@ -32,8 +32,8 @@ public class AccommodationListFragment extends ListFragment {
         return fragment;
     }
 
-    public void updateResorts(ArrayList<Resort> resorts) {
-        this.mResorts = resorts;
+    public void updateAccommodations(ArrayList<AccommodationCardDTO> accommodations) {
+        this.mAccommodations = accommodations;
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }

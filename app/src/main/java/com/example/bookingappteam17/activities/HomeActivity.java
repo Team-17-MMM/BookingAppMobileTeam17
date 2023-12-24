@@ -123,4 +123,8 @@ public class HomeActivity extends AppCompatActivity {
                 break;
         }
     }
+
+    public SharedViewModel getSharedViewModel() {
+        return sharedViewModel;
+    }
 }
