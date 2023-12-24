@@ -64,7 +64,7 @@ public class ApproveAccommodationListAdapter extends ArrayAdapter<AccommodationC
         }
 
         Button approveButton = convertView.findViewById(R.id.button_approve);
-        // TODO: approve accommodation
+
 
         Button rejectButton = convertView.findViewById(R.id.button_reject);
         // TODO: reject accommodation

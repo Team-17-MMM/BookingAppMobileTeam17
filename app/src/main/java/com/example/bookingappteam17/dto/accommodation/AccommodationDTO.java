@@ -1,7 +1,6 @@
 package com.example.bookingappteam17.dto.accommodation;
 
 
-import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -33,10 +32,9 @@ public class AccommodationDTO implements Serializable, Parcelable {
     private Set<AvailabilityPeriodDTO> availabilityPeriods = new HashSet<>();
     private double price;
     private String confirmationType;
-
-    private Bitmap image;
-
+    private String image;
     private Boolean approved;
+    private Long updateAccommodationID;
 
     protected AccommodationDTO(Parcel in) {
         if (in.readByte() == 0) {
@@ -49,9 +47,10 @@ public class AccommodationDTO implements Serializable, Parcelable {
         owner = in.readParcelable(User.class.getClassLoader());
         price = in.readDouble();
         confirmationType = in.readString();
-        image = in.readParcelable(Bitmap.class.getClassLoader());
+        image = in.readParcelable(String.class.getClassLoader());
         byte tmpApproved = in.readByte();
         approved = tmpApproved == 0 ? null : tmpApproved == 1;
+        updateAccommodationID = in.readLong();
     }
 
     public static final Creator<AccommodationDTO> CREATOR = new Creator<AccommodationDTO>() {
@@ -74,11 +73,11 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.approved = approved;
     }
 
-    public Bitmap getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Bitmap image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -171,9 +170,17 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.confirmationType = confirmationType;
     }
 
+    public Long getUpdateAccommodationID() {
+        return updateAccommodationID;
+    }
+
+    public void setUpdateAccommodationID(Long updateAccommodationID) {
+        this.updateAccommodationID = updateAccommodationID;
+    }
+
     public AccommodationDTO() {}
 
-    public AccommodationDTO(Long accommodationID, Bitmap image, Boolean approved, String name, String description, Location location, Set<Amenity> amenities, CapacityDTO capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriodDTO> availabilityPeriods, double price, String confirmationType) {
+    public AccommodationDTO(Long accommodationID, String image, Boolean approved, String name, String description, Location location, Set<Amenity> amenities, CapacityDTO capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriodDTO> availabilityPeriods, double price, String confirmationType, Long updateAccommodationID) {
 
         this.accommodationID = accommodationID;
         this.name = name;
@@ -188,6 +195,7 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.confirmationType = confirmationType;
         this.image = null;
         this.approved = approved;
+        this.updateAccommodationID = updateAccommodationID;
     }
 
     public AccommodationDTO(Accommodation accommodation) {
@@ -207,6 +215,7 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.confirmationType = accommodation.getConfirmationType();
         this.image = null;
         this.approved = accommodation.getApproved();
+        this.updateAccommodationID = accommodation.getUpdateAccommodationID();
     }
 
     public void copyValues(AccommodationDTO accommodation) {
@@ -260,7 +269,7 @@ public class AccommodationDTO implements Serializable, Parcelable {
         parcel.writeParcelable(owner, i);
         parcel.writeDouble(price);
         parcel.writeString(confirmationType);
-        parcel.writeParcelable(image, i);
+        parcel.writeString(image);
         parcel.writeByte((byte) (approved == null ? 0 : approved ? 1 : 2));
     }
 }

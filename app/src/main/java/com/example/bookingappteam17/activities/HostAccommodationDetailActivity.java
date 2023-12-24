@@ -78,7 +78,18 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
 
         Button updateButton = findViewById(R.id.updateButton);
         updateButton.setOnClickListener(v -> {
-            updateAccommodation();
+            // if approved is true, update accommodation
+            if (accommodationDTO.getApproved()) {
+                updateAccommodation();
+            } else {
+                // show error dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                builder.setTitle("Error");
+                builder.setMessage("Accommodation is not approved yet");
+                builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
 
         Button uploadImageButton = findViewById(R.id.uploadImageButton);

@@ -18,7 +18,7 @@ public class Accommodation implements Serializable {
 
     public Accommodation() {}
 
-    public Accommodation(Long accommodationID, Boolean approved, Bitmap image, String name, String description, Location location, Set<Amenity> amenities, Capacity capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriod> availabilityPeriods, double price, String confirmationType) {
+    public Accommodation(Long accommodationID, Boolean approved, Bitmap image, String name, String description, Location location, Set<Amenity> amenities, Capacity capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriod> availabilityPeriods, double price, String confirmationType, Long updateAccommodationID) {
 
         this.accommodationID = accommodationID;
         this.name = name;
@@ -33,6 +33,7 @@ public class Accommodation implements Serializable {
         this.confirmationType = confirmationType;
         this.image = image;
         this.approved = approved;
+        this.updateAccommodationID = updateAccommodationID;
     }
 
     public Accommodation(AccommodationDTO accommodation) {
@@ -50,8 +51,9 @@ public class Accommodation implements Serializable {
         }
         this.price = accommodation.getPrice();
         this.confirmationType = accommodation.getConfirmationType();
-        this.image = accommodation.getImage();
+        this.image = null;
         this.approved =accommodation.getApproved();
+        this.updateAccommodationID = accommodation.getUpdateAccommodationID();
     }
 
     public Accommodation(Accommodation accommodation) {
@@ -71,6 +73,7 @@ public class Accommodation implements Serializable {
         this.confirmationType = accommodation.getConfirmationType();
         this.image = accommodation.getImage();
         this.approved = accommodation.getApproved();
+        this.updateAccommodationID = accommodation.getUpdateAccommodationID();
     }
 
     private Long accommodationID;
@@ -98,6 +101,8 @@ public class Accommodation implements Serializable {
     private String confirmationType;
 
     private Bitmap image;
+
+    private Long updateAccommodationID;
 
     public boolean isApproved() {
         return approved;
@@ -207,6 +212,14 @@ public class Accommodation implements Serializable {
         this.image = image;
     }
 
+    public Long getUpdateAccommodationID() {
+        return updateAccommodationID;
+    }
+
+    public void setUpdateAccommodationID(Long updateAccommodationID) {
+        this.updateAccommodationID = updateAccommodationID;
+    }
+
     @Override
     public String toString() {
         return "Accommodation{" +
@@ -235,6 +248,9 @@ public class Accommodation implements Serializable {
         this.availabilityPeriods = accommodation.getAvailabilityPeriods();
         this.price = accommodation.getPrice();
         this.confirmationType = accommodation.getConfirmationType();
+        this.image = accommodation.getImage();
+        this.approved = accommodation.getApproved();
+        this.updateAccommodationID = accommodation.getUpdateAccommodationID();
     }
 
 
