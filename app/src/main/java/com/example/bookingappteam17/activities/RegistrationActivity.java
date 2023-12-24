@@ -2,13 +2,32 @@ package com.example.bookingappteam17.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.util.Log;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.UserInfoDTO;
+import com.example.bookingappteam17.dto.UserRegistrationDTO;
+import com.example.bookingappteam17.enums.UserRoleType;
+import com.example.bookingappteam17.services.IUserService;
+
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
+
+    private IUserService userService = ClientUtils.userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +47,10 @@ public class RegistrationActivity extends AppCompatActivity {
         EditText editTextRegisterPhone = findViewById(R.id.editTextRegisterPhone);
         EditText editTextRegisterAddress = findViewById(R.id.editTextRegisterAddress);
         EditText editTextRegisterCountry = findViewById(R.id.editTextRegisterCountry);
+        RadioGroup radioGroup = findViewById(R.id.RadioGroupUserRole);
+        TextView radioGroupError = findViewById(R.id.radioGroupError);
+
+        int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
 
 
         String email = editTextRegisterEmailAddress.getText().toString();
@@ -84,5 +107,43 @@ public class RegistrationActivity extends AppCompatActivity {
             editTextRegisterConfirmPassword.requestFocus();
             return;
         }
-    }
+        String selectedOption = "";
+        if (selectedRadioButtonId == -1) {
+            radioGroupError.setVisibility(View.VISIBLE);
+            radioGroupError.setText("Role is required");
+            return;
+        } else {
+            radioGroupError.setVisibility(View.GONE);
+            RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
+            selectedOption = selectedRadioButton.getText().toString();
+        }
+
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
+        userRegistrationDTO.setUsername(email);
+        userRegistrationDTO.setPassword(password);
+        userRegistrationDTO.setAddress(address + " " + country);
+        userRegistrationDTO.setName(name);
+        userRegistrationDTO.setLastname(surname);
+        userRegistrationDTO.setPhone(phone);
+        userRegistrationDTO.setUserRole(UserRoleType.valueOf(selectedOption));
+
+        Call<UserRegistrationDTO> call = userService.registerAccount(userRegistrationDTO);
+        call.enqueue(new Callback<UserRegistrationDTO>() {
+            @Override
+            public void onResponse(Call<UserRegistrationDTO> call, Response<UserRegistrationDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UserRegistrationDTO entity = response.body();
+                    Toast.makeText(RegistrationActivity.this, "Confirmation mail sent", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    Log.d("Error", "Failed to retrieve user data");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserRegistrationDTO> call, Throwable t) {
+                Log.e("Error", "Network request failed", t);
+            }
+    });}
 }

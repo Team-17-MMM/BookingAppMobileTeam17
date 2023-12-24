@@ -109,6 +109,34 @@
             android:layout_gravity="center_horizontal"
             android:inputType="text"
             android:hint="@string/country" />
+        <RadioGroup
+            android:id="@+id/RadioGroupUserRole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButtonGuest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/guest" />
+
+            <RadioButton
+                android:id="@+id/radioButtonHost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/host" />
+
+        </RadioGroup>
+        <TextView
+            android:id="@+id/radioGroupError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
