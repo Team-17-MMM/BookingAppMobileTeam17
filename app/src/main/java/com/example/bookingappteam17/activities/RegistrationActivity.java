@@ -3,12 +3,24 @@ package com.example.bookingappteam17.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
-import android.util.Log;
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.UserInfoDTO;
+import com.example.bookingappteam17.dto.UserRegistrationDTO;
+import com.example.bookingappteam17.enums.UserRoleType;
+import com.example.bookingappteam17.services.IUserService;
+
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistrationActivity extends AppCompatActivity {
+
+    private IUserService userService = ClientUtils.userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,5 +96,30 @@ public class RegistrationActivity extends AppCompatActivity {
             editTextRegisterConfirmPassword.requestFocus();
             return;
         }
-    }
+
+        UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
+        userRegistrationDTO.setUsername(email);
+        userRegistrationDTO.setPassword(password);
+        userRegistrationDTO.setAddress(address + " " + country);
+        userRegistrationDTO.setName(name);
+        userRegistrationDTO.setLastname(surname);
+        userRegistrationDTO.setPhone(phone);
+        userRegistrationDTO.setUserRole(UserRoleType.HOST);
+
+        Call<UserRegistrationDTO> call = userService.registerAccount(userRegistrationDTO);
+        call.enqueue(new Callback<UserRegistrationDTO>() {
+            @Override
+            public void onResponse(Call<UserRegistrationDTO> call, Response<UserRegistrationDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    UserRegistrationDTO entity = response.body();
+                }
+                else {
+                    Log.d("Error", "Failed to retrieve user data");
+                }
+            }
+            @Override
+            public void onFailure(Call<UserRegistrationDTO> call, Throwable t) {
+                Log.e("Error", "Network request failed", t);
+            }
+    });}
 }
