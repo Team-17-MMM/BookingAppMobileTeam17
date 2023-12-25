@@ -32,7 +32,7 @@
                     android:id="@+id/titleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Update Accommodation"
+                    android:text="Create Accommodation"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:layout_gravity="center"
                     android:padding="16dp"/>
@@ -123,7 +123,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:focusable="false"
-                        android:onClick="showAmenitiesDialog"/>
+                        android:onClick="showRegistrationAmenitiesDialog"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- Accommodation Type -->
@@ -140,10 +140,29 @@
                         android:layout_height="wrap_content"
                         android:inputType="text"
                         android:focusable="false"
-                        android:onClick="showAccommodationTypeDialog"/>
+                        android:onClick="showRegistrationAccommodationTypeDialog"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Price Input Container -->
+                <RadioGroup
+                    android:id="@+id/roleRadioGroupPricing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/guestPrivingRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price by guest"/>
+
+                    <RadioButton
+                        android:id="@+id/DaysPricingRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Price by day"/>
+                </RadioGroup>
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -177,6 +196,54 @@
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Days to cancel">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/cancelingDaysEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Price Input Container -->
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@+id/cordinateTypeLayout">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Latitude">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/latitudeEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="Longitude">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/longitudeEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="number"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
@@ -200,30 +267,20 @@
             android:id="@+id/updateButton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:text="Update"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/mapLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/setPeriodButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="Set Periods"
+            android:text="Create"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/uploadImageButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-<!--         button for upload image-->
+        <!--         button for upload image-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/uploadImageButton"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:text="Upload Image"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/updateButton"
+            app:layout_constraintTop_toBottomOf="@+id/mapLayout"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
