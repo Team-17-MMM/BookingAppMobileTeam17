@@ -1,28 +1,34 @@
 package com.example.bookingappteam17.activities;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
-import com.example.bookingappteam17.databinding.ActivityHostAccommodationsDetailsBinding;
-import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
+import com.example.bookingappteam17.dto.accommodation.CapacityDTO;
 import com.example.bookingappteam17.enums.AccommodationType;
 import com.example.bookingappteam17.enums.Amenity;
+import com.example.bookingappteam17.model.Location;
+import com.example.bookingappteam17.model.User;
 
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 
@@ -41,116 +47,75 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
-import retrofit2.http.POST;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
 
-public class HostAccommodationDetailActivity extends AppCompatActivity {
-    private ActivityHostAccommodationsDetailsBinding binding;
-    private AccommodationDTO accommodationDTO;
+public class RegisterAccommodationActivity extends AppCompatActivity {
+
+    private static final String USER_PREFS_KEY = "user_prefs";
+    private static final String USER_ID_KEY = "userId";
+    private AccommodationDTO accommodationDTO = new AccommodationDTO();
     private Uri imageUri = null;
+
+    private User owner = null;
+
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPreferences = getSharedPreferences(USER_PREFS_KEY, Context.MODE_PRIVATE);
+        loadUserData();
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_accommodation_reservation);
 
-        binding = ActivityHostAccommodationsDetailsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        Button buttonLogin = findViewById(R.id.updateButton);
+        accommodationDTO.setLocation(new Location());
+        GeoPoint location = new GeoPoint(45.0, 22.0);
+        MapView mapView = findViewById(R.id.mapView);
+        mapView.getController().setZoom(13.0);
+        mapView.getController().setCenter(location);
+        mapView.invalidate();
 
-
-        Long selectedAccommodation = getIntent().getLongExtra("selected_accommodation", 0);
-        System.out.println(selectedAccommodation);
-        loadOldImage(selectedAccommodation);
-
-        Call<AccommodationDTO> call = ClientUtils.accommodationService.getAccommodation(selectedAccommodation);
-        call.enqueue(new Callback<AccommodationDTO>() {
+        mapView.getOverlays().add(new MapEventsOverlay(new MapEventsReceiver() {
             @Override
-            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
-                if (response.isSuccessful()) {
-                    accommodationDTO = response.body();
-                    // bind data from accommodationDTO to layout
-                    bindData();
-                }
+            public boolean singleTapConfirmedHelper(GeoPoint geoPoint) {
+                return false;
             }
 
             @Override
-            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
-                Log.d("TAG", "onFailure: " + t.getMessage());
+            public boolean longPressHelper(GeoPoint geoPoint) {
+                handleLongPress(geoPoint);
+                return true;
             }
-        });
+        }));
 
-        Button updateButton = findViewById(R.id.updateButton);
-        updateButton.setOnClickListener(v -> {
-            // if approved is true, update accommodation
-            if (accommodationDTO.getApproved()) {
-                updateAccommodation();
-            } else {
-                // show error dialog
-                AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
-                builder.setTitle("Error");
-                builder.setMessage("Accommodation is not approved yet");
-                builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
+        buttonLogin.setOnClickListener(v -> handleRegistration());
+
 
         Button uploadImageButton = findViewById(R.id.uploadImageButton);
         uploadImageButton.setOnClickListener(v -> {
             chooseImage();
         });
 
-        Button setPeriods = findViewById(R.id.setPeriodButton);
-        setPeriods.setOnClickListener(v -> {
-            Intent intent = new Intent(HostAccommodationDetailActivity.this, SetPeriodActivity.class);
-            intent.putExtra("selected_accommodation", accommodationDTO.getAccommodationID());
-            startActivity(intent);
-        });
-
-
     }
 
-    private void bindData() {
-        if (accommodationDTO != null) {
-            binding.accommodationNameEditText.setText(accommodationDTO.getName());
-            binding.countryEditText.setText(accommodationDTO.getLocation().getCountry());
-            binding.addressEditText.setText(accommodationDTO.getLocation().getAddress());
-            binding.descriptionEditText.setText(accommodationDTO.getDescription());
-            // check if confirmationType is "AUTO" or "MANUAL" and set it to corresponding radio button
-            if (accommodationDTO.getConfirmationType().equals("AUTO")) {
-                binding.autoRadioButton.setChecked(true);
-            } else {
-                binding.manualRadioButton.setChecked(true);
-            }
-            binding.minPersonsEditText.setText(String.valueOf(accommodationDTO.getCapacity().getMinGuests()));
-            binding.maxPersonsEditText.setText(String.valueOf(accommodationDTO.getCapacity().getMaxGuests()));
-            //set map view to location
-            GeoPoint location = new GeoPoint(accommodationDTO.getLocation().getLatitude(), accommodationDTO.getLocation().getLongitude());
-            binding.mapView.getController().setZoom(13.0);
-            binding.mapView.getController().setCenter(location);
-            // add marker to map view
-            Marker marker = new Marker(binding.mapView);
-            marker.setPosition(location);
-            binding.mapView.getOverlays().add(marker);
-            binding.mapView.invalidate();
+    private void chooseImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 1);
+    }
 
-            binding.mapView.getOverlays().add(new MapEventsOverlay(new MapEventsReceiver() {
-                @Override
-                public boolean singleTapConfirmedHelper(GeoPoint geoPoint) {
-                    return false;
-                }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-                @Override
-                public boolean longPressHelper(GeoPoint geoPoint) {
-                    handleLongPress(geoPoint);
-                    return true;
-                }
-            }));
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            Uri imageUri = data.getData();
+            // Now you can call the uploadImage method with the selected imageUri
+            this.imageUri = imageUri;
         }
     }
 
@@ -159,16 +124,23 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         accommodationDTO.getLocation().setLatitude(geoPoint.getLatitude());
         accommodationDTO.getLocation().setLongitude(geoPoint.getLongitude());
         // set marker to geoPoint
-        Marker marker = new Marker(binding.mapView);
+        MapView mapView = findViewById(R.id.mapView);
+        Marker marker = new Marker(mapView);
         marker.setPosition(geoPoint);
-        binding.mapView.getOverlays().clear();
-        binding.mapView.getOverlays().add(marker);
-        binding.mapView.getController().setZoom(13.0);
-        binding.mapView.getController().setCenter(geoPoint);
-        binding.mapView.invalidate();
+        mapView.getOverlays().clear();
+        mapView.getOverlays().add(marker);
+        mapView.getController().setZoom(13.0);
+        mapView.getController().setCenter(geoPoint);
+        mapView.invalidate();
+
+        EditText editTextLatitude = findViewById(R.id.latitudeEditText);
+        EditText editTextLongitude = findViewById(R.id.longitudeEditText);
+
+        editTextLongitude.setText(Double.toString(geoPoint.getLongitude()));
+        editTextLatitude.setText(Double.toString(geoPoint.getLatitude()));
     }
 
-    public void showAmenitiesDialog(View view) {
+    public void showRegistrationAmenitiesDialog(View view) {
         // show options dialog with amenities from accommodationService.getAllAmenities()
         Call<List<String>> call = ClientUtils.accommodationService.getAllAmenities();
         call.enqueue(new Callback<List<String>>() {
@@ -185,7 +157,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
                         checkedAmenities[i] = accommodationDTO.getAmenities().contains(amenity);
                     }
                     // show dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterAccommodationActivity.this);
                     builder.setTitle("Choose amenities");
                     builder.setMultiChoiceItems(amenitiesArray, checkedAmenities, (dialog, which, isChecked) -> {
                         checkedAmenities[which] = isChecked;
@@ -218,7 +190,8 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void showAccommodationTypeDialog(View view) {
+
+    public void showRegistrationAccommodationTypeDialog(View view) {
         // show options dialog with accommodation types from accommodationService.getAllAccommodationTypes()
         Call<List<String>> call = ClientUtils.accommodationService.getAllAccommodationTypes();
         call.enqueue(new Callback<List<String>>() {
@@ -235,7 +208,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
                         checkedAccommodationTypes[i] = accommodationDTO.getAccommodationType().contains(accommodationType);
                     }
                     // show dialog
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterAccommodationActivity.this);
                     builder.setTitle("Choose accommodation types");
                     builder.setMultiChoiceItems(accommodationTypesArray, checkedAccommodationTypes, (dialog, which, isChecked) -> {
                         checkedAccommodationTypes[which] = isChecked;
@@ -267,46 +240,144 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void updateAccommodation() {
-        // update accommodationDTO with data from layout
-        accommodationDTO.setName(binding.accommodationNameEditText.getText().toString());
-        accommodationDTO.getLocation().setCountry(binding.countryEditText.getText().toString());
-        accommodationDTO.getLocation().setAddress(binding.addressEditText.getText().toString());
-        accommodationDTO.setDescription(binding.descriptionEditText.getText().toString());
-        if (binding.autoRadioButton.isChecked()) {
-            accommodationDTO.setConfirmationType("AUTO");
-        } else {
-            accommodationDTO.setConfirmationType("MANUAL");
-        }
-        accommodationDTO.getCapacity().setMinGuests((int) Long.parseLong(binding.minPersonsEditText.getText().toString()));
-        accommodationDTO.getCapacity().setMaxGuests((int) Long.parseLong(binding.maxPersonsEditText.getText().toString()));
-        accommodationDTO.setUpdateAccommodationID(accommodationDTO.getAccommodationID());
-        accommodationDTO.setApproved(null);
-        accommodationDTO.setAccommodationID(null);
-        // update accommodation
-        Call<AccommodationDTO> call = ClientUtils.accommodationService.createAccommodation(accommodationDTO);
-        call.enqueue(new Callback<AccommodationDTO>() {
-            @Override
-            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
-                if (response.isSuccessful()) {
-                    AccommodationDTO newAccommodationDTO = response.body();
-                    uploadImage(newAccommodationDTO.getAccommodationID(), imageUri);
-                    setApproveToFalse(newAccommodationDTO.getUpdateAccommodationID());
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
-                    builder.setTitle("Success");
-                    builder.setMessage("Accommodation updated successfully");
-                    builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
-                Log.e("Error", "Network request failed", t);
+    private void handleRegistration() {
+        if(imageUri == null){
+            return;
+        }
+        EditText editTextRegisterName = findViewById(R.id.accommodationNameEditText);
+        EditText editTextAddress = findViewById(R.id.addressEditText);
+        EditText editTextCountry = findViewById(R.id.countryEditText);
+        EditText editTextDescription = findViewById(R.id.descriptionEditText);
+        EditText editTextMinPersons = findViewById(R.id.minPersonsEditText);
+        EditText editTextMaxPersons = findViewById(R.id.maxPersonsEditText);
+        EditText editTextLatitude = findViewById(R.id.latitudeEditText);
+        EditText editTextLongitude = findViewById(R.id.longitudeEditText);
+        EditText editTextCancelingDays = findViewById(R.id.cancelingDaysEditText);
+        RadioGroup radioGroupConfirmation = findViewById(R.id.roleRadioGroup);
+        RadioGroup radioGroupPricing = findViewById(R.id.roleRadioGroupPricing);
+
+
+        String name = editTextRegisterName.getText().toString();
+        String address = editTextAddress.getText().toString();
+        String country = editTextCountry.getText().toString();
+        String description = editTextDescription.getText().toString();
+        String maxPersons = editTextMaxPersons.getText().toString();
+        String minPersons = editTextMinPersons.getText().toString();
+        String latitude = editTextLatitude.getText().toString();
+        String longitude = editTextLongitude.getText().toString();
+        String cancelingDays = editTextCancelingDays.getText().toString();
+        int selectedRadioButtonConfirmationId = radioGroupConfirmation.getCheckedRadioButtonId();
+        int selectedRadioButtonPricingId = radioGroupPricing.getCheckedRadioButtonId();
+
+        if (name.isEmpty()) {
+            editTextRegisterName.setError("Email is required");
+            editTextRegisterName.requestFocus();
+            return;
+        }
+        if (address.isEmpty()) {
+            editTextAddress.setError("Addres is required");
+            editTextAddress.requestFocus();
+            return;
+        }
+        if (country.isEmpty()) {
+            editTextCountry.setError("Country is required");
+            editTextCountry.requestFocus();
+            return;
+        }
+        if (description.isEmpty()) {
+            editTextDescription.setError("Description is required");
+            editTextDescription.requestFocus();
+            return;
+        }
+        if (maxPersons.isEmpty()) {
+            editTextMaxPersons.setError("MaxPerson is required");
+            editTextMaxPersons.requestFocus();
+            return;
+        }
+        if (minPersons.isEmpty()) {
+            editTextMinPersons.setError("MinPerson is required");
+            editTextMinPersons.requestFocus();
+            return;
+        }
+        if (latitude.isEmpty()) {
+            editTextLatitude.setError("Email is required");
+            editTextLatitude.requestFocus();
+            return;
+        }
+        if (longitude.isEmpty()) {
+            editTextLongitude.setError("Email is required");
+            editTextLongitude.requestFocus();
+            return;
+        }
+        if (cancelingDays.isEmpty()) {
+            editTextCancelingDays.setError("CancelingDays is required");
+            editTextCancelingDays.requestFocus();
+            return;
+        }
+
+        if(Integer.parseInt(maxPersons) < Integer.parseInt(minPersons)){
+            editTextMaxPersons.setError("Maximum guests lower than the minimum guests");
+            editTextMaxPersons.requestFocus();
+            return;
+        }
+
+        String selectedOptionConfirmation = "";
+        if (selectedRadioButtonConfirmationId == -1) {
+            return;
+        } else {
+            RadioButton selectedRadioButton = findViewById(selectedRadioButtonConfirmationId);
+            selectedOptionConfirmation = selectedRadioButton.getText().toString();
+        }
+
+        boolean selectedOptionPricing = false;
+        if (selectedRadioButtonPricingId == -1) {
+            return;
+        } else {
+            RadioButton selectedRadioButton = findViewById(selectedRadioButtonPricingId);
+            if(selectedRadioButton.getText().toString() == "Price by guest"){
+                selectedOptionPricing = true;
             }
-        });
-    }
+        }
+
+            // update accommodationDTO with data from layout
+            accommodationDTO.setName(name);
+            accommodationDTO.setDescription(description);
+            accommodationDTO.getLocation().setCountry(country);
+            accommodationDTO.getLocation().setAddress(address);
+            accommodationDTO.setCapacity(new CapacityDTO());
+            accommodationDTO.setConfirmationType(selectedOptionConfirmation);
+            accommodationDTO.getCapacity().setMinGuests(Integer.parseInt(minPersons));
+            accommodationDTO.getCapacity().setMaxGuests(Integer.parseInt(maxPersons));
+            accommodationDTO.setCancelingDays(Long.parseLong(cancelingDays));
+            accommodationDTO.setGuestPriced(selectedOptionPricing);
+            accommodationDTO.setImage("");
+            accommodationDTO.setOwner(owner);
+
+            // update accommodation
+            Call<AccommodationDTO> call = ClientUtils.accommodationService.createAccommodation(accommodationDTO);
+            call.enqueue(new Callback<AccommodationDTO>() {
+                @Override
+                public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                    if (response.isSuccessful()) {
+                        AccommodationDTO newAccommodationDTO = response.body();
+                        uploadImage(newAccommodationDTO.getAccommodationID(), imageUri);
+                        setApproveToFalse(newAccommodationDTO.getUpdateAccommodationID());
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RegisterAccommodationActivity.this);
+                        builder.setTitle("Success");
+                        builder.setMessage("Accommodation updated successfully");
+                        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                    Log.e("Error", "Network request failed", t);
+                }
+            });
+        }
 
     private void setApproveToFalse(Long accommodationID) {
         Call<AccommodationDTO> call = ClientUtils.accommodationService.setApproveAccommodation(accommodationID, false);
@@ -323,24 +394,6 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
                 Log.e("Error", "Network request failed", t);
             }
         });
-    }
-
-
-    private void chooseImage() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            // Now you can call the uploadImage method with the selected imageUri
-            this.imageUri = imageUri;
-        }
     }
 
     private void uploadImage(Long accommodationId, Uri imageUri) {
@@ -369,7 +422,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             // show success dialog
-                            AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterAccommodationActivity.this);
                             builder.setTitle("Success");
                             builder.setMessage("Image uploaded successfully");
                             builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
@@ -406,8 +459,6 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         }
     }
 
-
-
     private File createTempImageFile(InputStream inputStream, String fileExtension) {
         try {
             File outputDir = getCacheDir();
@@ -429,46 +480,27 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void loadUserData() {
+        Long username = sharedPreferences.getLong(USER_ID_KEY, 0);
 
-    private void loadOldImage(Long id) {
-        Call<ResponseBody> callImage = ClientUtils.accommodationService.getAccommodationImage(id);
-        callImage.enqueue(new Callback<ResponseBody>() {
+        Call<User> call = ClientUtils.userService.getById(username);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<ResponseBody> callImage, Response<ResponseBody> responseImage) {
-                if (responseImage.isSuccessful()) {
-                    try {
-                        // Convert ResponseBody to InputStream
-                        InputStream inputStream = responseImage.body().byteStream();
-
-                        // Save image to cache with a specific filename
-                        File outputDir = getCacheDir();
-                        File outputFile = new File(outputDir, "temp_image.jpg");
-                        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
-                            byte[] buffer = new byte[4096];
-                            int bytesRead;
-
-                            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                                outputStream.write(buffer, 0, bytesRead);
-                            }
-                        }
-
-                        // Set imageUri to the cache image
-                        imageUri = Uri.fromFile(outputFile);
-
-                    } catch (IOException e) {
-                        Log.e("Error", "Error saving image to cache: " + e.getMessage());
-                    }
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User userInfoDTO = response.body();
+                    owner = userInfoDTO;
                 } else {
-                    Log.d("Error", "Response not successful");
+                    Log.d("Error", "Failed to retrieve user data");
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Error", "Failed to get image", t);
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("Error", "Network request failed", t);
             }
         });
     }
 
+    }
 
-}
