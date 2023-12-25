@@ -164,7 +164,6 @@ public class AccommodationPageFragment extends Fragment {
                                      for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
                                          loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
-                                     sharedViewModel.setAccommodationCards(products);
 
                                  }
                              }
@@ -186,7 +185,6 @@ public class AccommodationPageFragment extends Fragment {
                                      for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
                                          loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
-                                     sharedViewModel.setAccommodationCards(products);
 
                                  }
                              }
@@ -214,6 +212,9 @@ public class AccommodationPageFragment extends Fragment {
                     // Use the bitmap as needed, for example set it to an ImageView
                     accommodationCardDTO.setImage(bmp);
                     products.add(accommodationCardDTO);
+                    sharedViewModel.addAccommodationCard(accommodationCardDTO);
+                    System.out.println("Accommodation added");
+                    System.out.println(accommodationCardDTO);
                 } else {
                     Log.d("Error", "Response not successful");
                 }

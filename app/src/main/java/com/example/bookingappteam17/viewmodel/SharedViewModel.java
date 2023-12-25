@@ -22,4 +22,6 @@ public class SharedViewModel extends ViewModel {
     public List<AccommodationCardDTO> getAccommodationCards() { return accommodationCards; }
 
     public void setAccommodationCards(List<AccommodationCardDTO> accommodationCards) { this.accommodationCards = accommodationCards; }
+
+    public void addAccommodationCard(AccommodationCardDTO accommodationCardDTO) { this.accommodationCards.add(accommodationCardDTO); }
 }

@@ -127,7 +127,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
         // Set a listener for when the user selects a start date
         materialDatePickerStartDate.addOnPositiveButtonClickListener(selection -> {
             // Format the selected date and set it to the TextInputEditText
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             editTextStartDate.setText(sdf.format(new Date(selection)));
         });
 
@@ -143,7 +143,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
         // Set a listener for when the user selects an end date
         materialDatePickerEndDate.addOnPositiveButtonClickListener(selection -> {
             // Format the selected date and set it to the TextInputEditText
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             editTextEndDate.setText(sdf.format(new Date(selection)));
         });
 
@@ -165,14 +165,16 @@ public class FilterFragment extends BottomSheetDialogFragment {
         LocalDate startDate;
         LocalDate endDate;
         String city = editTextCity.getText().toString();
+        String startDateString = editTextStartDate.getText().toString();
+        String endDateString = editTextEndDate.getText().toString();
 
         System.out.println(editTextStartDate.getText().toString());
-        if(editTextCity.getText().toString() == ""){
+        if(city.equals("")){
             showLongToast(this.getContext(),"City name is required");
             return;
         }
-        if(editTextStartDate.getText().toString() != "" && editTextEndDate.getText().toString()!= ""){
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        if(!startDateString.equals("") && !endDateString.equals("")){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
             startDate = LocalDate.parse(editTextStartDate.getText().toString(), formatter);
             endDate = LocalDate.parse(editTextEndDate.getText().toString(), formatter);
         }else{
@@ -180,9 +182,6 @@ public class FilterFragment extends BottomSheetDialogFragment {
             return;
         }
         chosenAccommodationTypes = getSelectedAccommodationTypes(view);
-        if (chosenAccommodationTypes.isEmpty()){
-            chosenAccommodationTypes.addAll(Arrays.asList("STUDIO","APARTMENT","ROOM"));
-        }
 
         String enteredCity = editTextCity.getText().toString();
         Long occupancy = Long.parseLong(spinnerPeopleCount.getSelectedItem().toString());
@@ -191,7 +190,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
         Long maxPrice = (long) maxValue;
         List<String> checkedAmenities = getCheckedAmenities(view);
 
-        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,startDate.toString(),endDate.toString(),occupancy,minPrice,maxPrice,checkedAmenities,chosenAccommodationTypes);
+        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,checkedAmenities,chosenAccommodationTypes);
         call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
              @Override
              public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
@@ -201,6 +200,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
                          filteredAccommodations.add(accommodationCardDTO);
                      }
                      sharedViewModel.setAccommodationCards(filteredAccommodations);
+                     dismiss();
                  }
              }
 
@@ -211,7 +211,6 @@ public class FilterFragment extends BottomSheetDialogFragment {
          }
         );
 
-        dismiss();
     }
 
     public void setOnDismissListener(OnDismissListener listener) {
@@ -347,18 +346,26 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private List<String> getCheckedAmenities(View view) {
         List<String> checkedAmenities = new ArrayList<>();
 
-        // Iterate through the dynamically created CheckBox instances
-        for (int i = 0; i < allAmenities.size(); i++) {
-            CheckBox checkBox = (CheckBox) ((LinearLayout) view.findViewById(R.id.checkboxContainer)).getChildAt(i);
+        GridLayout checkboxContainer = view.findViewById(R.id.checkboxContainer);
 
-            // Check if the CheckBox is checked
-            if (checkBox.isChecked()) {
-                checkedAmenities.add(allAmenities.get(i));
+        // Iterate through the dynamically created CheckBox instances
+        for (int i = 0; i < checkboxContainer.getChildCount(); i++) {
+            View childView = checkboxContainer.getChildAt(i);
+
+            // Check if the child view is a CheckBox
+            if (childView instanceof CheckBox) {
+                CheckBox checkBox = (CheckBox) childView;
+
+                // Check if the CheckBox is checked
+                if (checkBox.isChecked()) {
+                    checkedAmenities.add(allAmenities.get(i));
+                }
             }
         }
 
         return checkedAmenities;
     }
+
 
     private static void showShortToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
