@@ -66,6 +66,11 @@
             android:screenOrientation="portrait"
             android:label="Host Accommodation Details"
             android:theme="@style/Theme.BookingAppTeam17"/>
+        <activity
+            android:name=".activities.RegisterAccommodationActivity"
+            android:screenOrientation="portrait"
+            android:label="Register Accommodation"
+            android:theme="@style/Theme.BookingAppTeam17"/>
     </application>
 
 </manifest>
