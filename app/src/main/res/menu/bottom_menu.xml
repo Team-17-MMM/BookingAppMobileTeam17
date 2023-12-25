@@ -20,4 +20,10 @@
         android:icon="@drawable/baseline_notifications_24"
         android:title="@string/notifications" />
 
+    <item
+        android:id="@+id/approve"
+        android:icon="@drawable/baseline_checklist_24"
+        android:title="@string/approve" />
+
+
 </menu>

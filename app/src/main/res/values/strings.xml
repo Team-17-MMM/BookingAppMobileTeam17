@@ -35,6 +35,8 @@
     <string name="Accommodations">Accommodations</string>
     <string name="accommodations">Accommodations</string>
     <string name="host_accommodations">Host accommodations</string>
+    <string name="approve">Aprove</string>
+    <string name="reject">Reject</string>
     <string name="host">HOST</string>
     <string name="guest">GUEST</string>
 

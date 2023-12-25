@@ -21,6 +21,7 @@ import com.example.bookingappteam17.fragments.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.ProfileFragment;
 import com.example.bookingappteam17.fragments.ReservationsListFragment;
 import com.example.bookingappteam17.fragments.accommodations.AccommodationPageFragment;
+import com.example.bookingappteam17.fragments.accommodations.ApproveAccommodationPageFragment;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -68,6 +69,8 @@ public class HomeActivity extends AppCompatActivity {
             replaceFragment(new ReservationsListFragment());
         } else if (itemId == R.id.accommodations) {
             replaceFragment(new AccommodationPageFragment());
+        } else if (itemId == R.id.approve) {
+            replaceFragment(new ApproveAccommodationPageFragment());
         }
     }
 
@@ -116,10 +119,17 @@ public class HomeActivity extends AppCompatActivity {
             case GUEST:
                 menu.findItem(R.id.reservations).setVisible(true);
                 menu.findItem(R.id.accommodations).setVisible(true);
+                menu.findItem(R.id.approve).setVisible(false);
                 break;
             case HOST:
                 menu.findItem(R.id.reservations).setVisible(true);
                 menu.findItem(R.id.accommodations).setVisible(true);
+                menu.findItem(R.id.approve).setVisible(false);
+                break;
+            case ADMIN:
+                menu.findItem(R.id.reservations).setVisible(false);
+                menu.findItem(R.id.accommodations).setVisible(false);
+                menu.findItem(R.id.approve).setVisible(true);
                 break;
         }
     }

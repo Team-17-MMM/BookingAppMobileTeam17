@@ -25,6 +25,7 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
 import com.example.bookingappteam17.fragments.FilterFragment;
 import com.example.bookingappteam17.model.Accommodation;
 import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
@@ -141,40 +142,40 @@ public class AccommodationPageFragment extends Fragment {
 
         // if userRole HOST, show just his accommodations
         if (userRole.equals("HOST")) {
-            Call<HashSet<AccommodationCardDTO>> call = accommodationService.getHostAccommodationsCards(username);
-            call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
+            Call<HashSet<AccommodationCardRDTO>> call = accommodationService.getHostAccommodationsCards(username);
+            call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
                              @Override
-                             public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
+                             public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
                                  if (response.isSuccessful()) {
-                                     HashSet<AccommodationCardDTO> accommodations = response.body();
-                                     for (AccommodationCardDTO accommodationCardDTO : accommodations) {
-                                         loadImage(accommodationCardDTO, products);
+                                     HashSet<AccommodationCardRDTO> accommodations = response.body();
+                                     for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
+                                         loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
                                  }
                              }
 
                              @Override
-                             public void onFailure(Call<HashSet<AccommodationCardDTO>> call, Throwable t) {
+                             public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
                                  Log.d("Error", t.getMessage());
                              }
                          }
             );
 
         } else {
-            Call<HashSet<AccommodationCardDTO>> call = accommodationService.getAccommodationsCards();
-            call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
+            Call<HashSet<AccommodationCardRDTO>> call = accommodationService.getAccommodationsCards();
+            call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
                              @Override
-                             public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
+                             public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
                                  if (response.isSuccessful()) {
-                                     HashSet<AccommodationCardDTO> accommodations = response.body();
-                                     for (AccommodationCardDTO accommodationCardDTO : accommodations) {
-                                         loadImage(accommodationCardDTO, products);
+                                     HashSet<AccommodationCardRDTO> accommodations = response.body();
+                                     for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
+                                         loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
                                  }
                              }
 
                              @Override
-                             public void onFailure(Call<HashSet<AccommodationCardDTO>> call, Throwable t) {
+                             public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
                                  Log.d("Error", t.getMessage());
                              }
                          }

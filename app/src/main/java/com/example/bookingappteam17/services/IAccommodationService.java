@@ -2,6 +2,7 @@ package com.example.bookingappteam17.services;
 
 
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
@@ -47,10 +48,10 @@ public interface IAccommodationService {
     Call<AccommodationDTO> deleteAccommodation(@Path("id") Long id);
 
     @GET("accommodation/cards")
-    Call<HashSet<AccommodationCardDTO>> getAccommodationsCards();
+    Call<HashSet<AccommodationCardRDTO>> getAccommodationsCards();
 
     @GET("accommodation/cards/{username}")
-    Call<HashSet<AccommodationCardDTO>> getHostAccommodationsCards(@Path("username") String username);
+    Call<HashSet<AccommodationCardRDTO>> getHostAccommodationsCards(@Path("username") String username);
 
     @GET("accommodation/host/{id}")
     Call<HashSet<Long>> getHostAccommodationIDs(@Path("id") Long id);
@@ -79,4 +80,13 @@ public interface IAccommodationService {
 
     @GET("accommodationType")
     Call<List<String>> getAllAccommodationTypes();
+
+    @GET("accommodation/notApproved")
+    Call<HashSet<AccommodationCardRDTO>> getNotApprovedAccommodations();
+
+    @PUT("accommodation/approveAccommodation/{id}")
+    Call<AccommodationDTO> setApproveAccommodation(@Path("id") Long id, @Body Boolean approved);
+
+    @PUT("accommodation/updateByNewAccommodation/{id}")
+    Call<AccommodationDTO> updateByNewAccommodation(@Path("id") Long id);
 }

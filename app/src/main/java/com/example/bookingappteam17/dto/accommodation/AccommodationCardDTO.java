@@ -32,6 +32,13 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
         this.image = accommodation.getImage();
     }
 
+    public AccommodationCardDTO(AccommodationCardRDTO accommodationCardRDTO) {
+        this.accommodationID = accommodationCardRDTO.getAccommodationID();
+        this.name = accommodationCardRDTO.getName();
+        this.description = accommodationCardRDTO.getDescription();
+        this.image = null;
+    }
+
     protected AccommodationCardDTO(Parcel in) {
         if (in.readByte() == 0) {
             accommodationID = null;

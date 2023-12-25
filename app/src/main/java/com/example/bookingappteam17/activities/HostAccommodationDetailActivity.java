@@ -2,6 +2,8 @@ package com.example.bookingappteam17.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,6 +41,7 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +53,7 @@ import retrofit2.http.Path;
 public class HostAccommodationDetailActivity extends AppCompatActivity {
     private ActivityHostAccommodationsDetailsBinding binding;
     private AccommodationDTO accommodationDTO;
+    private Uri imageUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
 
         Long selectedAccommodation = getIntent().getLongExtra("selected_accommodation", 0);
         System.out.println(selectedAccommodation);
+        loadOldImage(selectedAccommodation);
 
         Call<AccommodationDTO> call = ClientUtils.accommodationService.getAccommodation(selectedAccommodation);
         call.enqueue(new Callback<AccommodationDTO>() {
@@ -78,7 +85,18 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
 
         Button updateButton = findViewById(R.id.updateButton);
         updateButton.setOnClickListener(v -> {
-            updateAccommodation();
+            // if approved is true, update accommodation
+            if (accommodationDTO.getApproved()) {
+                updateAccommodation();
+            } else {
+                // show error dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                builder.setTitle("Error");
+                builder.setMessage("Accommodation is not approved yet");
+                builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
         });
 
         Button uploadImageButton = findViewById(R.id.uploadImageButton);
@@ -252,14 +270,18 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         }
         accommodationDTO.getCapacity().setMinGuests((int) Long.parseLong(binding.minPersonsEditText.getText().toString()));
         accommodationDTO.getCapacity().setMaxGuests((int) Long.parseLong(binding.maxPersonsEditText.getText().toString()));
-
+        accommodationDTO.setUpdateAccommodationID(accommodationDTO.getAccommodationID());
+        accommodationDTO.setApproved(null);
+        accommodationDTO.setAccommodationID(null);
         // update accommodation
-        Call<AccommodationUpdateDTO> call = ClientUtils.accommodationService.updateAccommodation(accommodationDTO, accommodationDTO.getAccommodationID());
-        call.enqueue(new Callback<AccommodationUpdateDTO>() {
+        Call<AccommodationDTO> call = ClientUtils.accommodationService.createAccommodation(accommodationDTO);
+        call.enqueue(new Callback<AccommodationDTO>() {
             @Override
-            public void onResponse(Call<AccommodationUpdateDTO> call, Response<AccommodationUpdateDTO> response) {
+            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
                 if (response.isSuccessful()) {
-                    // show success dialog
+                    AccommodationDTO newAccommodationDTO = response.body();
+                    uploadImage(newAccommodationDTO.getAccommodationID(), imageUri);
+                    setApproveToFalse(newAccommodationDTO.getUpdateAccommodationID());
                     AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
                     builder.setTitle("Success");
                     builder.setMessage("Accommodation updated successfully");
@@ -270,7 +292,24 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<AccommodationUpdateDTO> call, Throwable t) {
+            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                Log.e("Error", "Network request failed", t);
+            }
+        });
+    }
+
+    private void setApproveToFalse(Long accommodationID) {
+        Call<AccommodationDTO> call = ClientUtils.accommodationService.setApproveAccommodation(accommodationID, false);
+        call.enqueue(new Callback<AccommodationDTO>() {
+            @Override
+            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.d("TAG", "onResponse: " + response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
                 Log.e("Error", "Network request failed", t);
             }
         });
@@ -290,7 +329,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             Uri imageUri = data.getData();
             // Now you can call the uploadImage method with the selected imageUri
-            uploadImage(accommodationDTO.getAccommodationID(), imageUri);
+            this.imageUri = imageUri;
         }
     }
 
@@ -300,35 +339,43 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
 
             if (inputStream != null) {
                 // Create a temporary file to write the image data
-                File file = createTempImageFile(inputStream);
+                File file = createTempImageFile(inputStream, ".jpg");
 
-                // Create RequestBody and MultipartBody.Part for the image file
-                RequestBody requestFile = RequestBody.create(
-                        MediaType.parse(getContentResolver().getType(imageUri)),
-                        file
-                );
-                MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+                // Get the MIME type of the image using URLConnection
+                String mimeType = getMimeTypeFromURLConnection(file);
 
-                // Call the API to upload the image
-                Call<Void> call = ClientUtils.accommodationService.uploadAccommodationPicture(accommodationId, imagePart);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        // show success dialog
-                        AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
-                        builder.setTitle("Success");
-                        builder.setMessage("Image uploaded successfully");
-                        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-                    }
+                // Null check for mimeType
+                if (mimeType != null) {
+                    // Create RequestBody and MultipartBody.Part for the image file
+                    RequestBody requestFile = RequestBody.create(
+                            MediaType.parse(mimeType),
+                            file
+                    );
+                    MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        // Handle the failure, show an error message, etc.
-                        Log.e("Error", "Image upload failed", t);
-                    }
-                });
+                    // Call the API to upload the image
+                    Call<Void> call = ClientUtils.accommodationService.uploadAccommodationPicture(accommodationId, imagePart);
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            // show success dialog
+                            AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
+                            builder.setTitle("Success");
+                            builder.setMessage("Image uploaded successfully");
+                            builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            // Handle the failure, show an error message, etc.
+                            Log.e("Error", "Image upload failed", t);
+                        }
+                    });
+                } else {
+                    Log.e("Error", "MIME type is null for selected image");
+                }
             } else {
                 Log.e("Error", "Failed to open InputStream for selected image");
             }
@@ -337,10 +384,24 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         }
     }
 
-    private File createTempImageFile(InputStream inputStream) {
+    // Utility method to get MIME type from URLConnection
+    private String getMimeTypeFromURLConnection(File file) {
+        try {
+            URLConnection connection = new URL("file://" + file.getAbsolutePath()).openConnection();
+            connection.connect();
+            return connection.getContentType();
+        } catch (IOException e) {
+            Log.e("Error", "Error getting MIME type from URLConnection: " + e.getMessage());
+            return null;
+        }
+    }
+
+
+
+    private File createTempImageFile(InputStream inputStream, String fileExtension) {
         try {
             File outputDir = getCacheDir();
-            File outputFile = File.createTempFile("temp_image", null, outputDir);
+            File outputFile = File.createTempFile("temp_image", fileExtension, outputDir);
 
             try (OutputStream outputStream = new FileOutputStream(outputFile)) {
                 byte[] buffer = new byte[4096];
@@ -357,5 +418,47 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
             return null;
         }
     }
+
+
+    private void loadOldImage(Long id) {
+        Call<ResponseBody> callImage = ClientUtils.accommodationService.getAccommodationImage(id);
+        callImage.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> callImage, Response<ResponseBody> responseImage) {
+                if (responseImage.isSuccessful()) {
+                    try {
+                        // Convert ResponseBody to InputStream
+                        InputStream inputStream = responseImage.body().byteStream();
+
+                        // Save image to cache with a specific filename
+                        File outputDir = getCacheDir();
+                        File outputFile = new File(outputDir, "temp_image.jpg");
+                        try (OutputStream outputStream = new FileOutputStream(outputFile)) {
+                            byte[] buffer = new byte[4096];
+                            int bytesRead;
+
+                            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                                outputStream.write(buffer, 0, bytesRead);
+                            }
+                        }
+
+                        // Set imageUri to the cache image
+                        imageUri = Uri.fromFile(outputFile);
+
+                    } catch (IOException e) {
+                        Log.e("Error", "Error saving image to cache: " + e.getMessage());
+                    }
+                } else {
+                    Log.d("Error", "Response not successful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("Error", "Failed to get image", t);
+            }
+        });
+    }
+
 
 }
