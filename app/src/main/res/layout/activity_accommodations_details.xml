@@ -111,12 +111,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:layout_marginTop="10sp"
         android:layout_marginHorizontal="20sp"
         android:fontFamily="@font/righteous"
         android:text="Create reservation"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools2:layout_editor_absoluteX="20dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
