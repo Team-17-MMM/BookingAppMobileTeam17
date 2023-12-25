@@ -20,9 +20,17 @@ import androidx.annotation.Nullable;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.AccommodationDetailActivity;
 import com.example.bookingappteam17.activities.HostAccommodationDetailActivity;
+import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 
 import java.util.ArrayList;
+
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ApproveAccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO> {
     private ArrayList<AccommodationCardDTO> aAccommodations;
@@ -64,11 +72,68 @@ public class ApproveAccommodationListAdapter extends ArrayAdapter<AccommodationC
         }
 
         Button approveButton = convertView.findViewById(R.id.button_approve);
+        approveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // update accommodation
+                updateAccommodation(accommodation.getAccommodationID());
+                // delete selected
+//                deleteNewAccommodation(accommodation.getAccommodationID());
+                // refresh list and load it again
+                ApproveAccommodationPageFragment.accommodations.clear();
+                ApproveAccommodationPageFragment.newInstance();
+            }
+
+        });
 
 
         Button rejectButton = convertView.findViewById(R.id.button_reject);
-        // TODO: reject accommodation
+        rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // delete selected
+                deleteNewAccommodation(accommodation.getAccommodationID());
+                // refresh list and load it again
+                ApproveAccommodationPageFragment.accommodations.clear();
+                ApproveAccommodationPageFragment.newInstance();
+            }
+        });
 
         return convertView;
+    }
+
+
+    private void updateAccommodation(Long accommodationID) {
+        Call<AccommodationDTO> call = ClientUtils.accommodationService.updateByNewAccommodation(accommodationID);
+        call.enqueue(new Callback<AccommodationDTO>() {
+            @Override
+            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                if (response.isSuccessful()) {
+                    System.out.println("Success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                System.out.println("Error");
+            }
+        });
+    }
+
+    private void deleteNewAccommodation(Long accommodationID) {
+        Call<AccommodationDTO> call = ClientUtils.accommodationService.deleteAccommodation(accommodationID);
+        call.enqueue(new Callback<AccommodationDTO>() {
+            @Override
+            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                if (response.isSuccessful()) {
+                    System.out.println("Success");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                System.out.println("Error");
+            }
+        });
     }
 }

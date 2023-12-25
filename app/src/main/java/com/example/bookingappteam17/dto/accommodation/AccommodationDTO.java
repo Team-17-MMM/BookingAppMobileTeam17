@@ -20,14 +20,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AccommodationDTO implements Serializable, Parcelable {
+
     private Long accommodationID;
     private String name;
     private String description;
     private Location location;
-    private
-    Set<Amenity> amenities = new HashSet<>();
+    private Set<Amenity> amenities = new HashSet<>();
     private CapacityDTO capacity;
-    private Set<AccommodationType> accommodationType = new HashSet<>();;
+    private Set<AccommodationType> accommodationType = new HashSet<>();
     private User owner;
     private Set<AvailabilityPeriodDTO> availabilityPeriods = new HashSet<>();
     private double price;
@@ -35,6 +35,8 @@ public class AccommodationDTO implements Serializable, Parcelable {
     private String image;
     private Boolean approved;
     private Long updateAccommodationID;
+    private Boolean guestPriced;
+    private Long cancelingDays;
 
     protected AccommodationDTO(Parcel in) {
         if (in.readByte() == 0) {
@@ -178,9 +180,41 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.updateAccommodationID = updateAccommodationID;
     }
 
+    public Boolean getGuestPriced() {
+        return guestPriced;
+    }
+
+    public void setGuestPriced(Boolean guestPriced) {
+        this.guestPriced = guestPriced;
+    }
+
+    public Long getCancelingDays() {
+        return cancelingDays;
+    }
+
+    public void setCancelingDays(Long cancelingDays) {
+        this.cancelingDays = cancelingDays;
+    }
+
     public AccommodationDTO() {}
 
-    public AccommodationDTO(Long accommodationID, String image, Boolean approved, String name, String description, Location location, Set<Amenity> amenities, CapacityDTO capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriodDTO> availabilityPeriods, double price, String confirmationType, Long updateAccommodationID) {
+    public AccommodationDTO(
+            Long accommodationID,
+            String image,
+            Boolean approved,
+            String name,
+            String description,
+            Location location,
+            Set<Amenity> amenities,
+            CapacityDTO capacity,
+            Set<AccommodationType> accommodationType,
+            User owner,
+            Set<AvailabilityPeriodDTO> availabilityPeriods,
+            double price,
+            String confirmationType,
+            Long updateAccommodationID,
+            Boolean guestPriced,
+            Long cancelingDays) {
 
         this.accommodationID = accommodationID;
         this.name = name;
@@ -196,6 +230,8 @@ public class AccommodationDTO implements Serializable, Parcelable {
         this.image = null;
         this.approved = approved;
         this.updateAccommodationID = updateAccommodationID;
+        this.guestPriced = guestPriced;
+        this.cancelingDays = cancelingDays;
     }
 
     public AccommodationDTO(Accommodation accommodation) {

@@ -83,4 +83,10 @@ public interface IAccommodationService {
 
     @GET("accommodation/notApproved")
     Call<HashSet<AccommodationCardRDTO>> getNotApprovedAccommodations();
+
+    @PUT("accommodation/approveAccommodation/{id}")
+    Call<AccommodationDTO> setApproveAccommodation(@Path("id") Long id, @Body Boolean approved);
+
+    @PUT("accommodation/updateByNewAccommodation/{id}")
+    Call<AccommodationDTO> updateByNewAccommodation(@Path("id") Long id);
 }
