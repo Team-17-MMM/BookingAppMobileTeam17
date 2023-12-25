@@ -1,6 +1,11 @@
 package com.example.bookingappteam17.dto.accommodation;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.example.bookingappteam17.enums.AccommodationType;
 import com.example.bookingappteam17.enums.Amenity;
 import com.example.bookingappteam17.model.Accommodation;
@@ -9,27 +14,58 @@ import com.example.bookingappteam17.model.Location;
 import com.example.bookingappteam17.model.User;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AccommodationDTO {
+public class AccommodationDTO implements Serializable, Parcelable {
+
     private Long accommodationID;
     private String name;
     private String description;
     private Location location;
-    private
-    Set<Amenity> amenities = new HashSet<>();
+    private Set<Amenity> amenities = new HashSet<>();
     private CapacityDTO capacity;
-    private Set<AccommodationType> accommodationType = new HashSet<>();;
+    private Set<AccommodationType> accommodationType = new HashSet<>();
     private User owner;
     private Set<AvailabilityPeriodDTO> availabilityPeriods = new HashSet<>();
     private double price;
     private String confirmationType;
-
     private String image;
-
     private Boolean approved;
+    private Long updateAccommodationID;
+    private Boolean guestPriced;
+    private Long cancelingDays;
+
+    protected AccommodationDTO(Parcel in) {
+        if (in.readByte() == 0) {
+            accommodationID = null;
+        } else {
+            accommodationID = in.readLong();
+        }
+        name = in.readString();
+        description = in.readString();
+        owner = in.readParcelable(User.class.getClassLoader());
+        price = in.readDouble();
+        confirmationType = in.readString();
+        image = in.readParcelable(String.class.getClassLoader());
+        byte tmpApproved = in.readByte();
+        approved = tmpApproved == 0 ? null : tmpApproved == 1;
+        updateAccommodationID = in.readLong();
+    }
+
+    public static final Creator<AccommodationDTO> CREATOR = new Creator<AccommodationDTO>() {
+        @Override
+        public AccommodationDTO createFromParcel(Parcel in) {
+            return new AccommodationDTO(in);
+        }
+
+        @Override
+        public AccommodationDTO[] newArray(int size) {
+            return new AccommodationDTO[size];
+        }
+    };
 
     public Boolean getApproved() {
         return approved;
@@ -82,7 +118,7 @@ public class AccommodationDTO {
     public Set<Amenity> getAmenities() {
         return amenities;
     }
-  
+
     public void setAmenities(HashSet<Amenity> amenities) {
         this.amenities = amenities;
     }
@@ -136,9 +172,49 @@ public class AccommodationDTO {
         this.confirmationType = confirmationType;
     }
 
+    public Long getUpdateAccommodationID() {
+        return updateAccommodationID;
+    }
+
+    public void setUpdateAccommodationID(Long updateAccommodationID) {
+        this.updateAccommodationID = updateAccommodationID;
+    }
+
+    public Boolean getGuestPriced() {
+        return guestPriced;
+    }
+
+    public void setGuestPriced(Boolean guestPriced) {
+        this.guestPriced = guestPriced;
+    }
+
+    public Long getCancelingDays() {
+        return cancelingDays;
+    }
+
+    public void setCancelingDays(Long cancelingDays) {
+        this.cancelingDays = cancelingDays;
+    }
+
     public AccommodationDTO() {}
 
-    public AccommodationDTO(Long accommodationID, String image, Boolean approved, String name, String description, Location location, Set<Amenity> amenities, CapacityDTO capacity, Set<AccommodationType> accommodationType, User owner, Set<AvailabilityPeriodDTO> availabilityPeriods, double price, String confirmationType) {
+    public AccommodationDTO(
+            Long accommodationID,
+            String image,
+            Boolean approved,
+            String name,
+            String description,
+            Location location,
+            Set<Amenity> amenities,
+            CapacityDTO capacity,
+            Set<AccommodationType> accommodationType,
+            User owner,
+            Set<AvailabilityPeriodDTO> availabilityPeriods,
+            double price,
+            String confirmationType,
+            Long updateAccommodationID,
+            Boolean guestPriced,
+            Long cancelingDays) {
 
         this.accommodationID = accommodationID;
         this.name = name;
@@ -151,8 +227,11 @@ public class AccommodationDTO {
         this.availabilityPeriods = availabilityPeriods;
         this.price = price;
         this.confirmationType = confirmationType;
-        this.image = image;
+        this.image = null;
         this.approved = approved;
+        this.updateAccommodationID = updateAccommodationID;
+        this.guestPriced = guestPriced;
+        this.cancelingDays = cancelingDays;
     }
 
     public AccommodationDTO(Accommodation accommodation) {
@@ -170,8 +249,9 @@ public class AccommodationDTO {
         }
         this.price = accommodation.getPrice();
         this.confirmationType = accommodation.getConfirmationType();
-        this.image = accommodation.getImage();
+        this.image = null;
         this.approved = accommodation.getApproved();
+        this.updateAccommodationID = accommodation.getUpdateAccommodationID();
     }
 
     public void copyValues(AccommodationDTO accommodation) {
@@ -185,7 +265,7 @@ public class AccommodationDTO {
         this.availabilityPeriods = accommodation.getAvailabilityPeriods();
         this.price = accommodation.getPrice();
         this.confirmationType = accommodation.getConfirmationType();
-        this.image = accommodation.getImage();
+        this.image = null;
         this.approved = accommodation.getApproved();
     }
 
@@ -205,5 +285,27 @@ public class AccommodationDTO {
                 ", confirmationType='" + confirmationType + '\'' +
                 ", approved=" + approved +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        if (accommodationID == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeLong(accommodationID);
+        }
+        parcel.writeString(name);
+        parcel.writeString(description);
+        parcel.writeParcelable(owner, i);
+        parcel.writeDouble(price);
+        parcel.writeString(confirmationType);
+        parcel.writeString(image);
+        parcel.writeByte((byte) (approved == null ? 0 : approved ? 1 : 2));
     }
 }

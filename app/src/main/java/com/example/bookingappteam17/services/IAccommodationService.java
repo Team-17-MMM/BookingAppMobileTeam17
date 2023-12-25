@@ -2,7 +2,9 @@ package com.example.bookingappteam17.services;
 
 
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodRangeDTO;
 
@@ -10,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -33,7 +36,7 @@ public interface IAccommodationService {
     Call<AccommodationDTO> createAccommodation(@Body AccommodationDTO accommodationDTO);
 
     @PUT("accommodation/{id}")
-    Call<AccommodationDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
+    Call<AccommodationUpdateDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
 
     @PUT("accommodation/{id}/availabilityPeriods")
     Call<AccommodationDTO> updateAccommodationAvailabilityPeriods(@Body List<AvailabilityPeriodDTO> availabilityPeriods, @Path("id") Long id);
@@ -45,10 +48,10 @@ public interface IAccommodationService {
     Call<AccommodationDTO> deleteAccommodation(@Path("id") Long id);
 
     @GET("accommodation/cards")
-    Call<HashSet<AccommodationCardDTO>> getAccommodationsCards();
+    Call<HashSet<AccommodationCardRDTO>> getAccommodationsCards();
 
     @GET("accommodation/cards/{username}")
-    Call<HashSet<AccommodationCardDTO>> getHostAccommodationsCards(@Path("username") String username);
+    Call<HashSet<AccommodationCardRDTO>> getHostAccommodationsCards(@Path("username") String username);
 
     @GET("accommodation/host/{id}")
     Call<HashSet<Long>> getHostAccommodationIDs(@Path("id") Long id);
@@ -70,5 +73,20 @@ public interface IAccommodationService {
     Call<Void> uploadAccommodationPicture(@Path("Id") Long Id, @Part MultipartBody.Part image);
 
     @GET("accommodation/{Id}/picture")
-    Call<byte[]> getAccommodationImage(@Path("Id") Long Id);
+    Call<ResponseBody> getAccommodationImage(@Path("Id") Long Id);
+
+    @GET("amenity")
+    Call<List<String>> getAllAmenities();
+
+    @GET("accommodationType")
+    Call<List<String>> getAllAccommodationTypes();
+
+    @GET("accommodation/notApproved")
+    Call<HashSet<AccommodationCardRDTO>> getNotApprovedAccommodations();
+
+    @PUT("accommodation/approveAccommodation/{id}")
+    Call<AccommodationDTO> setApproveAccommodation(@Path("id") Long id, @Body Boolean approved);
+
+    @PUT("accommodation/updateByNewAccommodation/{id}")
+    Call<AccommodationDTO> updateByNewAccommodation(@Path("id") Long id);
 }

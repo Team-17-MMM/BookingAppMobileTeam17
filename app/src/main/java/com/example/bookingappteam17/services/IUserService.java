@@ -2,6 +2,7 @@ package com.example.bookingappteam17.services;
 
 import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.dto.UserLoginDTO;
+import com.example.bookingappteam17.dto.UserRegistrationDTO;
 import com.example.bookingappteam17.dto.UserUpdateDTO;
 import com.example.bookingappteam17.model.AuthResponse;
 import com.example.bookingappteam17.model.DeleteUserResponse;
@@ -97,4 +98,11 @@ public interface IUserService {
     })
     @DELETE("user/delete/{userID}")
     Call<Void> deleteAccount(@Path("userID") Long userID);
+
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
+    @POST("user/register")
+    Call<UserRegistrationDTO> registerAccount(@Body UserRegistrationDTO userRegistrationDTO);
 }

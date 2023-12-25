@@ -14,6 +14,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="phone">Phone</string>
     <string name="address">Address</string>
+    <string name="country">Country</string>
     <string name="edit">Edit</string>
     <string name="phone_number">Phone number</string>
     <string name="logout">Log out</string>
@@ -26,7 +27,7 @@
     <string name="notification_description">Description</string>
     <string name="kopaonik_hotel">Hotel Grand Kopaonik</string>
     <string name="kopaonik_hotel_desc">Moderan i udoban hotel Grand Kopaonik se nalazi na 1.770 metara nadmorske visine u samom centru Kopaonika i nudi veličanstveni pogled na Nacionalni park Kopaonik.</string>
-    <string name="detalji">Detalji</string>
+    <string name="details">details</string>
     <string name="filters">Filters</string>
     <string name="sort">Sort</string>
     <string name="old_password">Old password</string>
@@ -34,5 +35,9 @@
     <string name="Accommodations">Accommodations</string>
     <string name="accommodations">Accommodations</string>
     <string name="host_accommodations">Host accommodations</string>
+    <string name="approve">Aprove</string>
+    <string name="reject">Reject</string>
+    <string name="host">HOST</string>
+    <string name="guest">GUEST</string>
 
 </resources>

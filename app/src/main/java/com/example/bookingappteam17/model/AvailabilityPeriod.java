@@ -14,7 +14,7 @@ public class AvailabilityPeriod {
     }
 
     public AvailabilityPeriod(AvailabilityPeriodDTO availabilityPeriod) {
-        this.date = availabilityPeriod.getDate();
+        this.date = LocalDate.parse(availabilityPeriod.getDate());
         this.price = availabilityPeriod.getPrice();
     }
 

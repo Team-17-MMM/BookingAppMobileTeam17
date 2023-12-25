@@ -1,6 +1,7 @@
 package com.example.bookingappteam17.dto.accommodation;
 
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,14 +9,16 @@ import androidx.annotation.NonNull;
 
 import com.example.bookingappteam17.model.Accommodation;
 
-public class AccommodationCardDTO implements Parcelable {
+import java.io.Serializable;
+
+public class AccommodationCardDTO implements Parcelable, Serializable {
     private Long accommodationID;
     private String name;
     private String description;
-    private String image;
+    private Bitmap image;
 
     public AccommodationCardDTO() {}
-    public AccommodationCardDTO(Long accommodationID, String name, String description, String image) {
+    public AccommodationCardDTO(Long accommodationID, String name, String description, Bitmap image) {
         this.accommodationID = accommodationID;
         this.name = name;
         this.description = description;
@@ -29,6 +32,13 @@ public class AccommodationCardDTO implements Parcelable {
         this.image = accommodation.getImage();
     }
 
+    public AccommodationCardDTO(AccommodationCardRDTO accommodationCardRDTO) {
+        this.accommodationID = accommodationCardRDTO.getAccommodationID();
+        this.name = accommodationCardRDTO.getName();
+        this.description = accommodationCardRDTO.getDescription();
+        this.image = null;
+    }
+
     protected AccommodationCardDTO(Parcel in) {
         if (in.readByte() == 0) {
             accommodationID = null;
@@ -37,7 +47,7 @@ public class AccommodationCardDTO implements Parcelable {
         }
         name = in.readString();
         description = in.readString();
-        image = in.readString();
+        image = in.readParcelable(Bitmap.class.getClassLoader());
     }
 
     public static final Creator<AccommodationCardDTO> CREATOR = new Creator<AccommodationCardDTO>() {
@@ -76,11 +86,11 @@ public class AccommodationCardDTO implements Parcelable {
         this.description = description;
     }
 
-    public String getImage() {
+    public Bitmap getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(Bitmap image) {
         this.image = image;
     }
 
@@ -99,6 +109,7 @@ public class AccommodationCardDTO implements Parcelable {
         }
         parcel.writeString(name);
         parcel.writeString(description);
-        parcel.writeString(image);
+        parcel.writeParcelable(image, i);
     }
+
 }

@@ -1,9 +1,16 @@
 package com.example.bookingappteam17.dto.accommodation;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import com.example.bookingappteam17.model.Capacity;
 
-public class CapacityDTO {
+import java.io.Serializable;
+
+public class CapacityDTO implements Serializable, Parcelable {
     private int minGuests;
     private int maxGuests;
 
@@ -18,6 +25,23 @@ public class CapacityDTO {
         this.minGuests = capacity.getMinGuests();
         this.maxGuests = capacity.getMaxGuests();
     }
+
+    protected CapacityDTO(Parcel in) {
+        minGuests = in.readInt();
+        maxGuests = in.readInt();
+    }
+
+    public static final Creator<CapacityDTO> CREATOR = new Creator<CapacityDTO>() {
+        @Override
+        public CapacityDTO createFromParcel(Parcel in) {
+            return new CapacityDTO(in);
+        }
+
+        @Override
+        public CapacityDTO[] newArray(int size) {
+            return new CapacityDTO[size];
+        }
+    };
 
     public int getMinGuests() {
         return minGuests;
@@ -38,5 +62,16 @@ public class CapacityDTO {
                 ", minGuests=" + minGuests +
                 ", maxGuests=" + maxGuests +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(minGuests);
+        parcel.writeInt(maxGuests);
     }
 }
