@@ -73,32 +73,32 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
         if (name.isEmpty()) {
-            editTextRegisterName.setError("Email is required");
+            editTextRegisterName.setError("Name is required");
             editTextRegisterName.requestFocus();
             return;
         }
         if (surname.isEmpty()) {
-            editTextRegisterSurName.setError("Email is required");
+            editTextRegisterSurName.setError("Surname is required");
             editTextRegisterSurName.requestFocus();
             return;
         }
         if (confirmPassword.isEmpty()) {
-            editTextRegisterConfirmPassword.setError("Email is required");
+            editTextRegisterConfirmPassword.setError("ConfirmPassword is required");
             editTextRegisterConfirmPassword.requestFocus();
             return;
         }
         if (phone.isEmpty()) {
-            editTextRegisterPhone.setError("Email is required");
+            editTextRegisterPhone.setError("Phone is required");
             editTextRegisterPhone.requestFocus();
             return;
         }
         if (address.isEmpty()) {
-            editTextRegisterAddress.setError("Email is required");
+            editTextRegisterAddress.setError("Address is required");
             editTextRegisterAddress.requestFocus();
             return;
         }
         if (country.isEmpty()) {
-            editTextRegisterCountry.setError("Email is required");
+            editTextRegisterCountry.setError("Country is required");
             editTextRegisterCountry.requestFocus();
             return;
         }

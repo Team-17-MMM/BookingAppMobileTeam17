@@ -2,6 +2,7 @@ package com.example.bookingappteam17.fragments.accommodations;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.HomeActivity;
+import com.example.bookingappteam17.activities.RegisterAccommodationActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
@@ -79,6 +81,13 @@ public class AccommodationPageFragment extends Fragment {
             // Show the FilterFragment as a BottomSheetDialogFragment
             FilterFragment filterFragment = new FilterFragment();
             filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+        });
+
+
+        Button btnAddAccommodation = binding.btnAddAccommodation;
+        btnAddAccommodation.setOnClickListener(v -> {
+            Intent intent = new Intent(requireContext(), RegisterAccommodationActivity.class);
+            startActivity(intent);
         });
 
         Spinner spinner = binding.btnSort;
