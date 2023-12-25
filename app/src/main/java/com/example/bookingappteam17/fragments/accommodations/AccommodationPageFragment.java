@@ -33,7 +33,9 @@ import com.example.bookingappteam17.model.Accommodation;
 import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
 import com.example.bookingappteam17.services.IAccommodationService;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -51,11 +53,18 @@ public class AccommodationPageFragment extends Fragment {
     private FragmentAccommodationsPageBinding binding;
     private SharedPreferences sharedPreferences;
     private IAccommodationService accommodationService = ClientUtils.accommodationService;
+    private SharedViewModel sharedViewModel;
+
     public static AccommodationPageFragment newInstance() {
         return new AccommodationPageFragment();
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        if (getActivity() != null && getActivity() instanceof HomeActivity) {
+            sharedViewModel = ((HomeActivity) getActivity()).getSharedViewModel();
+        }
+
+
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         productsViewModel = new ViewModelProvider(this).get(AccommodationPageViewModel.class);
         // check if accommodations have same accommodationID and if they do, remove one of them
@@ -73,14 +82,18 @@ public class AccommodationPageFragment extends Fragment {
 
         prepareProductList(accommodations);
 
-        SearchView searchView = binding.searchText;
-        productsViewModel.getText().observe(getViewLifecycleOwner(), searchView::setQueryHint);
+
 
         Button btnFilters = binding.btnFilters;
         btnFilters.setOnClickListener(v -> {
-            // Show the FilterFragment as a BottomSheetDialogFragment
             FilterFragment filterFragment = new FilterFragment();
+            filterFragment.setOnDismissListener(() -> {
+                AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
+                List<AccommodationCardDTO> filteredAccommodations = sharedViewModel.getAccommodationCards();
+                adapter.updateData(filteredAccommodations);
+            });
             filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+
         });
 
 
@@ -160,6 +173,7 @@ public class AccommodationPageFragment extends Fragment {
                                      for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
                                          loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
+
                                  }
                              }
 
@@ -180,6 +194,7 @@ public class AccommodationPageFragment extends Fragment {
                                      for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
                                          loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                                      }
+
                                  }
                              }
 
@@ -206,6 +221,9 @@ public class AccommodationPageFragment extends Fragment {
                     // Use the bitmap as needed, for example set it to an ImageView
                     accommodationCardDTO.setImage(bmp);
                     products.add(accommodationCardDTO);
+                    sharedViewModel.addAccommodationCard(accommodationCardDTO);
+                    System.out.println("Accommodation added");
+                    System.out.println(accommodationCardDTO);
                 } else {
                     Log.d("Error", "Response not successful");
                 }
@@ -242,4 +260,3 @@ public class AccommodationPageFragment extends Fragment {
         super.onStop();
     }
 }
-

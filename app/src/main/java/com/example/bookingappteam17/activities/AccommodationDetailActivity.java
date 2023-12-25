@@ -1,17 +1,30 @@
 package com.example.bookingappteam17.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingappteam17.databinding.ActivityAccommodationsDetailsBinding;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.fragments.FilterFragment;
+import com.example.bookingappteam17.fragments.ReservationFragment;
+import com.example.bookingappteam17.fragments.accommodations.AccommodationListAdapter;
 import com.example.bookingappteam17.model.Accommodation;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
+
+import java.util.List;
 
 public class AccommodationDetailActivity extends AppCompatActivity {
     private boolean isPermissions = true;
     private String [] permissions = {
             android.Manifest.permission.INTERNET
     };
+
+    private SharedViewModel sharedViewModel;
+
     private static final int REQUEST_PERMISSIONS = 200;
     private ActivityAccommodationsDetailsBinding binding;
     @Override
@@ -19,7 +32,12 @@ public class AccommodationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAccommodationsDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        Accommodation selectedAccommodation = getIntent().getParcelableExtra("selected_accommodation");
+        AccommodationDTO selectedAccommodation = getIntent().getParcelableExtra("selected_accommodation");
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            sharedViewModel = intent.getParcelableExtra("sharedViewModel");
+        }
 
         if (selectedAccommodation != null) {
             binding.accommodationDetailsTitle.setText(selectedAccommodation.getName());
@@ -27,6 +45,12 @@ public class AccommodationDetailActivity extends AppCompatActivity {
 //            binding.accommodationDetailsImage.setImageResource(selectedAccommodation.getImage());
 
             binding.accommodationDetailsPrice.setText(String.valueOf(selectedAccommodation.getPrice()));
+            Button btnReservation = binding.accommodationDetailsReservationButton;
+            btnReservation.setOnClickListener(v -> {
+                ReservationFragment reservationFragment = new ReservationFragment(selectedAccommodation, sharedViewModel);
+                reservationFragment.show(getSupportFragmentManager(), "ReservationFragmentTag");
+            });
+
 
         }
     }
