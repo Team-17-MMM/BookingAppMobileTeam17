@@ -365,7 +365,7 @@ public class RegisterAccommodationActivity extends AppCompatActivity {
                         setApproveToFalse(newAccommodationDTO.getUpdateAccommodationID());
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterAccommodationActivity.this);
                         builder.setTitle("Success");
-                        builder.setMessage("Accommodation updated successfully");
+                        builder.setMessage("Accommodation created successfully");
                         builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
                         AlertDialog dialog = builder.create();
                         dialog.show();

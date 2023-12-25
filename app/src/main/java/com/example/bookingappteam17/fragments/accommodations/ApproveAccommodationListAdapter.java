@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +25,7 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -110,6 +112,7 @@ public class ApproveAccommodationListAdapter extends ArrayAdapter<AccommodationC
             public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
                 if (response.isSuccessful()) {
                     System.out.println("Success");
+                    Toast.makeText(getContext(), "Accommodation approved!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -127,6 +130,7 @@ public class ApproveAccommodationListAdapter extends ArrayAdapter<AccommodationC
             public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
                 if (response.isSuccessful()) {
                     System.out.println("Success");
+                    Toast.makeText(getContext(), "Accommodation rejected!", Toast.LENGTH_SHORT).show();
                 }
             }
 

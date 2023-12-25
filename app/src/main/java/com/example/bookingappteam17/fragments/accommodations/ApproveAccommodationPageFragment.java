@@ -47,7 +47,7 @@ public class ApproveAccommodationPageFragment extends Fragment {
 
         binding = FragmentApproveAccommodationPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        prepareAccommodationList(accommodations);
+//        prepareAccommodationList(accommodations);
 
         // Calls FragmentTransition.to to replace the layout with a ApproveAccommodationsListFragment.
         FragmentTransition.to(ApproveAccommodationListFragment.newInstance(accommodations), getActivity(), false, R.id.scroll_approve_accommodation_list);
@@ -104,5 +104,11 @@ public class ApproveAccommodationPageFragment extends Fragment {
                 Log.d("Error", "Failed to get image", t);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        prepareAccommodationList(accommodations);
     }
 }
