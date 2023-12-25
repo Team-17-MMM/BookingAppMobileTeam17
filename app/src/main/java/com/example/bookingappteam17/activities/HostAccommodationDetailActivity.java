@@ -62,6 +62,7 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         binding = ActivityHostAccommodationsDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         Long selectedAccommodation = getIntent().getLongExtra("selected_accommodation", 0);
         System.out.println(selectedAccommodation);
         loadOldImage(selectedAccommodation);
@@ -103,6 +104,15 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
         uploadImageButton.setOnClickListener(v -> {
             chooseImage();
         });
+
+        Button setPeriods = findViewById(R.id.setPeriodButton);
+        setPeriods.setOnClickListener(v -> {
+            Intent intent = new Intent(HostAccommodationDetailActivity.this, SetPeriodActivity.class);
+            intent.putExtra("selected_accommodation", accommodationDTO.getAccommodationID());
+            startActivity(intent);
+        });
+
+
     }
 
     private void bindData() {

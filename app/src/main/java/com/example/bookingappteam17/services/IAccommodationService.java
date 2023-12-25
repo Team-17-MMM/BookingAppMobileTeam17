@@ -17,6 +17,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -41,6 +42,10 @@ public interface IAccommodationService {
     @PUT("accommodation/{id}/availabilityPeriods")
     Call<AccommodationDTO> updateAccommodationAvailabilityPeriods(@Body List<AvailabilityPeriodDTO> availabilityPeriods, @Path("id") Long id);
 
+    @Headers({
+            "User-Agent: Mobile-Android",
+            "Content-Type:application/json"
+    })
     @PUT("accommodation/{id}/period")
     Call<AccommodationDTO> updateAccommodationPeriod(@Body AvailabilityPeriodRangeDTO availabilityPeriodRangeDTO, @Path("id") Long id);
 

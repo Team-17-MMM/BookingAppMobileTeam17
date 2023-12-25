@@ -71,6 +71,11 @@
             android:screenOrientation="portrait"
             android:label="Register Accommodation"
             android:theme="@style/Theme.BookingAppTeam17"/>
+        <activity
+            android:name=".activities.SetPeriodActivity"
+            android:screenOrientation="portrait"
+            android:label="Set Periods"
+            android:theme="@style/Theme.BookingAppTeam17"/>
     </application>
 
 </manifest>
