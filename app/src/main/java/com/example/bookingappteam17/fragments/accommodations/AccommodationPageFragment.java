@@ -80,12 +80,9 @@ public class AccommodationPageFragment extends Fragment {
         binding = FragmentAccommodationsPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        prepareProductList(accommodations);
-
-
-
         Button btnFilters = binding.btnFilters;
         btnFilters.setOnClickListener(v -> {
+            // Show the FilterFragment as a BottomSheetDialogFragment
             FilterFragment filterFragment = new FilterFragment();
             filterFragment.setOnDismissListener(() -> {
                 AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
@@ -166,43 +163,41 @@ public class AccommodationPageFragment extends Fragment {
         if (userRole.equals("HOST")) {
             Call<HashSet<AccommodationCardRDTO>> call = accommodationService.getHostAccommodationsCards(username);
             call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
-                             @Override
-                             public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
-                                 if (response.isSuccessful()) {
-                                     HashSet<AccommodationCardRDTO> accommodations = response.body();
-                                     for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
-                                         loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
-                                     }
-
-                                 }
-                             }
-
-                             @Override
-                             public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
-                                 Log.d("Error", t.getMessage());
-                             }
+                 @Override
+                 public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
+                     if (response.isSuccessful()) {
+                         HashSet<AccommodationCardRDTO> accommodations = response.body();
+                         for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
+                             loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                          }
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
             );
 
         } else {
             Call<HashSet<AccommodationCardRDTO>> call = accommodationService.getAccommodationsCards();
             call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
-                             @Override
-                             public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
-                                 if (response.isSuccessful()) {
-                                     HashSet<AccommodationCardRDTO> accommodations = response.body();
-                                     for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
-                                         loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
-                                     }
-
-                                 }
-                             }
-
-                             @Override
-                             public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
-                                 Log.d("Error", t.getMessage());
-                             }
+                 @Override
+                 public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
+                     if (response.isSuccessful()) {
+                         HashSet<AccommodationCardRDTO> accommodations = response.body();
+                         for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
+                             loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
                          }
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
             );
         }
 
@@ -252,7 +247,7 @@ public class AccommodationPageFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        prepareProductList(accommodations);
+        prepareProductList(accommodations);
     }
 
     @Override
@@ -260,3 +255,4 @@ public class AccommodationPageFragment extends Fragment {
         super.onStop();
     }
 }
+

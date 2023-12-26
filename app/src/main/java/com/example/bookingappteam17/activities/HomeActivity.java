@@ -44,13 +44,11 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = getSharedPreferences(USER_PREFS_KEY, Context.MODE_PRIVATE);
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
         loadUserData();
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-
         setupBottomNavigationView();
         replaceFragment(new AccommodationPageFragment());
     }

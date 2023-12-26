@@ -291,7 +291,6 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     AccommodationDTO newAccommodationDTO = response.body();
                     uploadImage(newAccommodationDTO.getAccommodationID(), imageUri);
-                    setApproveToFalse(newAccommodationDTO.getUpdateAccommodationID());
                     AlertDialog.Builder builder = new AlertDialog.Builder(HostAccommodationDetailActivity.this);
                     builder.setTitle("Success");
                     builder.setMessage("Accommodation updated successfully");

@@ -22,6 +22,8 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.UserInfoDTO;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,6 +31,7 @@ import retrofit2.Response;
 public class ProfileFragment extends Fragment {
 
     private SharedViewModel sharedViewModel;
+    private UserInfoDTO userInfoDTO;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -48,8 +51,6 @@ public class ProfileFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.btnLogout);
         buttonLogout.setOnClickListener(v -> logout());
-
-        setupData(view);
 
         return view;
     }
@@ -83,8 +84,6 @@ public class ProfileFragment extends Fragment {
     // Set up user data in the UI
     private void setupData(View view) {
 
-        UserInfoDTO userInfoDTO = sharedViewModel.getUserInfoDTO();
-
         TextView textViewUsername = view.findViewById(R.id.txtName);
         textViewUsername.setText(userInfoDTO.getName());
 
@@ -99,5 +98,36 @@ public class ProfileFragment extends Fragment {
 
         TextView textViewAddress = view.findViewById(R.id.txtAddress);
         textViewAddress.setText(userInfoDTO.getAddress());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadUser();
+    }
+
+    // Load user data from the server
+    private void loadUser() {
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", "");
+
+        Call<UserInfoDTO> call = ClientUtils.userService.getUserInfo(username);
+        call.enqueue(new Callback<UserInfoDTO>() {
+            @Override
+            public void onResponse(Call<UserInfoDTO> call, Response<UserInfoDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    userInfoDTO = response.body();
+                    sharedViewModel.setUserInfoDTO(userInfoDTO);
+                    setupData(requireView());
+                } else {
+                    Log.d("Error", "Failed to retrieve user data");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserInfoDTO> call, Throwable t) {
+                Log.d("Error", Objects.requireNonNull(t.getLocalizedMessage()));
+            }
+        });
     }
 }

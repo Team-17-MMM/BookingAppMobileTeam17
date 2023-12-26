@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.UserInfoDTO;
@@ -27,11 +29,13 @@ import retrofit2.Response;
 public class EditProfileActivity extends AppCompatActivity {
 
     private UserInfoDTO userInfoDTO;
+    private SharedViewModel sharedViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+        sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
 
         // Retrieve UserInfoDTO from intent
         userInfoDTO = (UserInfoDTO) getIntent().getSerializableExtra("userInfoDTO");
