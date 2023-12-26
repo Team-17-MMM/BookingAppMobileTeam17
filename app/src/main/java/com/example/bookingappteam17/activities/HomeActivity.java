@@ -134,6 +134,10 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public SharedViewModel getSharedViewModel() {
+        return sharedViewModel;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

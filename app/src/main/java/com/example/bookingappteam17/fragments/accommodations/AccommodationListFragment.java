@@ -9,9 +9,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
 
+import com.example.bookingappteam17.activities.HomeActivity;
 import com.example.bookingappteam17.databinding.FragmentAccommodationListBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.model.Accommodation;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
+
 import java.util.ArrayList;
 
 public class AccommodationListFragment extends ListFragment {
@@ -19,6 +22,8 @@ public class AccommodationListFragment extends ListFragment {
     private static final String ARG_PARAM = "param";
     private ArrayList<AccommodationCardDTO> mAccommodations;
     private FragmentAccommodationListBinding binding;
+    private SharedViewModel sharedViewModel;
+
 
     public AccommodationListAdapter getAdapter() {
         return adapter;
@@ -30,6 +35,13 @@ public class AccommodationListFragment extends ListFragment {
         args.putParcelableArrayList(ARG_PARAM, accommodations);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void updateAccommodations(ArrayList<AccommodationCardDTO> accommodations) {
+        this.mAccommodations = accommodations;
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Nullable
@@ -45,7 +57,10 @@ public class AccommodationListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mAccommodations = getArguments().getParcelableArrayList(ARG_PARAM);
-            adapter = new AccommodationListAdapter(getActivity(), mAccommodations);
+            if (getActivity() != null && getActivity() instanceof HomeActivity) {
+                sharedViewModel = ((HomeActivity) getActivity()).getSharedViewModel();
+            }
+            adapter = new AccommodationListAdapter(getActivity(), mAccommodations, sharedViewModel);
             setListAdapter(adapter);
         }
     }
