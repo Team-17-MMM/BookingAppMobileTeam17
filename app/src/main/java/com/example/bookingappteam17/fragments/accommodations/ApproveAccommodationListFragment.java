@@ -8,25 +8,24 @@ import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.ListFragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.bookingappteam17.databinding.FragmentAccommodationListBinding;
 import com.example.bookingappteam17.databinding.FragmentApproveAccommodationListBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ApproveAccommodationListFragment extends ListFragment {
+
     private ApproveAccommodationListAdapter adapter;
     private static final String ARG_PARAM = "param";
-    private ArrayList<AccommodationCardDTO> mAccommodations;
     private FragmentApproveAccommodationListBinding binding;
 
-    public ApproveAccommodationListAdapter getAdapter() {
-        return adapter;
-    }
-
-    public static ApproveAccommodationListFragment newInstance(ArrayList<AccommodationCardDTO> accommodations){
+    public static ApproveAccommodationListFragment newInstance(ArrayList<AccommodationCardDTO> accommodations) {
         ApproveAccommodationListFragment fragment = new ApproveAccommodationListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList(ARG_PARAM, accommodations);
@@ -39,17 +38,28 @@ public class ApproveAccommodationListFragment extends ListFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentApproveAccommodationListBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        return root;
-    }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mAccommodations = getArguments().getParcelableArrayList(ARG_PARAM);
-            adapter = new ApproveAccommodationListAdapter(getActivity(), mAccommodations);
-            setListAdapter(adapter);
-        }
+        // Initialize ViewModel
+        ApproveAccommodationPageViewModel viewModel = new ViewModelProvider(this).get(ApproveAccommodationPageViewModel.class);
+
+        // Set up the adapter
+        adapter = new ApproveAccommodationListAdapter(getActivity(), new ArrayList<>());
+        setListAdapter(adapter);
+
+        // Observe LiveData and update UI
+        viewModel.getAccommodationsLiveData().observe(getViewLifecycleOwner(), new Observer<List<AccommodationCardDTO>>() {
+            @Override
+            public void onChanged(List<AccommodationCardDTO> accommodationCardDTOS) {
+                adapter.clear();
+                adapter.addAll(accommodationCardDTOS);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        // Load data
+        viewModel.loadAccommodations();
+
+        return root;
     }
 
     @Override
@@ -61,7 +71,6 @@ public class ApproveAccommodationListFragment extends ListFragment {
     @Override
     public void onListItemClick(@NonNull ListView l, @NonNull View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        // Handle the click on item at 'position'
+        // TODO: Handle the click on item at 'position'
     }
-
 }

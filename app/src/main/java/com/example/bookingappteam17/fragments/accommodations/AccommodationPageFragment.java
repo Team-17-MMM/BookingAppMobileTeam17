@@ -67,15 +67,6 @@ public class AccommodationPageFragment extends Fragment {
 
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         productsViewModel = new ViewModelProvider(this).get(AccommodationPageViewModel.class);
-        // check if accommodations have same accommodationID and if they do, remove one of them
-        for (int i = 0; i < accommodations.size(); i++) {
-            for (int j = i + 1; j < accommodations.size(); j++) {
-                if (accommodations.get(i).getAccommodationID().equals(accommodations.get(j).getAccommodationID())) {
-                    accommodations.remove(j);
-                }
-            }
-        }
-
 
         binding = FragmentAccommodationsPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -167,8 +158,9 @@ public class AccommodationPageFragment extends Fragment {
                  public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
                      if (response.isSuccessful()) {
                          HashSet<AccommodationCardRDTO> accommodations = response.body();
-                         for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
-                             loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
+                         products.clear();
+                         for (AccommodationCardRDTO accommodationCardRDTO : accommodations) {
+                             products.add(new AccommodationCardDTO(accommodationCardRDTO));
                          }
                      }
                  }
@@ -187,8 +179,8 @@ public class AccommodationPageFragment extends Fragment {
                  public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
                      if (response.isSuccessful()) {
                          HashSet<AccommodationCardRDTO> accommodations = response.body();
-                         for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
-                             loadImage(new AccommodationCardDTO(accommodationCardDTO), products);
+                         for (AccommodationCardRDTO accommodationCardRDTO : accommodations) {
+                             products.add(new AccommodationCardDTO(accommodationCardRDTO));
                          }
                      }
                  }
@@ -204,31 +196,6 @@ public class AccommodationPageFragment extends Fragment {
 //        products.add(new Accommodation(1L, "Grand Hotel Kopaonik", "The modern and comfortable Grand Hotel Kopaonik is located at an altitude of 1,770 meters in the very center of Kopaonik and offers a magnificent view of the Kopaonik National Park.","Kopaonik", R.drawable.hotel_grand_kop, 2500, 1L));
 //        products.add(new Accommodation(2L, "Krila Zlatibora", "The establishment Krila Zlatibora offers accommodation with free private parking and is located in Zlatibor, in the region of Central Serbia.","Zlatibor", R.drawable.zlatibor, 1800, 1L));
 //        products.add(new Accommodation(3L, "Brvnara Miris Bora", "The object Brvnara Miris Bora is located in Šljivovica and offers a garden, barbecue facilities, and a terrace. All rooms have a kitchen, flat-screen TV with satellite channels, and a private bathroom.","Tara", R.drawable.tara, 3400, 1L));
-    }
-
-    private void loadImage(AccommodationCardDTO accommodationCardDTO, ArrayList<AccommodationCardDTO> products) {
-        Call<ResponseBody> callImage = accommodationService.getAccommodationImage(accommodationCardDTO.getAccommodationID());
-        callImage.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> callImage, Response<ResponseBody> responseImage) {
-                if (responseImage.isSuccessful()) {
-                    Bitmap bmp = BitmapFactory.decodeStream(responseImage.body().byteStream());
-                    // Use the bitmap as needed, for example set it to an ImageView
-                    accommodationCardDTO.setImage(bmp);
-                    products.add(accommodationCardDTO);
-                    sharedViewModel.addAccommodationCard(accommodationCardDTO);
-                    System.out.println("Accommodation added");
-                    System.out.println(accommodationCardDTO);
-                } else {
-                    Log.d("Error", "Response not successful");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.d("Error", "Failed to get image", t);
-            }
-        });
     }
 
     @Override

@@ -52,10 +52,10 @@ public interface IAccommodationService {
     @DELETE("accommodation/{id}")
     Call<AccommodationDTO> deleteAccommodation(@Path("id") Long id);
 
-    @GET("accommodation/cards")
+    @GET("accommodation/cardsI")
     Call<HashSet<AccommodationCardRDTO>> getAccommodationsCards();
 
-    @GET("accommodation/cards/{username}")
+    @GET("accommodation/cardsI/{username}")
     Call<HashSet<AccommodationCardRDTO>> getHostAccommodationsCards(@Path("username") String username);
 
     @GET("accommodation/host/{id}")
