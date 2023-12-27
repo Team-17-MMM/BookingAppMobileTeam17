@@ -83,7 +83,8 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
         }
         Button detailsButton = convertView.findViewById(R.id.accommodation_details);
         detailsButton.setOnClickListener(v -> {
-            Long id = accommodation.getAccommodationID();
+            // get id of accommodation which is clicked
+            Long id = accommodationCard.getAccommodationID();
             String role = sharedPreferences.getString("role", "");
             if (role.equals("HOST")) {
                 System.out.println("HOST");

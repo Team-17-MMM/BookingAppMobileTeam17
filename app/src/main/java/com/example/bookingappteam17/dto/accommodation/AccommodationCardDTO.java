@@ -2,8 +2,10 @@ package com.example.bookingappteam17.dto.accommodation;
 
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
@@ -36,7 +38,15 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
         this.accommodationID = accommodationCardRDTO.getAccommodationID();
         this.name = accommodationCardRDTO.getName();
         this.description = accommodationCardRDTO.getDescription();
-        this.image = null;
+
+        // Assuming 'accommodationCardRDTO.getImage()' returns the Base64-encoded string
+        String base64Image = accommodationCardRDTO.getImage();
+
+        // Decode the Base64 string into a byte array
+        byte[] decodedBytes = Base64.decode(base64Image, Base64.DEFAULT);
+
+        // Convert the byte array to a Bitmap
+        this.image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
     protected AccommodationCardDTO(Parcel in) {
