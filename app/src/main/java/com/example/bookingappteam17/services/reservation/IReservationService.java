@@ -1,6 +1,7 @@
 package com.example.bookingappteam17.services.reservation;
 
 import com.example.bookingappteam17.dto.reservation.ReservationPostDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.example.bookingappteam17.model.reservation.Reservation;
 
 import java.util.HashSet;
@@ -31,4 +32,7 @@ public interface IReservationService {
 
     @DELETE("reservation/{id}")
     Call<Reservation> deleteReservation(@Path("id") Long id);
+
+    @GET("reservation/report/{id}")
+    Call<ReservationReportDTO> getReport(@Path("id") Long id);
 }

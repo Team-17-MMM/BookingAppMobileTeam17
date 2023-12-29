@@ -18,6 +18,7 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityHomeBinding;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.enums.user.UserRoleType;
+import com.example.bookingappteam17.fragments.accommodation.AccommodationPageViewModel;
 import com.example.bookingappteam17.fragments.notification.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.account.ProfileFragment;
 import com.example.bookingappteam17.fragments.reservation.ReservationsListFragment;
@@ -141,7 +142,6 @@ public class HomeActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         binding = null;
-        AccommodationPageFragment.accommodations.clear();
     }
 
     @Override
@@ -157,7 +157,6 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        AccommodationPageFragment.accommodations.clear();
     }
 
     @Override
