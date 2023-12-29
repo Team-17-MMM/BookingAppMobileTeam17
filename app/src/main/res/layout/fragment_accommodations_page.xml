@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.accommodations.AccommodationPageFragment">
+    tools:context=".fragments.accommodation.AccommodationPageFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,24 +47,34 @@
                 android:tooltipText="@string/sort" />
         </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linear3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        >
-
-        <Button
-            android:id="@+id/btnAddAccommodation"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear3"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"
-            android:text="Add accommodation"
-            android:fontFamily="@font/righteous"
-            />
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp">
+
+            <!-- "Add accommodation" button -->
+            <Button
+                android:id="@+id/btnAddAccommodation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="4dp"
+                android:text="@string/add_accommodation"
+                android:fontFamily="@font/righteous" />
+
+            <!-- "Get report" button -->
+            <Button
+                android:id="@+id/btnGetReport"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:text="@string/get_report"
+                android:fontFamily="@font/righteous" />
         </LinearLayout>
 
 

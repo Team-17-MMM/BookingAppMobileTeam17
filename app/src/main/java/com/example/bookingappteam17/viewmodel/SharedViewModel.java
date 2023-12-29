@@ -2,7 +2,7 @@ package com.example.bookingappteam17.viewmodel;
 
 import androidx.lifecycle.ViewModel;
 
-import com.example.bookingappteam17.dto.UserInfoDTO;
+import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 
 import java.util.ArrayList;
