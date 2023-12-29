@@ -21,4 +21,7 @@
     <string name="host_accommodations">Host accommodations</string>
     <string name="approve">Aprove</string>
     <string name="reject">Reject</string>
+    <string name="add_accommodation">Add accommodation</string>
+    <string name="get_report">Get report</string>
+    <string name="Details">Details</string>
 </resources>

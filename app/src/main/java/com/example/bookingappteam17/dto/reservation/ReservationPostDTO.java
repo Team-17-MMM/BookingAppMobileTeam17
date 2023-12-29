@@ -1,7 +1,7 @@
 package com.example.bookingappteam17.dto.reservation;
 
-import com.example.bookingappteam17.enums.ReservationStatus;
-import com.example.bookingappteam17.model.Reservation;
+import com.example.bookingappteam17.enums.reservation.ReservationStatus;
+import com.example.bookingappteam17.model.reservation.Reservation;
 
 import java.time.LocalDate;
 

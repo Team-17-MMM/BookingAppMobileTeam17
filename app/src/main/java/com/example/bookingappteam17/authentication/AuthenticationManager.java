@@ -4,10 +4,10 @@ package com.example.bookingappteam17.authentication;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.bookingappteam17.services.IUserService;
+import com.example.bookingappteam17.services.user.IUserService;
 import com.example.bookingappteam17.clients.JwtUtils;
-import com.example.bookingappteam17.dto.UserLoginDTO;
-import com.example.bookingappteam17.model.AuthResponse;
+import com.example.bookingappteam17.dto.user.UserLoginDTO;
+import com.example.bookingappteam17.model.user.AuthResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;

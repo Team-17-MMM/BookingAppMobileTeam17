@@ -39,5 +39,8 @@
     <string name="reject">Reject</string>
     <string name="host">HOST</string>
     <string name="guest">GUEST</string>
+    <string name="add_accommodation">Add accommodation</string>
+    <string name="get_report">Get report</string>
+    <string name="Details">Details</string>
 
 </resources>

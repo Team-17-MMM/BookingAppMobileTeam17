@@ -1,9 +1,9 @@
 package com.example.bookingappteam17.dto.accommodation;
 
-import com.example.bookingappteam17.enums.AccommodationType;
-import com.example.bookingappteam17.enums.Amenity;
-import com.example.bookingappteam17.model.Location;
-import com.example.bookingappteam17.model.User;
+import com.example.bookingappteam17.enums.accommodation.AccommodationType;
+import com.example.bookingappteam17.enums.accommodation.Amenity;
+import com.example.bookingappteam17.model.accommodation.Location;
+import com.example.bookingappteam17.model.user.User;
 
 import java.util.HashSet;
 import java.util.Set;

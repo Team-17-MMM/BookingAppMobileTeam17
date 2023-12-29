@@ -125,17 +125,42 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/accommodation_details"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|bottom"
-                android:layout_marginTop="10sp"
-                android:fontFamily="@font/righteous"
-                android:text="Details"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <!-- "Get Report" button visible only for HOST -->
+                <Button
+                    android:id="@+id/accommodation_details"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="10sp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/righteous"
+                    android:text="@string/Details"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/get_report_accommodation"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginTop="10sp"
+                    android:layout_marginStart="5dp"
+                    android:fontFamily="@font/righteous"
+                    android:text="@string/get_report"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
 
