@@ -2,6 +2,7 @@ package com.example.bookingappteam17.activities.accommodation;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -13,17 +14,24 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.adapters.AccommodationReportAdapter;
+import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityAccommodationReportBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationReportDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccommodationReportActivity extends AppCompatActivity {
     ActivityAccommodationReportBinding binding;
@@ -87,8 +95,26 @@ public class AccommodationReportActivity extends AppCompatActivity {
     }
 
     private void generateReport(String username, String start, String end) {
+        // TODO: Load data from the server
+        Call<List<AccommodationReportDTO>> call = ClientUtils.reservationService.getHostReport(username, start, end);
+        call.enqueue(new Callback<List<AccommodationReportDTO>>() {
+            @Override
+            public void onResponse(Call<List<AccommodationReportDTO>> call, Response<List<AccommodationReportDTO>> response) {
+                if (response.isSuccessful()) {
+                    List<AccommodationReportDTO> accommodationReportDTOS = response.body();
+                    createReportDialog(accommodationReportDTOS);
+                    Log.d("TAG", "onResponse: " + accommodationReportDTOS);
+                }
+            }
 
-        List<AccommodationReportDTO> accommodationList = loadData(username, start, end);
+            @Override
+            public void onFailure(Call<List<AccommodationReportDTO>> call, Throwable t) {
+                Log.d("TAG", "onFailure: " + t.getMessage());
+            }
+        });
+    }
+
+    private void createReportDialog(List<AccommodationReportDTO> accommodationList) {
 
         // Create a dialog
         Dialog dialog = new Dialog(this);
@@ -115,58 +141,11 @@ public class AccommodationReportActivity extends AppCompatActivity {
             dialog.dismiss();
         });
 
-        dialog.show();
-    }
+        Button getPdfButton = dialog.findViewById(R.id.dialog_get_pdf_button);
+        getPdfButton.setOnClickListener(v -> {
 
-    private List<AccommodationReportDTO> loadData(String username, String start, String end) {
-        // TODO: Load data from the server
-        return List.of(
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(5L, "Hotel 5", 5000.0, 50),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40),
-                new AccommodationReportDTO(1L, "Hotel 1", 1000.0, 10),
-                new AccommodationReportDTO(2L, "Hotel 2", 2000.0, 20),
-                new AccommodationReportDTO(3L, "Hotel 3", 3000.0, 30),
-                new AccommodationReportDTO(4L, "Hotel 4", 4000.0, 40)
-        );
+        });
+        dialog.show();
     }
 
 }

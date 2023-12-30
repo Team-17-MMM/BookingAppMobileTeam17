@@ -40,5 +40,4 @@ public class AccommodationReportDTO {
     public void setNumberOfReservations(Integer numberOfReservations) {
         this.numberOfReservations = numberOfReservations;
     }
-
 }
