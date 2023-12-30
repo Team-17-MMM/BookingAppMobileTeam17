@@ -1,0 +1,34 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/accommodationNameTextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/accommodation_name"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/profitTextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/profit"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/reservationsTextView"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/reservations"
+        android:textStyle="bold"/>
+</LinearLayout>

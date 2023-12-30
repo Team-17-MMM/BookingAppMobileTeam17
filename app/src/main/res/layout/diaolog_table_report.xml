@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp"
+            android:text="@string/accommodation_name"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/profit"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/reservations"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- RecyclerView for the table -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tableRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical">
+        <!-- OK button -->
+        <Button
+            android:id="@+id/dialog_ok_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/ok"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Get pdf button -->
+        <Button
+            android:id="@+id/dialog_get_pdf_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/get_pdf_1"
+            android:layout_weight="1"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+    </LinearLayout>
+</LinearLayout>
