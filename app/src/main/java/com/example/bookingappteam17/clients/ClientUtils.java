@@ -40,4 +40,4 @@ public class ClientUtils {
     public static IAccommodationService accommodationService = retrofit.create(IAccommodationService.class);
     public static IReservationService reservationService = retrofit.create(IReservationService.class);
     public static IAmenitiesService amenitiesService = retrofit.create(IAmenitiesService.class);
-}
+    }

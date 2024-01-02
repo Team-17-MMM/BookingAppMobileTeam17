@@ -2,25 +2,34 @@ package com.example.bookingappteam17.activities.accommodation;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DownloadManager;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.adapters.AccommodationReportAdapter;
 import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.clients.PdfGenerator;
 import com.example.bookingappteam17.databinding.ActivityAccommodationReportBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationReportDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -102,7 +111,7 @@ public class AccommodationReportActivity extends AppCompatActivity {
             public void onResponse(Call<List<AccommodationReportDTO>> call, Response<List<AccommodationReportDTO>> response) {
                 if (response.isSuccessful()) {
                     List<AccommodationReportDTO> accommodationReportDTOS = response.body();
-                    createReportDialog(accommodationReportDTOS);
+                    createReportDialog(accommodationReportDTOS, start, end);
                     Log.d("TAG", "onResponse: " + accommodationReportDTOS);
                 }
             }
@@ -114,7 +123,7 @@ public class AccommodationReportActivity extends AppCompatActivity {
         });
     }
 
-    private void createReportDialog(List<AccommodationReportDTO> accommodationList) {
+        private void createReportDialog(List<AccommodationReportDTO> accommodationList, String startDate, String endDate) {
 
         // Create a dialog
         Dialog dialog = new Dialog(this);
@@ -143,8 +152,35 @@ public class AccommodationReportActivity extends AppCompatActivity {
 
         Button getPdfButton = dialog.findViewById(R.id.dialog_get_pdf_button);
         getPdfButton.setOnClickListener(v -> {
+            // Change the date format from MM/dd/yyyy to dd-MM-yyyy
+            String[] startDateArray = startDate.split("/");
+            String[] endDateArray = endDate.split("/");
+            String start = startDateArray[1] + "-" + startDateArray[0] + "-" + startDateArray[2];
+            String end = endDateArray[1] + "-" + endDateArray[0] + "-" + endDateArray[2];
 
+            // Call the PDF generation method and get the generated file path
+            String filePath = PdfGenerator.generatePdf(getApplicationContext(), start, end, accommodationList);
+
+            // Check if the file path is not null or empty before attempting to open it
+            if (filePath != null && !filePath.isEmpty()) {
+                // Open the PDF file using an Intent
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", new File(filePath));
+                intent.setDataAndType(uri, "application/pdf");
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                // Verify that there is an app to handle this intent before starting it
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(this, "No PDF viewer app installed", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(this, "Error generating PDF", Toast.LENGTH_SHORT).show();
+            }
+            dialog.dismiss(); // Dismiss the dialog after handling the button click
         });
+
         dialog.show();
     }
 

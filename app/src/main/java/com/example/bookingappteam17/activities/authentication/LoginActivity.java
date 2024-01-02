@@ -1,12 +1,14 @@
 package com.example.bookingappteam17.activities.authentication;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -22,11 +24,14 @@ import com.example.bookingappteam17.services.user.IUserService;
 import com.example.bookingappteam17.dto.user.UserLoginDTO;
 import com.example.bookingappteam17.model.user.AuthResponse;
 
+@RequiresApi(api = Build.VERSION_CODES.R)
 public class LoginActivity extends AppCompatActivity {
 
     private boolean isPermissions = true;
-    private String [] permissions = {
+    private final String [] permissions = {
             Manifest.permission.INTERNET,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
     };
     private static final int REQUEST_PERMISSIONS = 200;
 
@@ -70,7 +75,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onRequestPermission(){
         Log.i("ShopApp", "onRequestPermission");
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
+        for (String permission : permissions) {
+            if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+                Log.i("ShopApp", "permission " + permission + " is denied");
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSIONS);
+                break;
+            }
+        }
     }
 
     private void handleLogin() {
