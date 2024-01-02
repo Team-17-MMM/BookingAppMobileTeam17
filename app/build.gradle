@@ -67,6 +67,11 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
     // implement osmdroid
     implementation 'org.osmdroid:osmdroid-android:6.1.11'
+    // chart plugin
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // pdf generator
+    implementation 'com.itextpdf:itext7-core:7.1.15'
 
 
 }
