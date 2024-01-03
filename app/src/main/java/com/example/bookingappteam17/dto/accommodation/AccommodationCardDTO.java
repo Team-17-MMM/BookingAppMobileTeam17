@@ -9,7 +9,7 @@ import android.util.Base64;
 
 import androidx.annotation.NonNull;
 
-import com.example.bookingappteam17.model.Accommodation;
+import com.example.bookingappteam17.model.accommodation.Accommodation;
 
 import java.io.Serializable;
 

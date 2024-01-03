@@ -6,7 +6,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.bookingappteam17.model.Capacity;
+import com.example.bookingappteam17.model.accommodation.Capacity;
 
 import java.io.Serializable;
 

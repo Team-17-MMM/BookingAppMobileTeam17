@@ -4,7 +4,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.bookingappteam17.fragments.FilterFragment;
+import com.example.bookingappteam17.fragments.accommodation.FilterFragment;
 
 public class CircleTouchListener implements View.OnTouchListener {
 

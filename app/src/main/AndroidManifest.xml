@@ -4,6 +4,11 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
+
 
     <application
         android:allowBackup="true"
@@ -17,16 +22,16 @@
         android:theme="@style/Theme.BookingAppTeam17"
         tools:targetApi="31">
         <activity
-            android:name=".activities.RegistrationActivity"
+            android:name=".activities.authentication.RegistrationActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".activities.authentication.LoginActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".activities.EditProfileActivity"
+            android:name=".activities.account.EditProfileActivity"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
@@ -46,7 +51,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".activities.home.HomeActivity"
             android:screenOrientation="portrait"
             android:exported="false"
             android:label="Home"
@@ -57,25 +62,41 @@
 
         </activity>
         <activity
-            android:name=".activities.AccommodationDetailActivity"
+            android:name=".activities.accommodation.AccommodationDetailActivity"
             android:screenOrientation="portrait"
             android:label="Accommodation Details"
             android:theme="@style/Theme.BookingAppTeam17"/>
         <activity
-            android:name=".activities.HostAccommodationDetailActivity"
+            android:name=".activities.accommodation.HostAccommodationDetailActivity"
             android:screenOrientation="portrait"
             android:label="Host Accommodation Details"
             android:theme="@style/Theme.BookingAppTeam17"/>
         <activity
-            android:name=".activities.RegisterAccommodationActivity"
+            android:name=".activities.accommodation.RegisterAccommodationActivity"
             android:screenOrientation="portrait"
             android:label="Register Accommodation"
             android:theme="@style/Theme.BookingAppTeam17"/>
         <activity
-            android:name=".activities.SetPeriodActivity"
+            android:name=".activities.accommodation.SetPeriodActivity"
             android:screenOrientation="portrait"
             android:label="Set Periods"
             android:theme="@style/Theme.BookingAppTeam17"/>
+        <activity
+            android:name=".activities.accommodation.AccommodationReportActivity"
+            android:screenOrientation="portrait"
+            android:label="Accommodation Report"
+            android:theme="@style/Theme.BookingAppTeam17"/>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
     </application>
 
 </manifest>

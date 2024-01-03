@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 
-import com.example.bookingappteam17.dto.UserInfoDTO;
+import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class SharedViewModel extends ViewModel implements Parcelable {
 
     public void addAccommodationCard(AccommodationCardDTO accommodationCardDTO) { this.accommodationCards.add(accommodationCardDTO); }
 
+    public void clearAccommodations(){this.accommodationCards.clear();}
     public SharedViewModel() {
     }
     protected SharedViewModel(Parcel in) {

@@ -1,6 +1,5 @@
 package com.example.bookingappteam17.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -18,10 +17,8 @@ import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class SplashScreenActivity extends AppCompatActivity {
     @Override

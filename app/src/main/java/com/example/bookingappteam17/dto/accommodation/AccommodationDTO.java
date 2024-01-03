@@ -6,13 +6,12 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.bookingappteam17.enums.AccommodationType;
-import com.example.bookingappteam17.enums.Amenity;
-import com.example.bookingappteam17.model.Accommodation;
-import com.example.bookingappteam17.model.AvailabilityPeriod;
-import com.example.bookingappteam17.model.Location;
-import com.example.bookingappteam17.model.User;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.bookingappteam17.enums.accommodation.AccommodationType;
+import com.example.bookingappteam17.enums.accommodation.Amenity;
+import com.example.bookingappteam17.model.accommodation.Accommodation;
+import com.example.bookingappteam17.model.accommodation.AvailabilityPeriod;
+import com.example.bookingappteam17.model.accommodation.Location;
+import com.example.bookingappteam17.model.user.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;

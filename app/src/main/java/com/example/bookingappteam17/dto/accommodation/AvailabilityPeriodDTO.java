@@ -6,8 +6,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import com.example.bookingappteam17.model.AvailabilityPeriod;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.bookingappteam17.model.accommodation.AvailabilityPeriod;
 
 import java.io.Serializable;
 
