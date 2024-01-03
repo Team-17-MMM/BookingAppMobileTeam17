@@ -161,6 +161,7 @@ public class AccommodationPageFragment extends Fragment {
                          products.clear();
                          for (AccommodationCardRDTO accommodationCardRDTO : accommodations) {
                              products.add(new AccommodationCardDTO(accommodationCardRDTO));
+                             sharedViewModel.addAccommodationCard(new AccommodationCardDTO(accommodationCardRDTO));
                          }
                      }
                  }
@@ -181,6 +182,7 @@ public class AccommodationPageFragment extends Fragment {
                          HashSet<AccommodationCardRDTO> accommodations = response.body();
                          for (AccommodationCardRDTO accommodationCardRDTO : accommodations) {
                              products.add(new AccommodationCardDTO(accommodationCardRDTO));
+                             sharedViewModel.addAccommodationCard(new AccommodationCardDTO(accommodationCardRDTO));
                          }
                      }
                  }

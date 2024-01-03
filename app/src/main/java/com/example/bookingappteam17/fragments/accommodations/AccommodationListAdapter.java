@@ -3,6 +3,7 @@ package com.example.bookingappteam17.fragments.accommodations;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,8 +96,8 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
             }
             else{
                 Intent intent = new Intent(getContext(), AccommodationDetailActivity.class);
-                intent.putExtra("selected_accommodation", (CharSequence) accommodation);
-                intent.putExtra("sharedViewModel", (CharSequence) sharedViewModel);
+                intent.putExtra("selected_accommodation", (Parcelable) accommodation);
+                intent.putExtra("sharedViewModel", sharedViewModel);
                 getContext().startActivity(intent);
             }
         });

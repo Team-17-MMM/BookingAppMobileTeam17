@@ -29,7 +29,6 @@ import com.example.bookingappteam17.activities.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.listener.CircleTouchListener;
-import com.example.bookingappteam17.model.FilterData;
 import com.example.bookingappteam17.services.IAccommodationService;
 import com.example.bookingappteam17.services.IAmenitiesService;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
@@ -189,8 +188,10 @@ public class FilterFragment extends BottomSheetDialogFragment {
         Long minPrice = (long) minValue;
         Long maxPrice = (long) maxValue;
         List<String> checkedAmenities = getCheckedAmenities(view);
+        String[] accommodationArray = chosenAccommodationTypes.toArray(new String[0]);
+        String[] amenitiesArray = checkedAmenities.toArray(new String[0]);
 
-        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,checkedAmenities,chosenAccommodationTypes);
+        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,amenitiesArray,accommodationArray);
         call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
              @Override
              public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
