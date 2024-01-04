@@ -4,20 +4,28 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityAccommodationsDetailsBinding;
 import com.example.bookingappteam17.databinding.ActivityHostAccommodationsDetailsBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.enums.accommodation.AccommodationType;
+import com.example.bookingappteam17.enums.accommodation.Amenity;
 import com.example.bookingappteam17.fragments.reservation.ReservationFragment;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
@@ -50,7 +58,8 @@ public class AccommodationDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = null;
         binding = ActivityAccommodationsDetailsBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        View view = binding.getRoot();
+        setContentView(view);
         Long selectedAccommodationID = getIntent().getLongExtra("selected_accommodation", 0);
         userID = getIntent().getLongExtra("user_id",0);
 
@@ -61,7 +70,7 @@ public class AccommodationDetailActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     accommodation = response.body();
                     // bind data from accommodationDTO to layout
-                    bindData();
+                    bindData(view);
                 }
             }
 
@@ -74,20 +83,70 @@ public class AccommodationDetailActivity extends AppCompatActivity {
 
     }
 
-    private void bindData(){
+    private void bindData(View view){
         if (accommodation != null) {
             loadOldImage(accommodation.getAccommodationID());
 
-
+            binding.countryEditText.setText(accommodation.getLocation().getCountry());
+            binding.addressEditText.setText(accommodation.getLocation().getAddress());
             binding.accommodationDetailsTitle.setText(accommodation.getName());
             binding.accommodationDetailsDescription.setText(accommodation.getDescription());
-            binding.accommodationDetailsPrice.setText(String.valueOf(accommodation.getPrice()));
+            binding.minPersonsEditText.setText(String.valueOf(accommodation.getCapacity().getMinGuests()));
+            binding.maxPersonsEditText.setText(String.valueOf(accommodation.getCapacity().getMaxGuests()));
+
+            bindAccommodationType(view);
+
+            createAmenitiesCheckboxes(view);
+
+            //set map view to location
             Button btnReservation = binding.accommodationDetailsReservationButton;
             btnReservation.setOnClickListener(v -> {
-                ReservationFragment reservationFragment = new ReservationFragment(accommodation, userID);
-                reservationFragment.show(getSupportFragmentManager(), "ReservationFragmentTag");
+                ReservationFragment reservationFragment = new ReservationFragment(accommodation,userID);
+                reservationFragment.show(getSupportFragmentManager().beginTransaction(), "ReservationFragmentTag");
             });
 
+        }
+    }
+
+    private void createAmenitiesCheckboxes(View view){
+        for (Amenity amenity : accommodation.getAmenities()) {
+            CheckBox checkBox = new CheckBox(view.getContext());
+            checkBox.setText(amenity.name());
+            checkBox.setChecked(true);
+            checkBox.setEnabled(false);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                checkBox.setButtonTintList(ContextCompat.getColorStateList(view.getContext(), R.color.blue));
+            }
+
+            GridLayout.Spec rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Row weight
+            GridLayout.Spec colSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f); // Column weight
+
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams(rowSpec, colSpec);
+            params.width = 0;
+            params.height = GridLayout.LayoutParams.WRAP_CONTENT;
+
+
+            checkBox.setLayoutParams(params);
+
+            binding.checkboxContainer.addView(checkBox);
+        }
+    }
+
+    private void bindAccommodationType(View view){
+        if (accommodation != null){
+            if(accommodation.getAccommodationType().contains(AccommodationType.STUDIO)){
+                binding.checkboxStudio.setChecked(true);
+                binding.checkboxStudio.setButtonTintList(ContextCompat.getColorStateList(view.getContext(), R.color.blue));
+            }
+            if(accommodation.getAccommodationType().contains(AccommodationType.APARTMENT)){
+                binding.checkboxApartment.setChecked(true);
+                binding.checkboxApartment.setButtonTintList(ContextCompat.getColorStateList(view.getContext(), R.color.blue));
+            }
+            if(accommodation.getAccommodationType().contains(AccommodationType.ROOM)){
+                binding.checkboxRoom.setChecked(true);
+                binding.checkboxRoom.setButtonTintList(ContextCompat.getColorStateList(view.getContext(), R.color.blue));
+            }
         }
     }
 

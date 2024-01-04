@@ -28,7 +28,7 @@ public interface IReservationService {
 
 
     @POST("reservation")
-    Call<Reservation> createReservation(@Body ReservationPostDTO reservation);
+    Call<ReservationPostDTO> createReservation(@Body ReservationPostDTO reservation);
 
     @PUT("reservation/{id}")
     Call<Reservation> updateReservation(@Body Reservation reservation, @Path("id") Long id);
