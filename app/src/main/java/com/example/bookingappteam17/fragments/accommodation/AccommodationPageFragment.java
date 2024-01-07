@@ -1,9 +1,13 @@
 package com.example.bookingappteam17.fragments.accommodation;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +16,36 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.AccommodationReportActivity;
+import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.activities.accommodation.RegisterAccommodationActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
-import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
+import com.example.bookingappteam17.fragments.accommodation.FilterFragment;
+import com.example.bookingappteam17.model.accommodation.Accommodation;
+import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
 import com.example.bookingappteam17.services.accommodation.IAccommodationService;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.HashSet;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AccommodationPageFragment extends Fragment {
 
@@ -46,6 +63,7 @@ public class AccommodationPageFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         sharedPreferences = getActivity().getSharedPreferences("user_prefs", getActivity().MODE_PRIVATE);
         String username = sharedPreferences.getString("username", "");
+        String role = sharedPreferences.getString("role","");
         binding = FragmentAccommodationsPageBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -60,7 +78,7 @@ public class AccommodationPageFragment extends Fragment {
         accommodationListFragment.setListAdapter(adapter);
 
         // Load data
-        accommodationsPageViewModel.loadAccommodations(username);
+        accommodationsPageViewModel.loadAccommodations(username,role);
 
         // Observe LiveData and update UI
         accommodationsPageViewModel.getAccommodationsLiveData().observe(getViewLifecycleOwner(), new Observer<List<AccommodationCardDTO>>() {
@@ -70,19 +88,16 @@ public class AccommodationPageFragment extends Fragment {
             }
         });
 
-//        // buttons
-//        Button btnFilters = binding.btnFilters;
-//        btnFilters.setOnClickListener(v -> {
-//            // Show the FilterFragment as a BottomSheetDialogFragment
-//            FilterFragment filterFragment = new FilterFragment();
-//            filterFragment.setOnDismissListener(() -> {
-//                AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
-//                List<AccommodationCardDTO> filteredAccommodations = sharedViewModel.getAccommodationCards();
-//                adapter.updateData(filteredAccommodations);
-//            });
-//            filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
-//
-//        });
+        // buttons
+        Button btnFilters = binding.btnFilters;
+        btnFilters.setOnClickListener(v -> {
+            // Show the FilterFragment as a BottomSheetDialogFragment
+            FilterFragment filterFragment = new FilterFragment(accommodationListFragment.getAdapter());
+            filterFragment.setOnDismissListener(() -> {
+                adapter.notifyDataSetChanged();
+            });
+            filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+        });
 
 
         Button btnAddAccommodation = binding.btnAddAccommodation;
@@ -148,3 +163,4 @@ public class AccommodationPageFragment extends Fragment {
         return root;
     }
 }
+

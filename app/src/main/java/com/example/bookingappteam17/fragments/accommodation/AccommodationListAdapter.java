@@ -1,9 +1,13 @@
 package com.example.bookingappteam17.fragments.accommodation;
+import static com.example.bookingappteam17.clients.ClientUtils.accommodationService;
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +26,12 @@ import androidx.lifecycle.LifecycleOwner;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.AccommodationDetailActivity;
 import com.example.bookingappteam17.activities.accommodation.HostAccommodationDetailActivity;
+import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
+import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -76,7 +82,6 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.accommodation_card, parent, false);
         }
 
-        LinearLayout accommodationCard = convertView.findViewById(R.id.accommodation_card_item);
         TextView accommodationName = convertView.findViewById(R.id.accommodation_name);
         TextView accommodationDescription = convertView.findViewById(R.id.accommodation_description);
         ImageView accommodationImage = convertView.findViewById(R.id.accommodation_image);
@@ -109,8 +114,8 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
             }
             else{
                 Intent intent = new Intent(getContext(), AccommodationDetailActivity.class);
-                intent.putExtra("selected_accommodation", (CharSequence) accommodation);
-//                intent.putExtra("sharedViewModel", (CharSequence) sharedViewModel);
+                intent.putExtra("selected_accommodation", id);
+                intent.putExtra("user_id", sharedPreferences.getLong("userId", 0));
                 getContext().startActivity(intent);
             }
         });
@@ -118,8 +123,36 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
         return convertView;
     }
 
+    public void updateData(List<AccommodationCardDTO> newAccommodations) {
+        aAccommodations.clear();
+        aAccommodations.addAll(newAccommodations);
+        notifyDataSetChanged();
+    }
+
+    private AccommodationDTO getAccommodationFromID(Long id){
+        final AccommodationDTO[] accommodation = {new AccommodationDTO()};
+        Call<AccommodationDTO> call = accommodationService.getAccommodation(id);
+        call.enqueue(new Callback<AccommodationDTO>() {
+             @Override
+             public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                 if (response.isSuccessful()) {
+                     accommodation[0] = response.body();
+
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                 Log.d("Error", t.getMessage());
+
+             }
+         }
+
+        );
+        return accommodation[0];
+    }
     private void updateAccommodation(Long accommodationID) {
-        Call<AccommodationDTO> call = ClientUtils.accommodationService.updateByNewAccommodation(accommodationID);
+        Call<AccommodationDTO> call = accommodationService.updateByNewAccommodation(accommodationID);
         call.enqueue(new Callback<AccommodationDTO>() {
             @Override
             public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
@@ -140,7 +173,7 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
     }
 
     private void deleteNewAccommodation(Long accommodationID) {
-        Call<AccommodationDTO> call = ClientUtils.accommodationService.deleteAccommodation(accommodationID);
+        Call<AccommodationDTO> call = accommodationService.deleteAccommodation(accommodationID);
         call.enqueue(new Callback<AccommodationDTO>() {
             @Override
             public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {

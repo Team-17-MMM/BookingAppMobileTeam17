@@ -2,6 +2,7 @@ package com.example.bookingappteam17.fragments.accommodation;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -73,7 +76,12 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private IAccommodationService accommodationService = ClientUtils.accommodationService;
     private List<AccommodationCardDTO> filteredAccommodations = new ArrayList<>();
 
+    private AccommodationListAdapter adapter;
     private IAmenitiesService amenitiesService = ClientUtils.amenitiesService;
+
+    public FilterFragment(AccommodationListAdapter adapter){
+        this.adapter = adapter;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -185,8 +193,10 @@ public class FilterFragment extends BottomSheetDialogFragment {
         Long minPrice = (long) minValue;
         Long maxPrice = (long) maxValue;
         List<String> checkedAmenities = getCheckedAmenities(view);
+        String[] accommodationArray = chosenAccommodationTypes.toArray(new String[0]);
+        String[] amenitiesArray = checkedAmenities.toArray(new String[0]);
 
-        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,checkedAmenities,chosenAccommodationTypes);
+        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,amenitiesArray,accommodationArray);
         call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
              @Override
              public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
@@ -195,7 +205,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
                      for (AccommodationCardDTO accommodationCardDTO : accommodations) {
                          filteredAccommodations.add(accommodationCardDTO);
                      }
-                     sharedViewModel.setAccommodationCards(filteredAccommodations);
+                     adapter.setAccommodations(filteredAccommodations);
                      dismiss();
                  }
              }

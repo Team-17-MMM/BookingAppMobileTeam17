@@ -1,16 +1,14 @@
 package com.example.bookingappteam17.dto.reservation;
 
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
-import com.example.bookingappteam17.model.reservation.Reservation;
 
-import java.time.LocalDate;
+public class ReservationDTO {
 
-public class ReservationPostDTO {
-
+    private Long reservationID;
     private Long userID;
     private Long accommodationID;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
     private ReservationStatus status;
     private int price;
 
@@ -31,19 +29,19 @@ public class ReservationPostDTO {
         this.accommodationID = accommodationID;
     }
 
-    public LocalDate getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public LocalDate getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -63,7 +61,15 @@ public class ReservationPostDTO {
         this.price = price;
     }
 
-    public ReservationPostDTO(Long userID, Long accommodationID, LocalDate startDate, LocalDate endDate, ReservationStatus status, int price) {
+    public Long getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(Long reservationID) {
+        this.reservationID = reservationID;
+    }
+
+    public ReservationDTO(Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
         this.userID = userID;
         this.accommodationID = accommodationID;
         this.startDate = startDate;
@@ -72,12 +78,14 @@ public class ReservationPostDTO {
         this.price = price;
     }
 
-    public ReservationPostDTO(Reservation reservation){
-        this.userID = reservation.getUserID();
-        this.accommodationID = reservation.getAccommodationID();
-        this.startDate = reservation.getStartDate();
-        this.endDate = reservation.getEndDate();
-        this.status = reservation.getStatus();
-        this.price = reservation.getPrice();
+    public ReservationDTO(Long reservationID,Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
+        this.reservationID = reservationID;
+        this.userID = userID;
+        this.accommodationID = accommodationID;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.price = price;
     }
+
 }

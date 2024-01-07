@@ -69,8 +69,8 @@ public interface IAccommodationService {
             @Query("persons") Long persons,
             @Query("minPrice") Long minPrice,
             @Query("maxPrice") Long maxPrice,
-            @Query("amenities") List<String> amenities,
-            @Query("accommodationTypes") List<String> accommodationTypes
+            @Query("amenities") String[] amenities,
+            @Query("accommodationTypes") String[] accommodationTypes
     );
 
     @Multipart

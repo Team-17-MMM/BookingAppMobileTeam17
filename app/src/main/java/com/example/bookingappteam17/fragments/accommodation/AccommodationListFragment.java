@@ -33,6 +33,9 @@ public class AccommodationListFragment extends ListFragment {
         return fragment;
     }
 
+    public AccommodationListAdapter getAdapter(){
+        return adapter;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class AccommodationListFragment extends ListFragment {
         });
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", getActivity().MODE_PRIVATE);
-        viewModel.loadAccommodations(sharedPreferences.getString("username", ""));
+        viewModel.loadAccommodations(sharedPreferences.getString("username", ""),sharedPreferences.getString("role", ""));
 
         return root;
     }

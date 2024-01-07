@@ -70,6 +70,11 @@ dependencies {
     // chart plugin
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    implementation 'com.google.android.material:material:1.11.0'
+
+    //image loading library
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+
     // pdf generator
     implementation 'com.itextpdf:itext7-core:7.1.15'
 

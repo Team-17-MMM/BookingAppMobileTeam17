@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="2dp"
+    >
+<LinearLayout
+
+    android:background="@drawable/border_background_blue"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:layout_margin="10sp"
+    android:orientation="vertical"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RESERVATION"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/startDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Start date"
+                android:fontFamily="@font/righteous"
+                android:textSize="12sp"
+
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/endDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="End date"
+                android:fontFamily="@font/righteous"
+                android:textSize="12sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Status"
+                android:fontFamily="@font/righteous"
+                android:textSize="12sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5sp">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Name"
+                android:fontFamily="@font/righteous"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/accommodationName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Accommodation name"
+                android:fontFamily="@font/righteous"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:fontFamily="@font/righteous"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/approveBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Approve"
+            android:layout_marginHorizontal="3sp"
+            android:fontFamily="@font/righteous"
+            android:theme="@style/Theme.BookingAppTeam17"
+            />
+        <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="3sp"
+            android:text="Cancel"
+            android:fontFamily="@font/righteous"
+            android:theme="@style/Theme.BookingAppTeam17"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

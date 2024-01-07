@@ -27,24 +27,45 @@ public class AccommodationPageViewModel extends ViewModel {
         return accommodationsLiveData;
     }
 
-    public void loadAccommodations(String username) {
-        Call<HashSet<AccommodationCardRDTO>> call = ClientUtils.accommodationService.getHostAccommodationsCards(username);
-        call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
-            @Override
-            public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
-                if (response.isSuccessful()) {
-                    HashSet<AccommodationCardRDTO> accommodationCardRDTOS = response.body();
-                    List<AccommodationCardDTO> accommodations = convertToDTOList(accommodationCardRDTOS);
-                    accommodationsLiveData.setValue(accommodations);
+    public void loadAccommodations(String username, String role) {
+        if (role == "HOST"){
+            Call<HashSet<AccommodationCardRDTO>> call = ClientUtils.accommodationService.getHostAccommodationsCards(username);
+            call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
+                @Override
+                public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
+                    if (response.isSuccessful()) {
+                        HashSet<AccommodationCardRDTO> accommodationCardRDTOS = response.body();
+                        List<AccommodationCardDTO> accommodations = convertToDTOList(accommodationCardRDTOS);
+                        accommodationsLiveData.setValue(accommodations);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
-                // Handle failure
-                Log.e("ERROR", t.getMessage());
-            }
-        });
+                @Override
+                public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
+                    // Handle failure
+                    Log.e("ERROR", t.getMessage());
+                }
+            });
+        }else{
+            Call<HashSet<AccommodationCardRDTO>> call = ClientUtils.accommodationService.getAccommodationsCards();
+            call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
+                @Override
+                public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
+                    if (response.isSuccessful()) {
+                        HashSet<AccommodationCardRDTO> accommodationCardRDTOS = response.body();
+                        List<AccommodationCardDTO> accommodations = convertToDTOList(accommodationCardRDTOS);
+                        accommodationsLiveData.setValue(accommodations);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
+                    // Handle failure
+                    Log.e("ERROR", t.getMessage());
+                }
+            });
+        }
+
     }
 
     private List<AccommodationCardDTO> convertToDTOList(HashSet<AccommodationCardRDTO> accommodationCardRDTOS) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class ProfileFragment extends Fragment {
     private void editIconClicked() {
         Intent intent = new Intent(getActivity(), EditProfileActivity.class);
         UserInfoDTO userInfoDTO = sharedViewModel.getUserInfoDTO();
-        intent.putExtra("userInfoDTO", userInfoDTO);
+        intent.putExtra("userInfoDTO", (Parcelable) userInfoDTO);
         startActivity(intent);
     }
 
