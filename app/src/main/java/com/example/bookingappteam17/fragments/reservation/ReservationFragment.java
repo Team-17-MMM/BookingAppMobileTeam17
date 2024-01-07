@@ -20,9 +20,8 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.CapacityDTO;
-import com.example.bookingappteam17.dto.reservation.ReservationPostDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationDTO;
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
-import com.example.bookingappteam17.model.reservation.Reservation;
 import com.example.bookingappteam17.services.reservation.IReservationService;
 import com.example.bookingappteam17.validators.ReservationDateValidator;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -172,7 +171,7 @@ public class ReservationFragment extends BottomSheetDialogFragment {
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd", Locale.US);
                 if(!editTextEndDate.getText().toString().equals("") && !editTextStartDate.getText().toString().equals("")){
                     try {
-                        setPrice(sdf.parse(editTextStartDate.getText().toString()), sdf.parse(editTextEndDate.getText().toString()),Long.parseLong(spinnerPeopleCount.getSelectedItem().toString()));
+                        priceText.setText(String.valueOf(setPrice(sdf.parse(editTextStartDate.getText().toString()), sdf.parse(editTextEndDate.getText().toString()),Long.parseLong(spinnerPeopleCount.getSelectedItem().toString()))));
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
                     }
@@ -246,21 +245,24 @@ public class ReservationFragment extends BottomSheetDialogFragment {
             return;
         }
 
-        ReservationPostDTO reservationDTO = new ReservationPostDTO(userID,accommodation.getAccommodationID(),startDate.toString(),endDate.toString(), ReservationStatus.PENDING,Integer.parseInt(String.valueOf(priceText.getText())));
+        ReservationDTO reservationDTO = new ReservationDTO(userID,accommodation.getAccommodationID(),startDate.toString(),endDate.toString(), ReservationStatus.PENDING,Integer.parseInt(String.valueOf(priceText.getText())));
 
-        Call<ReservationPostDTO> call = reservationService.createReservation(reservationDTO);
-        call.enqueue(new Callback<ReservationPostDTO>() {
+        Call<ReservationDTO> call = reservationService.createReservation(reservationDTO);
+        call.enqueue(new Callback<ReservationDTO>() {
                  @Override
-                 public void onResponse(Call<ReservationPostDTO> call, Response<ReservationPostDTO> response) {
+                 public void onResponse(Call<ReservationDTO> call, Response<ReservationDTO> response) {
                      if (response.isSuccessful()) {
-                         ReservationPostDTO reservation = response.body();
+                         ReservationDTO reservation = response.body();
                          showLongToast(view.getContext(),"Successfully created reservation!");
+                         if(accommodation.getConfirmationType().equals("Auto Confirmation")){
+                             approveReservation(view,reservation);
+                         }
                          dismiss();
                      }
                  }
 
                  @Override
-                 public void onFailure(Call<ReservationPostDTO> call, Throwable t) {
+                 public void onFailure(Call<ReservationDTO> call, Throwable t) {
                      Log.d("Error", t.getMessage());
                      showLongToast(view.getContext(),"Error creating reservation!");
                      dismiss();
@@ -270,6 +272,26 @@ public class ReservationFragment extends BottomSheetDialogFragment {
 
 
 
+    }
+
+    private void approveReservation(View view, ReservationDTO reservationDTO){
+        Call<HashSet<ReservationDTO>> call = reservationService.acceptReservation(reservationDTO.getReservationID(), reservationDTO.getReservationID());
+        call.enqueue(new Callback<HashSet<ReservationDTO>>() {
+                 @Override
+                 public void onResponse(Call<HashSet<ReservationDTO>> call, Response<HashSet<ReservationDTO>> response) {
+                     if (response.isSuccessful()) {
+                         showShortToast(view.getContext(),"Reservation accepted automatically");
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<HashSet<ReservationDTO>> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                     showLongToast(view.getContext(),"Error creating reservation!");
+                     dismiss();
+                 }
+             }
+        );
     }
 
     private List<String> getOccupancy(){

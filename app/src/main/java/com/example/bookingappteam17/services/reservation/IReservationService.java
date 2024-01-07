@@ -1,7 +1,8 @@
 package com.example.bookingappteam17.services.reservation;
 
 import com.example.bookingappteam17.dto.accommodation.AccommodationReportDTO;
-import com.example.bookingappteam17.dto.reservation.ReservationPostDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationInfoDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.example.bookingappteam17.model.reservation.Reservation;
 
@@ -22,13 +23,13 @@ public interface IReservationService {
     Call<HashSet<Reservation>> getReservations();
 
     @GET("reservation/{id}")
-    Call<Reservation> getReservation(@Path("id") Long id);
+    Call<ReservationDTO> getReservation(@Path("id") Long id);
     @GET("reservation/user/{id}")
     Call<HashSet<Reservation>> getUserReservations(@Path("id") Long id);
 
 
     @POST("reservation")
-    Call<ReservationPostDTO> createReservation(@Body ReservationPostDTO reservation);
+    Call<ReservationDTO> createReservation(@Body ReservationDTO reservation);
 
     @PUT("reservation/{id}")
     Call<Reservation> updateReservation(@Body Reservation reservation, @Path("id") Long id);
@@ -44,4 +45,15 @@ public interface IReservationService {
             @Query("start") String start,
             @Query("end") String end
     );
+
+    @GET("reservation/info/user/{id}")
+    Call<HashSet<ReservationInfoDTO>> getUserInfoReservations(@Path("id") Long id);
+    @GET("reservation/host/{id}")
+    Call<HashSet<ReservationInfoDTO>> getHostReservations(@Path("id") Long id);
+    @PUT("reservation/accept/{id}")
+    Call<HashSet<ReservationDTO>> acceptReservation(@Body Long resId, @Path("id") Long id);
+    @PUT("reservation/cancel/{id}")
+    Call<ReservationDTO> cancelReservation(@Body Long resId, @Path("id") Long id);
+    @PUT("reservation/reject/{id}")
+    Call<ReservationDTO> rejectReservation(@Body Long resId, @Path("id") Long id);
 }

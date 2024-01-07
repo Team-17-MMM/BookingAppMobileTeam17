@@ -1,12 +1,10 @@
 package com.example.bookingappteam17.dto.reservation;
 
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
-import com.example.bookingappteam17.model.reservation.Reservation;
 
-import java.time.LocalDate;
+public class ReservationDTO {
 
-public class ReservationPostDTO {
-
+    private Long reservationID;
     private Long userID;
     private Long accommodationID;
     private String startDate;
@@ -63,7 +61,25 @@ public class ReservationPostDTO {
         this.price = price;
     }
 
-    public ReservationPostDTO(Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
+    public Long getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(Long reservationID) {
+        this.reservationID = reservationID;
+    }
+
+    public ReservationDTO(Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
+        this.userID = userID;
+        this.accommodationID = accommodationID;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.status = status;
+        this.price = price;
+    }
+
+    public ReservationDTO(Long reservationID,Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
+        this.reservationID = reservationID;
         this.userID = userID;
         this.accommodationID = accommodationID;
         this.startDate = startDate;

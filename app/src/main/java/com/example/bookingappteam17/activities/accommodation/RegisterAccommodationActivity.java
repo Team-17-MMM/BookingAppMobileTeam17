@@ -334,7 +334,7 @@ public class RegisterAccommodationActivity extends AppCompatActivity {
             return;
         } else {
             RadioButton selectedRadioButton = findViewById(selectedRadioButtonPricingId);
-            if(selectedRadioButton.getText().toString() == "Price by guest"){
+            if(selectedRadioButton.getText().toString().equals("Price by guest")){
                 selectedOptionPricing = true;
             }
         }
