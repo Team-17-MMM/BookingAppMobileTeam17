@@ -4,15 +4,15 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.bookingappteam17.fragments.accommodation.FilterFragment;
+import com.example.bookingappteam17.fragments.accommodation.AccommodationFilterFragment;
 
 public class CircleTouchListener implements View.OnTouchListener {
 
     private boolean isMinThumb;
-    private FilterFragment filterFragment;
+    private AccommodationFilterFragment accommodationFilterFragment;
 
-    public CircleTouchListener(FilterFragment filterFragment, boolean isMinThumb) {
-        this.filterFragment = filterFragment;
+    public CircleTouchListener(AccommodationFilterFragment accommodationFilterFragment, boolean isMinThumb) {
+        this.accommodationFilterFragment = accommodationFilterFragment;
         this.isMinThumb = isMinThumb;
     }
 
@@ -34,18 +34,18 @@ public class CircleTouchListener implements View.OnTouchListener {
     private void handleThumbMovement(float x) {
 
         if (isMinThumb) {
-            float value = filterFragment.calculateValueFromPositionMin(x);
-            filterFragment.setMinValue(value);
+            float value = accommodationFilterFragment.calculateValueFromPositionMin(x);
+            accommodationFilterFragment.setMinValue(value);
             // Update the position of minThumb based on the calculated value
-            filterFragment.updateMinThumbPosition(x);
+            accommodationFilterFragment.updateMinThumbPosition(x);
         } else {
-            float value = filterFragment.calculateValueFromPositionMax(x);
-            filterFragment.setMaxValue(value);
+            float value = accommodationFilterFragment.calculateValueFromPositionMax(x);
+            accommodationFilterFragment.setMaxValue(value);
             // Update the position of maxThumb based on the calculated value
-            filterFragment.updateMaxThumbPosition(x);
+            accommodationFilterFragment.updateMaxThumbPosition(x);
         }
 
-        filterFragment.updateTextViews();
+        accommodationFilterFragment.updateTextViews();
     }
 
 }

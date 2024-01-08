@@ -62,7 +62,7 @@ public interface IAccommodationService {
     Call<HashSet<Long>> getHostAccommodationIDs(@Path("id") Long id);
 
     @GET("accommodation/search")
-    Call<HashSet<AccommodationCardDTO>> searchAccommodations(
+    Call<HashSet<AccommodationCardRDTO>> searchAccommodations(
             @Query("searchLocation") String searchLocation,
             @Query("startDate") String startDate,
             @Query("endDate") String endDate,

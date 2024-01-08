@@ -2,7 +2,6 @@ package com.example.bookingappteam17.fragments.accommodation;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,7 +17,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +26,7 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
 import com.example.bookingappteam17.listener.CircleTouchListener;
 import com.example.bookingappteam17.services.accommodation.IAccommodationService;
 import com.example.bookingappteam17.services.accommodation.IAmenitiesService;
@@ -38,7 +37,6 @@ import com.google.android.material.datepicker.MaterialDatePicker;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +48,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FilterFragment extends BottomSheetDialogFragment {
+public class AccommodationFilterFragment extends BottomSheetDialogFragment {
 
     public interface OnDismissListener {
         void onDismiss();
@@ -79,13 +77,13 @@ public class FilterFragment extends BottomSheetDialogFragment {
     private AccommodationListAdapter adapter;
     private IAmenitiesService amenitiesService = ClientUtils.amenitiesService;
 
-    public FilterFragment(AccommodationListAdapter adapter){
+    public AccommodationFilterFragment(AccommodationListAdapter adapter){
         this.adapter = adapter;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_filter, container, false);
+        View view = inflater.inflate(R.layout.fragment_accommodation_filter, container, false);
         setStyle(STYLE_NORMAL, R.style.Theme_BookingAppTeam17);
 
         if (getActivity() != null && getActivity() instanceof HomeActivity) {
@@ -112,7 +110,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
 
         // Create a list of options (e.g., 1 to 10 people)
         List<String> peopleOptions = new ArrayList<>();
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 10; i++) {
             peopleOptions.add(String.valueOf(i));
         }
 
@@ -196,14 +194,14 @@ public class FilterFragment extends BottomSheetDialogFragment {
         String[] accommodationArray = chosenAccommodationTypes.toArray(new String[0]);
         String[] amenitiesArray = checkedAmenities.toArray(new String[0]);
 
-        Call<HashSet<AccommodationCardDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,amenitiesArray,accommodationArray);
-        call.enqueue(new Callback<HashSet<AccommodationCardDTO>>() {
+        Call<HashSet<AccommodationCardRDTO>> call = accommodationService.searchAccommodations(enteredCity,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),occupancy,minPrice,maxPrice,amenitiesArray,accommodationArray);
+        call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
              @Override
-             public void onResponse(Call<HashSet<AccommodationCardDTO>> call, Response<HashSet<AccommodationCardDTO>> response) {
+             public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {
                  if (response.isSuccessful()) {
-                     HashSet<AccommodationCardDTO> accommodations = response.body();
-                     for (AccommodationCardDTO accommodationCardDTO : accommodations) {
-                         filteredAccommodations.add(accommodationCardDTO);
+                     HashSet<AccommodationCardRDTO> accommodations = response.body();
+                     for (AccommodationCardRDTO accommodationCardDTO : accommodations) {
+                         filteredAccommodations.add(new AccommodationCardDTO(accommodationCardDTO));
                      }
                      adapter.setAccommodations(filteredAccommodations);
                      dismiss();
@@ -211,7 +209,7 @@ public class FilterFragment extends BottomSheetDialogFragment {
              }
 
              @Override
-             public void onFailure(Call<HashSet<AccommodationCardDTO>> call, Throwable t) {
+             public void onFailure(Call<HashSet<AccommodationCardRDTO>> call, Throwable t) {
                  Log.d("Error", t.getMessage());
              }
          }

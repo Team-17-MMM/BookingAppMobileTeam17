@@ -1,13 +1,9 @@
 package com.example.bookingappteam17.fragments.accommodation;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,34 +14,22 @@ import android.widget.Spinner;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.AccommodationReportActivity;
-import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.activities.accommodation.RegisterAccommodationActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
-import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
-import com.example.bookingappteam17.fragments.accommodation.FilterFragment;
-import com.example.bookingappteam17.model.accommodation.Accommodation;
 import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
 import com.example.bookingappteam17.services.accommodation.IAccommodationService;
-import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AccommodationPageFragment extends Fragment {
 
@@ -92,11 +76,11 @@ public class AccommodationPageFragment extends Fragment {
         Button btnFilters = binding.btnFilters;
         btnFilters.setOnClickListener(v -> {
             // Show the FilterFragment as a BottomSheetDialogFragment
-            FilterFragment filterFragment = new FilterFragment(accommodationListFragment.getAdapter());
-            filterFragment.setOnDismissListener(() -> {
+            AccommodationFilterFragment accommodationFilterFragment = new AccommodationFilterFragment(accommodationListFragment.getAdapter());
+            accommodationFilterFragment.setOnDismissListener(() -> {
                 adapter.notifyDataSetChanged();
             });
-            filterFragment.show(getChildFragmentManager(), filterFragment.getTag());
+            accommodationFilterFragment.show(getChildFragmentManager(), accommodationFilterFragment.getTag());
         });
 
 
@@ -113,49 +97,49 @@ public class AccommodationPageFragment extends Fragment {
             startActivity(intent);
         });
 
-//        Spinner spinner = binding.btnSort;
-//        // Create an ArrayAdapter using the string array and a default spinner layout
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
-//                android.R.layout.simple_spinner_item,
-//                getResources().getStringArray(R.array.sort_array));
-//        // Specify the layout to use when the list of choices appears
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        // Apply the adapter to the spinner
-//        spinner.setAdapter(arrayAdapter);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-//
-//                boolean isAscending = (position == 0);
-//
-//                // Update the data directly in the AccommodationListFragment's adapter
-//                if (accommodationListFragment != null) {
-//                    AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
-//                    if (adapter != null) {
-//                        adapter.sort(new Comparator<AccommodationCardDTO>() {
-//                            @Override
-//                            public int compare(AccommodationCardDTO accommodation1, AccommodationCardDTO accommodation2) {
-////                                int result = Double.compare(accommodation1.getPrice(), accommodation2.getPrice());
-//                                int result = Double.compare(1000, 1000);
-//
-//                                return isAscending ? result : -result;
-//                            }
-//                        });
-//
-//                        // Notify the adapter to update the UI
-//                        adapter.notifyDataSetChanged();
-//                    }
-//                }
-//            }
-//
-//
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parent) {
-//                // TODO Auto-generated method stub
-//            }
-//        });
+        Spinner spinner = binding.btnSort;
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item,
+                getResources().getStringArray(R.array.sort_array));
+        // Specify the layout to use when the list of choices appears
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                boolean isAscending = (position == 0);
+
+                // Update the data directly in the AccommodationListFragment's adapter
+                if (accommodationListFragment != null) {
+                    AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
+                    if (adapter != null) {
+                        adapter.sort(new Comparator<AccommodationCardDTO>() {
+                            @Override
+                            public int compare(AccommodationCardDTO accommodation1, AccommodationCardDTO accommodation2) {
+//                                int result = Double.compare(accommodation1.getPrice(), accommodation2.getPrice());
+                                int result = Double.compare(1000, 1000);
+
+                                return isAscending ? result : -result;
+                            }
+                        });
+
+                        // Notify the adapter to update the UI
+                        adapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
 
         // Calls FragmentTransition.to to replace the layout with a AccommodationsListFragment.
         FragmentTransition.to(accommodationListFragment, getActivity(), false, R.id.scroll_products_list);

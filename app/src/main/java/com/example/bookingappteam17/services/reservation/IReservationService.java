@@ -2,6 +2,7 @@ package com.example.bookingappteam17.services.reservation;
 
 import com.example.bookingappteam17.dto.accommodation.AccommodationReportDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationFilterRequestDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationInfoDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.example.bookingappteam17.model.reservation.Reservation;
@@ -56,4 +57,8 @@ public interface IReservationService {
     Call<ReservationDTO> cancelReservation(@Body Long resId, @Path("id") Long id);
     @PUT("reservation/reject/{id}")
     Call<ReservationDTO> rejectReservation(@Body Long resId, @Path("id") Long id);
+
+    @POST("reservation/search/info")
+    Call<HashSet<ReservationInfoDTO>> filterReservationsFromList(@Body ReservationFilterRequestDTO reservationRequest);
+
 }

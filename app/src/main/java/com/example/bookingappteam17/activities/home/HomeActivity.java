@@ -21,6 +21,7 @@ import com.example.bookingappteam17.enums.user.UserRoleType;
 import com.example.bookingappteam17.fragments.accommodation.AccommodationPageViewModel;
 import com.example.bookingappteam17.fragments.notification.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.account.ProfileFragment;
+import com.example.bookingappteam17.fragments.reservation.ReservationPageFragment;
 import com.example.bookingappteam17.fragments.reservation.ReservationsListFragment;
 import com.example.bookingappteam17.fragments.accommodation.AccommodationPageFragment;
 import com.example.bookingappteam17.fragments.accommodation.ApproveAccommodationPageFragment;
@@ -66,7 +67,7 @@ public class HomeActivity extends AppCompatActivity {
         } else if (itemId == R.id.notifications) {
             replaceFragment(new NotificationPageFragment());
         } else if (itemId == R.id.reservations) {
-            replaceFragment(new ReservationsListFragment());
+            replaceFragment(new ReservationPageFragment());
         } else if (itemId == R.id.accommodations) {
             replaceFragment(new AccommodationPageFragment());
         } else if (itemId == R.id.approve) {
