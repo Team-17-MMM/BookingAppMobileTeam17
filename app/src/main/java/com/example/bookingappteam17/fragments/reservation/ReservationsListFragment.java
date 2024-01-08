@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class ReservationsListFragment extends ListFragment {
+    private List<ReservationInfoDTO> filteredReservations;
     private ReservationListAdapter adapter;
     private static final String ARG_PARAM = "param";
     private FragmentReservationListBinding binding;
@@ -71,6 +72,11 @@ public class ReservationsListFragment extends ListFragment {
 
     public void updateReservationList(List<ReservationInfoDTO> reservations){
         viewModel.updateReservationList(reservations);
+    }
+
+    public List<ReservationInfoDTO> getReservationList(){
+        List<ReservationInfoDTO> reservationInfoDTOS = viewModel.getReservationsLiveData().getValue();
+        return viewModel.getReservationsLiveData().getValue();
     }
 
     @Override
