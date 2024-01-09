@@ -91,6 +91,11 @@ public class AccommodationPageFragment extends Fragment {
         });
 
         Button btnGetReport = binding.btnGetReport;
+        if (role.equals("HOST")) {
+            btnGetReport.setVisibility(View.VISIBLE);
+        } else {
+            btnGetReport.setVisibility(View.GONE);
+        }
         btnGetReport.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), AccommodationReportActivity.class);
             intent.putExtra("username", username);

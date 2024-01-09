@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -18,13 +17,13 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityHomeBinding;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.enums.user.UserRoleType;
-import com.example.bookingappteam17.fragments.accommodation.AccommodationPageViewModel;
+import com.example.bookingappteam17.fragments.TabApproveAndManageReviewFragment;
 import com.example.bookingappteam17.fragments.notification.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.account.ProfileFragment;
 import com.example.bookingappteam17.fragments.reservation.ReservationPageFragment;
-import com.example.bookingappteam17.fragments.reservation.ReservationsListFragment;
 import com.example.bookingappteam17.fragments.accommodation.AccommodationPageFragment;
 import com.example.bookingappteam17.fragments.accommodation.ApproveAccommodationPageFragment;
+import com.example.bookingappteam17.fragments.review.ManageReviewPageFragment;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -70,8 +69,10 @@ public class HomeActivity extends AppCompatActivity {
             replaceFragment(new ReservationPageFragment());
         } else if (itemId == R.id.accommodations) {
             replaceFragment(new AccommodationPageFragment());
-        } else if (itemId == R.id.approve) {
-            replaceFragment(new ApproveAccommodationPageFragment());
+        } else if (itemId == R.id.approve_and_manage_review) {
+            replaceFragment(new TabApproveAndManageReviewFragment());
+        } else {
+            throw new IllegalArgumentException("Unknown itemId: " + itemId);
         }
     }
 
@@ -120,17 +121,17 @@ public class HomeActivity extends AppCompatActivity {
             case GUEST:
                 menu.findItem(R.id.reservations).setVisible(true);
                 menu.findItem(R.id.accommodations).setVisible(true);
-                menu.findItem(R.id.approve).setVisible(false);
+                menu.findItem(R.id.approve_and_manage_review).setVisible(false);
                 break;
             case HOST:
                 menu.findItem(R.id.reservations).setVisible(true);
                 menu.findItem(R.id.accommodations).setVisible(true);
-                menu.findItem(R.id.approve).setVisible(false);
+                menu.findItem(R.id.approve_and_manage_review).setVisible(false);
                 break;
             case ADMIN:
                 menu.findItem(R.id.reservations).setVisible(false);
                 menu.findItem(R.id.accommodations).setVisible(true);
-                menu.findItem(R.id.approve).setVisible(true);
+                menu.findItem(R.id.approve_and_manage_review).setVisible(true);
                 break;
         }
     }

@@ -21,7 +21,7 @@
         android:title="@string/notifications" />
 
     <item
-        android:id="@+id/approve"
+        android:id="@+id/approve_and_manage_review"
         android:icon="@drawable/baseline_checklist_24"
         android:title="@string/approve" />
 
