@@ -15,6 +15,7 @@ import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -24,6 +25,7 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityAccommodationsDetailsBinding;
 import com.example.bookingappteam17.databinding.ActivityHostAccommodationsDetailsBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
 import com.example.bookingappteam17.enums.accommodation.AccommodationType;
 import com.example.bookingappteam17.enums.accommodation.Amenity;
 import com.example.bookingappteam17.fragments.reservation.ReservationFragment;
@@ -80,7 +82,30 @@ public class AccommodationDetailActivity extends AppCompatActivity {
             }
         });
 
+        Button btnFavorite = binding.accommodationDetailsAddFavorite;
+        btnFavorite.setOnClickListener(v -> {
+            Log.d("TAG", "onFailure: " + "krmacica");
+            this.addAccommodationToFavorite();
+        });
 
+    }
+
+    private void addAccommodationToFavorite(){
+        Call<EnabledNotificationsDTO> call = ClientUtils.accommodationService.addToFavorite(this.accommodation.getAccommodationID(), this.userID);
+
+        call.enqueue(new Callback<EnabledNotificationsDTO>() {
+            @Override
+            public void onResponse(Call<EnabledNotificationsDTO> call, Response<EnabledNotificationsDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.e("Error", "Network request failed" + "proslo");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EnabledNotificationsDTO> call, Throwable t) {
+                Log.e("Error", "Network request failed", t);
+            }
+        });
     }
 
     private void bindData(View view){
