@@ -238,14 +238,14 @@ public class ReservationFragment extends BottomSheetDialogFragment {
             return;
         }
 
-        Long occupancy = Long.parseLong(spinnerPeopleCount.getSelectedItem().toString());
+        int occupancy = Integer.parseInt(spinnerPeopleCount.getSelectedItem().toString());
 
         if(occupancy < accommodation.getCapacity().getMinGuests() || occupancy > accommodation.getCapacity().getMaxGuests()){
             showShortToast(this.getContext(),"Occupancy not whitin range\nMin: " + accommodation.getCapacity().getMinGuests() + "\tMax: " + accommodation.getCapacity().getMaxGuests());
             return;
         }
 
-        ReservationDTO reservationDTO = new ReservationDTO(userID,accommodation.getAccommodationID(),startDate.toString(),endDate.toString(), ReservationStatus.PENDING,Integer.parseInt(String.valueOf(priceText.getText())));
+        ReservationDTO reservationDTO = new ReservationDTO(userID,accommodation.getAccommodationID(),startDate.toString(),endDate.toString(), ReservationStatus.PENDING,Integer.parseInt(String.valueOf(priceText.getText())),occupancy);
 
         Call<ReservationDTO> call = reservationService.createReservation(reservationDTO);
         call.enqueue(new Callback<ReservationDTO>() {
