@@ -15,12 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.notification.NotificationDTO;
 import com.example.bookingappteam17.model.notification.Notification;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationListAdapter extends ArrayAdapter<NotificationDTO> {
     private ArrayList<NotificationDTO> aNotifications;
@@ -86,6 +92,23 @@ public class NotificationListAdapter extends ArrayAdapter<NotificationDTO> {
                         notification.getId().toString());
                 Toast.makeText(getContext(), "Clicked: " + notification.getNotificationType().toString()  +
                         ", id: " + notification.getId().toString(), Toast.LENGTH_SHORT).show();
+                notification.setShown(true);
+                Call<NotificationDTO> call = ClientUtils.accommodationService.updateNotification(notification, notification.getId());
+                call.enqueue(new Callback<NotificationDTO>() {
+                    @Override
+                    public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                        if (response.isSuccessful()) {
+                            NotificationDTO notifications = response.body();
+                            Log.i("ok", "proslo");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                        // Handle failure
+                        Log.e("ERROR", t.getMessage());
+                    }
+                });
             });
         }
 

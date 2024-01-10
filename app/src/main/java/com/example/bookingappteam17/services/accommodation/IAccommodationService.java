@@ -54,6 +54,12 @@ public interface IAccommodationService {
     @PUT("accommodation/{id}")
     Call<AccommodationUpdateDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
 
+    @PUT("notification/{id}")
+    Call<NotificationDTO> updateNotification(@Body NotificationDTO accommodationDTO, @Path("id") Long id);
+
+    @PUT("enabledNotifications/{id}")
+    Call<EnabledNotificationsDTO> updateEnabledNotifications(@Body EnabledNotificationsDTO accommodationDTO, @Path("id") Long id);
+
     @PUT("accommodation/{id}/availabilityPeriods")
     Call<AccommodationDTO> updateAccommodationAvailabilityPeriods(@Body List<AvailabilityPeriodDTO> availabilityPeriods, @Path("id") Long id);
 

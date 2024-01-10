@@ -49,9 +49,10 @@ public class NotificationsPageViewModel extends ViewModel {
     private List<NotificationDTO> convertToDTOList(HashSet<NotificationDTO> notificationsDto) {
         List<NotificationDTO> notifications = new ArrayList<>();
         for (NotificationDTO accommodationCardRDTO : notificationsDto) {
-            notifications.add(accommodationCardRDTO);
+            if(!accommodationCardRDTO.isShown()){
+                notifications.add(accommodationCardRDTO);
+            }
         }
-
         return notifications;
     }
 }
