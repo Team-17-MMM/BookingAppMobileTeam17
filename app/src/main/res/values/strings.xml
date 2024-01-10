@@ -36,7 +36,7 @@
     <string name="Accommodations">Accommodations</string>
     <string name="accommodations">Accommodations</string>
     <string name="host_accommodations">Host accommodations</string>
-    <string name="approve">Aprove</string>
+    <string name="approve">Approve</string>
     <string name="reject">Reject</string>
     <string name="host">HOST</string>
     <string name="guest">GUEST</string>
@@ -53,5 +53,12 @@
     <string name="get_pdf_1">Get PDF</string>
     <string name="accommodation_name">Accommodation</string>
     <string name="profit">Profit</string>
+    <string name="manage_review">Manage review</string>
+    <string name="delete_report">Delete report</string>
+    <string name="delete_review1">Delete review</string>
+    <string name="accommodation_host_name">Accommodation/Host Name:</string>
+    <string name="comment">Comment:</string>
+    <string name="grade">Grade:</string>
+    <string name="username">Username:</string>
 
 </resources>

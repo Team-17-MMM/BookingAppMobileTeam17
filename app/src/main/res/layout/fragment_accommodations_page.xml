@@ -74,7 +74,8 @@
                 android:layout_weight="1"
                 android:layout_marginStart="4dp"
                 android:text="@string/get_report"
-                android:fontFamily="@font/righteous" />
+                android:fontFamily="@font/righteous"
+                android:visibility="gone"/>
         </LinearLayout>
 
 

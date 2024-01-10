@@ -95,7 +95,11 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
         }
 
         Button getReportAccommodation = convertView.findViewById(R.id.get_report_accommodation);
-        getReportAccommodation.setVisibility(View.VISIBLE);
+        if (sharedPreferences.getString("role", "").equals("HOST")) {
+            getReportAccommodation.setVisibility(View.VISIBLE);
+        } else {
+            getReportAccommodation.setVisibility(View.GONE);
+        }
         getReportAccommodation.setOnClickListener(v -> {
             getReportData(accommodation.getAccommodationID());
         });
