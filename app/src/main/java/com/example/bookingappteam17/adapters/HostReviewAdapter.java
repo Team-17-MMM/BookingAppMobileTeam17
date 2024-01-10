@@ -58,7 +58,7 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
         holder.reviewDate.setText(review.getReviewDate());
         holder.reviewRating.setRating(review.getRating());
 
-        if (this.userID.equals(0)){
+        if (this.userID.equals(0L)){
             holder.reportButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.GONE);
         } else {
@@ -73,9 +73,8 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
         holder.reportButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Report review
                 reportReview(review);
-                Toast.makeText(context, "Reported review", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Reported review", Toast.LENGTH_LONG).show();
             }
         });
 

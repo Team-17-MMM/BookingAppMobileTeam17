@@ -1,6 +1,7 @@
 package com.example.bookingappteam17.activities.review;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -55,9 +56,11 @@ public class RateHostActivity extends AppCompatActivity {
         // Load host reviews when the activity is created
         viewModel.loadHostReviews(hostUsername, binding.ratingBarHost);
 
-        viewModel.loadUserInfo(getIntent().getStringExtra("host_username"),
-                binding
-        );
+        viewModel.loadUserInfo(getIntent().getStringExtra("host_username"), binding);
+
+        if (getIntent().getLongExtra("user_id", 0) == 0) {
+            binding.commentSection.setVisibility(View.GONE);
+        }
 
         Button submitReviewButton = binding.btnSubmitComment;
         submitReviewButton.setOnClickListener(v -> {
