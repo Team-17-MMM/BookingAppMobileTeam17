@@ -1,8 +1,10 @@
 package com.example.bookingappteam17.services.review;
 
+import com.example.bookingappteam17.dto.review.HostReviewDTO;
 import com.example.bookingappteam17.model.review.ReportedReviewCardDTO;
 
 import java.util.HashSet;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -18,4 +20,7 @@ public interface IReviewService {
 
     @DELETE("review/" + "{hostPath}" + "{id}")
     Call<Void> deleteReview(@Path("id") Long id, @Path("hostPath") String hostPath);
+
+    @GET("review/host/user/{email}")
+    Call<HashSet<HostReviewDTO>> getHostReviews(@Path("email") String email);
 }

@@ -219,12 +219,12 @@
             android:layout_marginHorizontal="20sp"
             android:layout_marginVertical="20sp"
             android:fontFamily="@font/righteous"
-            android:text="@string/reviews"
+            android:text="@string/host_reviews"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
             tools2:layout_editor_absoluteX="20dp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </LinearLayout>
 

@@ -93,7 +93,7 @@
             android:theme="@style/Theme.BookingAppTeam17"/>
 
         <activity
-            android:name=".activities.accommodation.RateHostActivity"
+            android:name=".activities.review.RateHostActivity"
             android:screenOrientation="portrait"
             android:label="Rate Host"
             android:theme="@style/Theme.BookingAppTeam17"/>
