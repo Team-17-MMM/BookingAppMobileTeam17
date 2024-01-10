@@ -132,7 +132,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="5sp"
+        >
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -151,6 +153,32 @@
                 android:textColor="@color/blue"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="2sp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/occupancy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Occupancy"
+                android:fontFamily="@font/righteous"
+                android:textSize="14sp"
+                android:focusable="false"
+                android:textColorHint="@color/blue"
+                android:textColor="@color/blue"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10sp">
 
         <Button
             android:id="@+id/approveBtn"
