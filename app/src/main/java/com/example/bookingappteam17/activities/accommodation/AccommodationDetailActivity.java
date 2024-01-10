@@ -88,6 +88,16 @@ public class AccommodationDetailActivity extends AppCompatActivity {
             this.addAccommodationToFavorite();
         });
 
+
+
+        Button btnRateHost = binding.rateHostButton;
+        btnRateHost.setOnClickListener(v -> {
+           // TODO: add rate host activity
+            Intent intent = new Intent(this, RateHostActivity.class);
+            intent.putExtra("user_id", userID);
+            startActivity(intent);
+        });
+
     }
 
     private void addAccommodationToFavorite(){
