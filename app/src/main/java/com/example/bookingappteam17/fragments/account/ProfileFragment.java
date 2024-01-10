@@ -20,6 +20,7 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodationsActivity;
 import com.example.bookingappteam17.activities.account.EditProfileActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
+import com.example.bookingappteam17.activities.review.RateHostActivity;
 import com.example.bookingappteam17.activities.notification.NotificationsSettingsActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
@@ -59,6 +60,15 @@ public class ProfileFragment extends Fragment {
         favoriteAccommodationsButton.setOnClickListener(v -> {
             Log.e("EditProfileActivity", "proslo");
             Intent intent = new Intent(getActivity(), FavoriteAccommodationsActivity.class);
+            startActivity(intent);
+        });
+
+        Button buttonReviews = view.findViewById(R.id.btnHostReviews);
+        buttonReviews.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), RateHostActivity.class);
+            intent.putExtra("user_id", 0);
+            intent.putExtra("host_username", userInfoDTO.getUsername());
+            intent.putExtra("host_id", userInfoDTO.getUserID());
             startActivity(intent);
         });
 
