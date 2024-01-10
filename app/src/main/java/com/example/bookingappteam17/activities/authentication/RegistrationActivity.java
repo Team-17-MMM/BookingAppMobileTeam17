@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
 import com.example.bookingappteam17.dto.user.UserRegistrationDTO;
 import com.example.bookingappteam17.enums.user.UserRoleType;
 import com.example.bookingappteam17.services.user.IUserService;
@@ -133,6 +134,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserRegistrationDTO entity = response.body();
                     Toast.makeText(RegistrationActivity.this, "Confirmation mail sent", Toast.LENGTH_SHORT).show();
+                    createEnabledNotifications(entity.getUserID());
                     Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
@@ -145,4 +147,30 @@ public class RegistrationActivity extends AppCompatActivity {
                 Log.e("Error", "Network request failed", t);
             }
     });}
+
+    private void createEnabledNotifications(Long idUser){
+        EnabledNotificationsDTO enabledNotificationsDTO = new EnabledNotificationsDTO();
+        enabledNotificationsDTO.setReservationRequestRespond(true);
+        enabledNotificationsDTO.setRateUser(true);
+        enabledNotificationsDTO.setCreateReservationRequest(true);
+        enabledNotificationsDTO.setRateAccommodation(true);
+        enabledNotificationsDTO.setCancelReservation(true);
+        enabledNotificationsDTO.setUserId(idUser);
+
+        Call<EnabledNotificationsDTO> call = ClientUtils.accommodationService.createEnabledNotifications(enabledNotificationsDTO);
+        call.enqueue(new Callback<EnabledNotificationsDTO>() {
+            @Override
+            public void onResponse(Call<EnabledNotificationsDTO> call, Response<EnabledNotificationsDTO> response) {
+                if (response.isSuccessful()) {
+                    Log.e("ERROR", "proslo");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EnabledNotificationsDTO> call, Throwable t) {
+                // Handle failure
+                Log.e("ERROR", t.getMessage());
+            }
+        });
+    }
 }

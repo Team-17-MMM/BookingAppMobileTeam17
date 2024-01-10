@@ -54,6 +54,9 @@ public interface IAccommodationService {
     @POST("accommodation")
     Call<AccommodationDTO> createAccommodation(@Body AccommodationDTO accommodationDTO);
 
+    @POST("enabledNotifications")
+    Call<EnabledNotificationsDTO> createEnabledNotifications(@Body EnabledNotificationsDTO accommodationDTO);
+
     @PUT("accommodation/{id}")
     Call<AccommodationUpdateDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
 
