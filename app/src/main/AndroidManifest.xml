@@ -91,6 +91,11 @@
             android:screenOrientation="portrait"
             android:label="Favorite Accommodation"
             android:theme="@style/Theme.BookingAppTeam17"/>
+        <activity
+            android:name=".activities.notification.NotificationsSettingsActivity"
+            android:screenOrientation="portrait"
+            android:label="Notifications settings"
+            android:theme="@style/Theme.BookingAppTeam17"/>
 
         <activity
             android:name=".activities.review.RateHostActivity"

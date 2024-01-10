@@ -2,8 +2,6 @@ package com.example.bookingappteam17.dto.reservation;
 
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
 
-import java.time.LocalDate;
-
 public class ReservationInfoDTO {
     private Long reservationID;
     private String userFirstName;
@@ -13,6 +11,7 @@ public class ReservationInfoDTO {
     private String endDate;
     private ReservationStatus status;
     private int price;
+    private int occupancy;
 
     public Long getReservationID() {
         return reservationID;
@@ -78,8 +77,24 @@ public class ReservationInfoDTO {
         this.price = price;
     }
 
+    public int getOccupancy() {
+        return occupancy;
+    }
 
-    public ReservationInfoDTO(Long reservationID, String userFirstName, String userLastName, String accommodationName, String startDate, String endDate, ReservationStatus status, int price) {
+    public void setOccupancy(int occupancy) {
+        this.occupancy = occupancy;
+    }
+
+    public ReservationInfoDTO(ReservationDTO reservation){
+        this.reservationID = reservation.getReservationID();
+        this.startDate = reservation.getStartDate();
+        this.endDate = reservation.getEndDate();
+        this.status = reservation.getStatus();
+        this.price = reservation.getPrice();
+        this.occupancy = reservation.getOccupancy();
+    }
+
+    public ReservationInfoDTO(Long reservationID, String userFirstName, String userLastName, String accommodationName, String startDate, String endDate, ReservationStatus status, int price, int occupancy) {
         this.reservationID = reservationID;
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
@@ -88,5 +103,7 @@ public class ReservationInfoDTO {
         this.endDate = endDate;
         this.status = status;
         this.price = price;
+        this.occupancy = occupancy;
     }
 }
+

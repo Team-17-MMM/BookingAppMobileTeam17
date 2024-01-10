@@ -3,7 +3,6 @@ package com.example.bookingappteam17.dto.reservation;
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
 
 public class ReservationDTO {
-
     private Long reservationID;
     private Long userID;
     private Long accommodationID;
@@ -11,7 +10,15 @@ public class ReservationDTO {
     private String endDate;
     private ReservationStatus status;
     private int price;
+    private int occupancy;
 
+    public Long getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(Long reservationID) {
+        this.reservationID = reservationID;
+    }
 
     public Long getUserID() {
         return userID;
@@ -61,31 +68,33 @@ public class ReservationDTO {
         this.price = price;
     }
 
-    public Long getReservationID() {
-        return reservationID;
+    public int getOccupancy() {
+        return occupancy;
     }
 
-    public void setReservationID(Long reservationID) {
-        this.reservationID = reservationID;
+    public void setOccupancy(int occupancy) {
+        this.occupancy = occupancy;
     }
 
-    public ReservationDTO(Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
+    public ReservationDTO(Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price, int occupancy) {
         this.userID = userID;
         this.accommodationID = accommodationID;
         this.startDate = startDate;
         this.endDate = endDate;
         this.status = status;
         this.price = price;
+        this.occupancy = occupancy;
     }
+    
 
-    public ReservationDTO(Long reservationID,Long userID, Long accommodationID, String startDate, String endDate, ReservationStatus status, int price) {
-        this.reservationID = reservationID;
-        this.userID = userID;
-        this.accommodationID = accommodationID;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-        this.price = price;
+    public void copyValues(ReservationDTO reservation){
+        this.setUserID(reservation.getUserID());
+        this.setAccommodationID(reservation.getAccommodationID());
+        this.setStartDate(reservation.getStartDate());
+        this.setEndDate(reservation.getEndDate());
+        this.setStatus(reservation.getStatus());
+        this.setPrice(reservation.getPrice());
+        this.setOccupancy(reservation.getOccupancy());
     }
 
 }

@@ -21,6 +21,7 @@ import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodati
 import com.example.bookingappteam17.activities.account.EditProfileActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.example.bookingappteam17.activities.review.RateHostActivity;
+import com.example.bookingappteam17.activities.notification.NotificationsSettingsActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
@@ -70,6 +71,14 @@ public class ProfileFragment extends Fragment {
             intent.putExtra("host_id", userInfoDTO.getUserID());
             startActivity(intent);
         });
+
+        Button notificationsSettingsBtn = view.findViewById(R.id.btnNotificationsSettings);
+        notificationsSettingsBtn.setOnClickListener(v -> {
+            Log.e("EditProfileActivity", "proslo");
+            Intent intent = new Intent(getActivity(), NotificationsSettingsActivity.class);
+            startActivity(intent);
+        });
+
 
         return view;
     }

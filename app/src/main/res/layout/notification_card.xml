@@ -31,13 +31,6 @@
         android:layout_marginBottom="8dp">
 
         <!-- Title of notification -->
-        <TextView
-            android:id="@+id/notification_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/notification_title"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
 
         <!-- Description of notification -->
         <TextView
@@ -46,7 +39,7 @@
             android:layout_height="wrap_content"
             android:text="@string/notification_description"
             android:textSize="14sp"
-            android:textStyle="italic"/>
+            />
     </LinearLayout>
 
 </LinearLayout>

@@ -68,6 +68,8 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
         TextInputEditText statusField = convertView.findViewById(R.id.status);
         TextInputEditText accommodationNameField = convertView.findViewById(R.id.accommodationName);
         TextInputEditText userNameField = convertView.findViewById(R.id.name);
+        TextInputEditText occupancyField = convertView.findViewById(R.id.occupancy);
+
 
         if(reservation!=null){
             priceField.setText(String.valueOf(reservation.getPrice()));
@@ -76,6 +78,7 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
             statusField.setText(reservation.getStatus().name());
             userNameField.setText(reservation.getUserFirstName() + " " + reservation.getUserLastName());
             accommodationNameField.setText(reservation.getAccommodationName());
+            occupancyField.setText(String.valueOf(reservation.getOccupancy()));
         }
 
         reservations.add(reservation);
