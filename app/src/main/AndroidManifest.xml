@@ -92,6 +92,12 @@
             android:label="Favorite Accommodation"
             android:theme="@style/Theme.BookingAppTeam17"/>
 
+        <activity
+            android:name=".activities.review.RateHostActivity"
+            android:screenOrientation="portrait"
+            android:label="Rate Host"
+            android:theme="@style/Theme.BookingAppTeam17"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

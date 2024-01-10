@@ -2,34 +2,27 @@ package com.example.bookingappteam17.activities.accommodation;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.review.RateHostActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityAccommodationsDetailsBinding;
-import com.example.bookingappteam17.databinding.ActivityHostAccommodationsDetailsBinding;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
 import com.example.bookingappteam17.enums.accommodation.AccommodationType;
 import com.example.bookingappteam17.enums.accommodation.Amenity;
 import com.example.bookingappteam17.fragments.reservation.ReservationFragment;
-import com.example.bookingappteam17.viewmodel.SharedViewModel;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,6 +79,16 @@ public class AccommodationDetailActivity extends AppCompatActivity {
         btnFavorite.setOnClickListener(v -> {
             Log.d("TAG", "onFailure: " + "krmacica");
             this.addAccommodationToFavorite();
+        });
+
+        // rate host activity
+        Button btnRateHost = binding.rateHostButton;
+        btnRateHost.setOnClickListener(v -> {
+            Intent intent = new Intent(this, RateHostActivity.class);
+            intent.putExtra("user_id", userID);
+            intent.putExtra("host_username", accommodation.getOwner().getUsername());
+            intent.putExtra("host_id", accommodation.getOwner().getUserID());
+            startActivity(intent);
         });
 
     }

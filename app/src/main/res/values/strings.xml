@@ -60,5 +60,8 @@
     <string name="comment">Comment:</string>
     <string name="grade">Grade:</string>
     <string name="username">Username:</string>
+    <string name="reviews">Reviews</string>
+    <string name="review_comment">Comment</string>
+    <string name="host_reviews">Host reviews</string>
 
 </resources>
