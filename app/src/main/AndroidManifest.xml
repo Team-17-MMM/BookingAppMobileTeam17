@@ -86,6 +86,11 @@
             android:screenOrientation="portrait"
             android:label="Accommodation Report"
             android:theme="@style/Theme.BookingAppTeam17"/>
+        <activity
+            android:name=".activities.accommodation.FavoriteAccommodationsActivity"
+            android:screenOrientation="portrait"
+            android:label="Favorite Accommodation"
+            android:theme="@style/Theme.BookingAppTeam17"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
