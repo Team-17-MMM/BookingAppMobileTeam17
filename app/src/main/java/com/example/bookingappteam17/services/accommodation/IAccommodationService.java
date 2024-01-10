@@ -45,6 +45,9 @@ public interface IAccommodationService {
     @GET("notification/user/{id}")
     Call<HashSet<NotificationDTO>> getUserNotifications(@Path("id") Long id);
 
+    @GET("notification/user/enabled/{id}")
+    Call<HashSet<NotificationDTO>> getUserNotificationsEnabled(@Path("id") Long id);
+
     @GET("accommodation/cardsFavorite/{id}")
     Call<HashSet<AccommodationCardRDTO>> getFavoriteAccommodationsCards(@Path("id") Long id);
 

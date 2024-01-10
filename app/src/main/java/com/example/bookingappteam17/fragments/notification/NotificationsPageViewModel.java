@@ -27,7 +27,7 @@ public class NotificationsPageViewModel extends ViewModel {
     }
 
     public void loadNotifications(String username, Long id) {
-        Call<HashSet<NotificationDTO>> call = ClientUtils.accommodationService.getUserNotifications(id);
+        Call<HashSet<NotificationDTO>> call = ClientUtils.accommodationService.getUserNotificationsEnabled(id);
         call.enqueue(new Callback<HashSet<NotificationDTO>>() {
             @Override
             public void onResponse(Call<HashSet<NotificationDTO>> call, Response<HashSet<NotificationDTO>> response) {

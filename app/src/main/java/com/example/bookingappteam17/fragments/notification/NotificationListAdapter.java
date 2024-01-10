@@ -18,6 +18,7 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.enums.notification.NotificationType;
 import com.example.bookingappteam17.model.notification.Notification;
 
 import java.util.ArrayList;
@@ -79,12 +80,26 @@ public class NotificationListAdapter extends ArrayAdapter<NotificationDTO> {
                     parent, false);
         }
         LinearLayout productCard = convertView.findViewById(R.id.notification_card_item);
-        TextView productTitle = convertView.findViewById(R.id.notification_title);
         TextView productDescription = convertView.findViewById(R.id.notification_description);
 
         if(notification != null){
-            productTitle.setText(notification.getNotificationType().toString());
-            productDescription.setText(notification.getNotificationType().toString());
+
+
+            if(notification.getNotificationType() == NotificationType.RATE_USER){
+                productDescription.setText("You have received a new review from a guest.");
+            }
+            else if(notification.getNotificationType() == NotificationType.RATE_ACCOMMODATION){
+                productDescription.setText("A guest has reviewed your accommodation.");
+            }
+            else if(notification.getNotificationType() == NotificationType.RESERVATION_REQUEST_RESPOND){
+                productDescription.setText("Good news! The host has responded to your reservation request.");
+            }
+            else if(notification.getNotificationType() == NotificationType.CANCEL_RESERVATION){
+                productDescription.setText("Your reservation has been canceled.");
+            }
+            else if(notification.getNotificationType() == NotificationType.CREATE_RESERVATION_REQUEST){
+                productDescription.setText("Good news! You have received a new reservation request.");
+            }
 
             productCard.setOnClickListener(v -> {
                 // Handle click on the item at 'position'
