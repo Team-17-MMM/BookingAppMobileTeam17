@@ -87,6 +87,7 @@ public class AccommodationDetailActivity extends AppCompatActivity {
             Intent intent = new Intent(this, RateHostActivity.class);
             intent.putExtra("user_id", userID);
             intent.putExtra("host_username", accommodation.getOwner().getUsername());
+            intent.putExtra("host_id", accommodation.getOwner().getUserID());
             startActivity(intent);
         });
 

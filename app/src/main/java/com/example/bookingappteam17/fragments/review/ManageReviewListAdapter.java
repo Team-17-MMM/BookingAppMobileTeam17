@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ManageReviewListAdapter extends ArrayAdapter<ReportedReviewCardDTO> {
     private List<ReportedReviewCardDTO> aReviews;
@@ -105,10 +106,11 @@ public class ManageReviewListAdapter extends ArrayAdapter<ReportedReviewCardDTO>
     }
 
     private void deleteReview(Long reviewID, String hostPath) {
-        Call<Void> call = ClientUtils.reviewService.deleteReview(reviewID, hostPath);
+        String path = "review/" + hostPath + reviewID;
+        Call<Void> call = ClientUtils.reviewService.deleteReview(path);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     aReviews.removeIf(review -> review.getReviewID().equals(reviewID));
                     notifyDataSetChanged();
