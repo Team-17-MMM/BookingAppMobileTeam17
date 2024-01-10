@@ -8,6 +8,7 @@ import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodRangeDTO;
 import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
 
 import java.util.HashSet;
 import java.util.List;
@@ -41,14 +42,29 @@ public interface IAccommodationService {
     @GET("enabledNotifications/user/{id}")
     Call<EnabledNotificationsDTO> getUserEnabledNotifications(@Path("id") Long id);
 
+    @GET("notification/user/{id}")
+    Call<HashSet<NotificationDTO>> getUserNotifications(@Path("id") Long id);
+
+    @GET("notification/user/enabled/{id}")
+    Call<HashSet<NotificationDTO>> getUserNotificationsEnabled(@Path("id") Long id);
+
     @GET("accommodation/cardsFavorite/{id}")
     Call<HashSet<AccommodationCardRDTO>> getFavoriteAccommodationsCards(@Path("id") Long id);
 
     @POST("accommodation")
     Call<AccommodationDTO> createAccommodation(@Body AccommodationDTO accommodationDTO);
 
+    @POST("enabledNotifications")
+    Call<EnabledNotificationsDTO> createEnabledNotifications(@Body EnabledNotificationsDTO accommodationDTO);
+
     @PUT("accommodation/{id}")
     Call<AccommodationUpdateDTO> updateAccommodation(@Body AccommodationDTO accommodationDTO, @Path("id") Long id);
+
+    @PUT("notification/{id}")
+    Call<NotificationDTO> updateNotification(@Body NotificationDTO accommodationDTO, @Path("id") Long id);
+
+    @PUT("enabledNotifications/{id}")
+    Call<EnabledNotificationsDTO> updateEnabledNotifications(@Body EnabledNotificationsDTO accommodationDTO, @Path("id") Long id);
 
     @PUT("accommodation/{id}/availabilityPeriods")
     Call<AccommodationDTO> updateAccommodationAvailabilityPeriods(@Body List<AvailabilityPeriodDTO> availabilityPeriods, @Path("id") Long id);
