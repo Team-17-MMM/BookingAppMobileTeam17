@@ -7,6 +7,7 @@ import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationUpdateDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodRangeDTO;
+import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
 
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +33,16 @@ public interface IAccommodationService {
 
     @GET("accommodation/{id}")
     Call<AccommodationDTO> getAccommodation(@Path("id") Long id);
+
+    @GET("enabledNotifications/favorite/{accommodationId}/{userId}")
+    Call<EnabledNotificationsDTO> addToFavorite(@Path("accommodationId") Long accommodationId, @Path("userId") Long userId);
+
+
+    @GET("enabledNotifications/user/{id}")
+    Call<EnabledNotificationsDTO> getUserEnabledNotifications(@Path("id") Long id);
+
+    @GET("accommodation/cardsFavorite/{id}")
+    Call<HashSet<AccommodationCardRDTO>> getFavoriteAccommodationsCards(@Path("id") Long id);
 
     @POST("accommodation")
     Call<AccommodationDTO> createAccommodation(@Body AccommodationDTO accommodationDTO);

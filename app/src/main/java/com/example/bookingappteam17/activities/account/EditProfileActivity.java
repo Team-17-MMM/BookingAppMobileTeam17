@@ -12,6 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodationsActivity;
+import com.example.bookingappteam17.activities.accommodation.HostAccommodationDetailActivity;
+import com.example.bookingappteam17.activities.accommodation.SetPeriodActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
@@ -64,6 +67,8 @@ public class EditProfileActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> {
             deleteUser();
         });
+
+
     }
 
 

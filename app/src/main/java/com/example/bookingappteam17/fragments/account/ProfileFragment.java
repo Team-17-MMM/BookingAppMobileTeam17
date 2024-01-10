@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodationsActivity;
 import com.example.bookingappteam17.activities.account.EditProfileActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
@@ -52,6 +53,13 @@ public class ProfileFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.btnLogout);
         buttonLogout.setOnClickListener(v -> logout());
+
+        Button favoriteAccommodationsButton = view.findViewById(R.id.btnFavoriteAccommodations);
+        favoriteAccommodationsButton.setOnClickListener(v -> {
+            Log.e("EditProfileActivity", "proslo");
+            Intent intent = new Intent(getActivity(), FavoriteAccommodationsActivity.class);
+            startActivity(intent);
+        });
 
         return view;
     }

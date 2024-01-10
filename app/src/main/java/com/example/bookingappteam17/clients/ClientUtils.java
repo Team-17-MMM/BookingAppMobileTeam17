@@ -4,6 +4,7 @@ import com.example.bookingappteam17.BuildConfig;
 import com.example.bookingappteam17.services.accommodation.IAccommodationService;
 import com.example.bookingappteam17.services.accommodation.IAmenitiesService;
 import com.example.bookingappteam17.services.reservation.IReservationService;
+import com.example.bookingappteam17.services.review.IReviewService;
 import com.example.bookingappteam17.services.user.IUserService;
 
 import java.util.concurrent.TimeUnit;
@@ -40,4 +41,5 @@ public class ClientUtils {
     public static IAccommodationService accommodationService = retrofit.create(IAccommodationService.class);
     public static IReservationService reservationService = retrofit.create(IReservationService.class);
     public static IAmenitiesService amenitiesService = retrofit.create(IAmenitiesService.class);
+    public static IReviewService reviewService = retrofit.create(IReviewService.class);
     }
