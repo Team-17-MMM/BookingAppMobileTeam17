@@ -15,23 +15,32 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityHomeBinding;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
 import com.example.bookingappteam17.enums.user.UserRoleType;
 import com.example.bookingappteam17.fragments.TabApproveAndManageReviewFragment;
+import com.example.bookingappteam17.fragments.notification.NotificationListAdapter;
 import com.example.bookingappteam17.fragments.notification.NotificationPageFragment;
 import com.example.bookingappteam17.fragments.account.ProfileFragment;
 import com.example.bookingappteam17.fragments.reservation.ReservationPageFragment;
 import com.example.bookingappteam17.fragments.accommodation.AccommodationPageFragment;
 import com.example.bookingappteam17.fragments.accommodation.ApproveAccommodationPageFragment;
 import com.example.bookingappteam17.fragments.review.ManageReviewPageFragment;
+import com.example.bookingappteam17.listener.OnNotificationReadListener;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements OnNotificationReadListener {
 
     private static final String USER_PREFS_KEY = "user_prefs";
     private static final String USERNAME_KEY = "username";
@@ -116,6 +125,9 @@ public class HomeActivity extends AppCompatActivity {
         menu.findItem(R.id.profile).setVisible(true);
         menu.findItem(R.id.notifications).setVisible(true);
 
+        // Check if there are unread notifications
+        checkUnreadNotifications(); // Implement this method
+
         String role = sharedPreferences.getString(ROLE_KEY, "");
         switch (UserRoleType.valueOf(role)) {
             case GUEST:
@@ -138,6 +150,40 @@ public class HomeActivity extends AppCompatActivity {
 
     public SharedViewModel getSharedViewModel() {
         return sharedViewModel;
+    }
+
+    public void checkUnreadNotifications() {
+        Long userId = sharedPreferences.getLong(USER_ID_KEY, 0);
+        Call<HashSet<NotificationDTO>> call = ClientUtils.accommodationService.getUserNotificationsEnabled(userId);
+        call.enqueue(new Callback<HashSet<NotificationDTO>>() {
+            @Override
+            public void onResponse(Call<HashSet<NotificationDTO>> call, Response<HashSet<NotificationDTO>> response) {
+                if (response.isSuccessful()) {
+                    HashSet<NotificationDTO> notifications = response.body();
+                    if (!Objects.requireNonNull(notifications).isEmpty()){
+                        int unreadCount = 0;
+                        for (NotificationDTO notification : notifications) {
+                            if (!notification.isShown()) {
+                                unreadCount++;
+                            }
+                        }
+                        if (unreadCount > 0) {
+                            BadgeDrawable badge = binding.bottomNavigationView.getOrCreateBadge(R.id.notifications);
+                            badge.setNumber(unreadCount);
+                            badge.setVisible(true);
+                        } else {
+                            binding.bottomNavigationView.removeBadge(R.id.notifications);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashSet<NotificationDTO>> call, Throwable t) {
+                // Handle failure
+                Log.e("ERROR", t.getMessage());
+            }
+        });
     }
 
     @Override
@@ -171,4 +217,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
     }
 
+    @Override
+    public void onNotificationRead() {
+        checkUnreadNotifications();
+    }
 }
