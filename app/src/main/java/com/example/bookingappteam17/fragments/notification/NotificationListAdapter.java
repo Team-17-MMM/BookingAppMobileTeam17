@@ -15,11 +15,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.notification.NotificationDTO;
 import com.example.bookingappteam17.enums.notification.NotificationType;
+import com.example.bookingappteam17.listener.OnNotificationReadListener;
 import com.example.bookingappteam17.model.notification.Notification;
+import com.google.android.material.badge.BadgeDrawable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -31,9 +34,9 @@ import retrofit2.Response;
 
 public class NotificationListAdapter extends ArrayAdapter<NotificationDTO> {
     private ArrayList<NotificationDTO> aNotifications;
-
     private Context context;
     private SharedPreferences sharedPreferences;
+
 
     public NotificationListAdapter(Context context, ArrayList<NotificationDTO> notifications) {
         super(context, R.layout.notification_card, notifications);
@@ -114,6 +117,11 @@ public class NotificationListAdapter extends ArrayAdapter<NotificationDTO> {
                     public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
                         if (response.isSuccessful()) {
                             NotificationDTO notifications = response.body();
+                            // remove the notification from the list
+                            remove(notification);
+                            notifyDataSetChanged();
+                            OnNotificationReadListener listener = (OnNotificationReadListener) context;
+                            listener.onNotificationRead();
                             Log.i("ok", "proslo");
                         }
                     }
