@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodationsActivity;
 import com.example.bookingappteam17.activities.account.EditProfileActivity;
+import com.example.bookingappteam17.activities.account.ReportUserActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.example.bookingappteam17.activities.review.RateHostActivity;
 import com.example.bookingappteam17.activities.notification.NotificationsSettingsActivity;
@@ -83,6 +84,13 @@ public class ProfileFragment extends Fragment {
         notificationsSettingsBtn.setOnClickListener(v -> {
             Log.e("EditProfileActivity", "proslo");
             Intent intent = new Intent(getActivity(), NotificationsSettingsActivity.class);
+            startActivity(intent);
+        });
+
+        Button reportUserBtn = view.findViewById(R.id.btnReportUser);
+        reportUserBtn.setOnClickListener(v -> {
+            Log.e("EditProfileActivity", "proslo");
+            Intent intent = new Intent(getActivity(), ReportUserActivity.class);
             startActivity(intent);
         });
 

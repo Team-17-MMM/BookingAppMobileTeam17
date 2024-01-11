@@ -2,6 +2,8 @@ package com.example.bookingappteam17.services.review;
 
 import com.example.bookingappteam17.dto.review.HostReviewDTO;
 import com.example.bookingappteam17.dto.review.ReportedReviewDTO;
+import com.example.bookingappteam17.dto.user.UserInfoDTO;
+import com.example.bookingappteam17.dto.user.UserReportDTO;
 import com.example.bookingappteam17.model.review.ReportedReviewCardDTO;
 
 import java.util.HashSet;
@@ -19,6 +21,13 @@ public interface IReviewService {
     @GET("reportedReview/accommodation")
     Call<HashSet<ReportedReviewCardDTO>> getReportedReviews();
 
+    @GET("reservation/users/info/{id}")
+    Call<HashSet<UserInfoDTO>> getReservationsUsers(@Path("id") Long id);
+
+    @GET("reservation/hosts/info/{id}")
+    Call<HashSet<UserInfoDTO>> getReservationsHosts(@Path("id") Long id);
+
+
     @DELETE("reportedReview/{id}")
     Call<Void> deleteReport(@Path("id") Long id);
 
@@ -33,4 +42,7 @@ public interface IReviewService {
 
     @POST("review/host")
     Call<Void> submitHostReview(@Body HostReviewDTO review);
+
+    @POST("userreport")
+    Call<UserReportDTO> reportUser(@Body UserReportDTO review);
 }

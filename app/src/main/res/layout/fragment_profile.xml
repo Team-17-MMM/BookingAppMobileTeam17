@@ -160,16 +160,26 @@
             android:textStyle="bold"
             android:layout_marginHorizontal="20dp"/>
 
+
         <Button
-            android:id="@+id/btnFavoriteAccommodations"
+            android:id="@+id/btnNotificationsSettings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/favorite_accommodations"
+            android:text="Settings"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="20dp"
-            android:visibility="gone"/>
+            android:layout_marginHorizontal="20dp"/>
+
+        <Button
+            android:id="@+id/btnReportUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Report user"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="20dp"/>
 
         <Button
             android:id="@+id/btnHostReviews"
@@ -184,13 +194,14 @@
 
 
         <Button
-            android:id="@+id/btnNotificationsSettings"
+            android:id="@+id/btnFavoriteAccommodations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
+            android:text="@string/favorite_accommodations"
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="20dp"/>
+            android:layout_marginHorizontal="20dp"
+            android:visibility="gone"/>
     </LinearLayout>
 </FrameLayout>
