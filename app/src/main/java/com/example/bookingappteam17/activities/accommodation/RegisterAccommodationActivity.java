@@ -16,6 +16,7 @@ import android.widget.RadioGroup;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookingappteam17.BuildConfig;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
@@ -25,6 +26,7 @@ import com.example.bookingappteam17.enums.accommodation.Amenity;
 import com.example.bookingappteam17.model.accommodation.Location;
 import com.example.bookingappteam17.model.user.User;
 
+import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -64,6 +66,8 @@ public class RegisterAccommodationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         sharedPreferences = getSharedPreferences(USER_PREFS_KEY, Context.MODE_PRIVATE);
         loadUserData();

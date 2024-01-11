@@ -11,6 +11,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.bookingappteam17.BuildConfig;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
@@ -43,6 +44,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import org.osmdroid.config.Configuration;
+
 public class HostAccommodationDetailActivity extends AppCompatActivity {
     private ActivityHostAccommodationsDetailsBinding binding;
     private AccommodationDTO accommodationDTO;
@@ -51,6 +54,8 @@ public class HostAccommodationDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
 
         binding = ActivityHostAccommodationsDetailsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
