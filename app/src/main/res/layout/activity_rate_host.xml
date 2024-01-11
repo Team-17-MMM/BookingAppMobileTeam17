@@ -67,7 +67,8 @@
             android:stepSize="0.001"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:rating="0"/>
+            android:rating="0"
+            android:isIndicator="true"/>
 
 <!--        Horizontal Line-->
         <View

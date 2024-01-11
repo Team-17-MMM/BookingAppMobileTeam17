@@ -85,6 +85,9 @@ public class AccommodationPageFragment extends Fragment {
 
 
         Button btnAddAccommodation = binding.btnAddAccommodation;
+        if(role.equals("HOST")){
+            btnAddAccommodation.setVisibility(View.VISIBLE);
+        }
         btnAddAccommodation.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), RegisterAccommodationActivity.class);
             startActivity(intent);

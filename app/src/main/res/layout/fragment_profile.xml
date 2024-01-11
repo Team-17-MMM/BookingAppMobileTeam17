@@ -168,7 +168,8 @@
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="20dp"/>
+            android:layout_marginHorizontal="20dp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/btnHostReviews"
@@ -178,7 +179,8 @@
             android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="20dp"/>
+            android:layout_marginHorizontal="20dp"
+            android:visibility="gone"/>
 
 
         <Button

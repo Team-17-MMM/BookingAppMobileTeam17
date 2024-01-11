@@ -55,8 +55,12 @@ public class ProfileFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.btnLogout);
         buttonLogout.setOnClickListener(v -> logout());
-
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", "");
         Button favoriteAccommodationsButton = view.findViewById(R.id.btnFavoriteAccommodations);
+        if(role.equals("GUEST")){
+            favoriteAccommodationsButton.setVisibility(View.VISIBLE);
+        }
         favoriteAccommodationsButton.setOnClickListener(v -> {
             Log.e("EditProfileActivity", "proslo");
             Intent intent = new Intent(getActivity(), FavoriteAccommodationsActivity.class);
@@ -64,6 +68,9 @@ public class ProfileFragment extends Fragment {
         });
 
         Button buttonReviews = view.findViewById(R.id.btnHostReviews);
+        if(role.equals("HOST")){
+            buttonReviews.setVisibility(View.VISIBLE);
+        }
         buttonReviews.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), RateHostActivity.class);
             intent.putExtra("user_id", 0);
