@@ -20,9 +20,14 @@ import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.authentication.AuthenticationCallback;
 import com.example.bookingappteam17.authentication.AuthenticationManager;
 import com.example.bookingappteam17.clients.ClientUtils;
+import com.example.bookingappteam17.dto.user.UserReportDTO;
 import com.example.bookingappteam17.services.user.IUserService;
 import com.example.bookingappteam17.dto.user.UserLoginDTO;
 import com.example.bookingappteam17.model.user.AuthResponse;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.R)
 public class LoginActivity extends AppCompatActivity {
@@ -108,22 +113,48 @@ public class LoginActivity extends AppCompatActivity {
         userLoginDTO.setUsername(email);
         userLoginDTO.setPassword(password);
 
-        // send data to server
-        AuthenticationManager authenticationManager = new AuthenticationManager(userService, getApplicationContext());
-        authenticationManager.loginUser(userLoginDTO, new AuthenticationCallback() {
+
+        Call<Boolean> call = userService.isUserBanned(userLoginDTO.getUsername());
+        call.enqueue(new Callback<Boolean>() {
             @Override
-            public void onSuccess(AuthResponse token) {
-                // Handle successful login, for example, navigate to the next screen
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                if (response.isSuccessful()) {
+                    Boolean isBanned = response.body();
+                    if(!isBanned){
+                        AuthenticationManager authenticationManager = new AuthenticationManager(userService, getApplicationContext());
+                        authenticationManager.loginUser(userLoginDTO, new AuthenticationCallback() {
+                            @Override
+                            public void onSuccess(AuthResponse token) {
+                                // Handle successful login, for example, navigate to the next screen
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                // Handle login failure, show an error message, etc.
+                                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                    else{
+                        Toast.makeText(LoginActivity.this,"Your account has been suspended", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
 
             @Override
-            public void onFailure(String errorMessage) {
-                // Handle login failure, show an error message, etc.
-                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Boolean> call, Throwable t) {
+                // Handle failure
+                Log.e("ERROR", t.getMessage());
             }
         });
+
+
+
+
+        // send data to server
+
     }
 }

@@ -9,6 +9,7 @@ import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodRangeDTO;
 import com.example.bookingappteam17.dto.notification.EnabledNotificationsDTO;
 import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.dto.user.UserReportDTO;
 
 import java.util.HashSet;
 import java.util.List;
@@ -121,4 +122,10 @@ public interface IAccommodationService {
 
     @PUT("accommodation/updateByNewAccommodation/{id}")
     Call<AccommodationDTO> updateByNewAccommodation(@Path("id") Long id);
+
+    @PUT("userreport/{id}")
+    Call<UserReportDTO> updateUserReport(@Body UserReportDTO accommodationDTO, @Path("id") Long id);
+
+    @DELETE("userreport/{id}")
+    Call<Void> deleteUserReport(@Path("id") Long id);
 }

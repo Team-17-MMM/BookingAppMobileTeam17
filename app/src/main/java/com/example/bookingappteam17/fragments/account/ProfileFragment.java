@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.activities.accommodation.FavoriteAccommodationsActivity;
 import com.example.bookingappteam17.activities.account.EditProfileActivity;
+import com.example.bookingappteam17.activities.account.ReportUserActivity;
 import com.example.bookingappteam17.activities.authentication.LoginActivity;
 import com.example.bookingappteam17.activities.review.RateHostActivity;
 import com.example.bookingappteam17.activities.notification.NotificationsSettingsActivity;
@@ -55,8 +56,12 @@ public class ProfileFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.btnLogout);
         buttonLogout.setOnClickListener(v -> logout());
-
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", "");
         Button favoriteAccommodationsButton = view.findViewById(R.id.btnFavoriteAccommodations);
+        if(role.equals("GUEST")){
+            favoriteAccommodationsButton.setVisibility(View.VISIBLE);
+        }
         favoriteAccommodationsButton.setOnClickListener(v -> {
             Log.e("EditProfileActivity", "proslo");
             Intent intent = new Intent(getActivity(), FavoriteAccommodationsActivity.class);
@@ -64,6 +69,9 @@ public class ProfileFragment extends Fragment {
         });
 
         Button buttonReviews = view.findViewById(R.id.btnHostReviews);
+        if(role.equals("HOST")){
+            buttonReviews.setVisibility(View.VISIBLE);
+        }
         buttonReviews.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), RateHostActivity.class);
             intent.putExtra("user_id", 0);
@@ -76,6 +84,13 @@ public class ProfileFragment extends Fragment {
         notificationsSettingsBtn.setOnClickListener(v -> {
             Log.e("EditProfileActivity", "proslo");
             Intent intent = new Intent(getActivity(), NotificationsSettingsActivity.class);
+            startActivity(intent);
+        });
+
+        Button reportUserBtn = view.findViewById(R.id.btnReportUser);
+        reportUserBtn.setOnClickListener(v -> {
+            Log.e("EditProfileActivity", "proslo");
+            Intent intent = new Intent(getActivity(), ReportUserActivity.class);
             startActivity(intent);
         });
 

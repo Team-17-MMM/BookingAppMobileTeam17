@@ -1,6 +1,8 @@
 package com.example.bookingappteam17.activities.accommodation;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -76,6 +78,11 @@ public class AccommodationDetailActivity extends AppCompatActivity {
         });
 
         Button btnFavorite = binding.accommodationDetailsAddFavorite;
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", "");
+        if(role.equals("GUEST")){
+            btnFavorite.setVisibility(View.VISIBLE);
+        }
         btnFavorite.setOnClickListener(v -> {
             Log.d("TAG", "onFailure: " + "krmacica");
             this.addAccommodationToFavorite();

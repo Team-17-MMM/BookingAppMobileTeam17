@@ -104,4 +104,7 @@ public interface IUserService {
     })
     @POST("user/register")
     Call<UserRegistrationDTO> registerAccount(@Body UserRegistrationDTO userRegistrationDTO);
+
+    @GET("userreport/isbanned/{email}")
+    Call<Boolean> isUserBanned(@Path("email") String username);
 }

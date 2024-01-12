@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <!-- Host Information Section (25% of the screen) -->
     <LinearLayout
         android:id="@+id/hostInfoSection"
@@ -26,7 +27,7 @@
                 android:id="@+id/textHostName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Host Name"
+                android:text=""
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
@@ -35,17 +36,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="8dp"/>
 
-            <!-- Host Surname -->
-            <TextView
-                android:id="@+id/textHostSurname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Host Surname"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="4dp"/>
+
         </LinearLayout>
 
         <!-- Host Username -->
@@ -53,24 +44,16 @@
             android:id="@+id/textHostUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Host Username"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray"
+            android:text="Report User"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
             android:layout_gravity="center_horizontal"/>
 
         <!-- Host Average grade -->
-        <RatingBar
-            android:id="@+id/ratingBarHost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:numStars="5"
-            android:stepSize="0.001"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="10dp"
-            android:rating="0"
-            android:isIndicator="true"/>
 
-<!--        Horizontal Line-->
+
+        <!--        Horizontal Line-->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -102,7 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.15"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent">
 
         <!-- Comment Input EditText -->
@@ -146,7 +129,6 @@
                 android:layout_gravity="end"/>
         </LinearLayout>
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

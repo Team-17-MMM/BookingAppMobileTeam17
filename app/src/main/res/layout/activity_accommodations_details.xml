@@ -207,7 +207,8 @@
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            tools2:layout_editor_absoluteX="20dp" />
+            tools2:layout_editor_absoluteX="20dp"
+            android:visibility="gone"/>
 
 
 <!--        button for reviews-->
