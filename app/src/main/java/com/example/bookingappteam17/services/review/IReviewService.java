@@ -21,6 +21,9 @@ public interface IReviewService {
     @GET("reportedReview/accommodation")
     Call<HashSet<ReportedReviewCardDTO>> getReportedReviews();
 
+    @GET("userreport")
+    Call<HashSet<UserReportDTO>> getReportedUsers();
+
     @GET("reservation/users/info/{id}")
     Call<HashSet<UserInfoDTO>> getReservationsUsers(@Path("id") Long id);
 

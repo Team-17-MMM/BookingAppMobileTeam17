@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class ReportedReviewCardDTO implements Parcelable {
+public class    ReportedReviewCardDTO implements Parcelable {
     private Long reportedAccommodationReviewDetailsID;
     private Long reviewID;
     private String comment;
