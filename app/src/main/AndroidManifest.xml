@@ -108,6 +108,12 @@
             android:theme="@style/Theme.BookingAppTeam17"/>
 
         <activity
+            android:name=".activities.review.RateAccommodationActivity"
+            android:screenOrientation="portrait"
+            android:label="Rate Accommodation"
+            android:theme="@style/Theme.BookingAppTeam17"/>
+
+        <activity
             android:name=".activities.account.ReportUserActivity"
             android:screenOrientation="portrait"
             android:label="Report User"
