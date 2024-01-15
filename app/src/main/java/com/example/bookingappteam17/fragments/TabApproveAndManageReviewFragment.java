@@ -15,6 +15,7 @@
     import com.example.bookingappteam17.R;
     import com.example.bookingappteam17.fragments.accommodation.ApproveAccommodationPageFragment;
     import com.example.bookingappteam17.fragments.report.ManageUserReportsFragment;
+    import com.example.bookingappteam17.fragments.review.ApproveReviewListFragment;
     import com.example.bookingappteam17.fragments.review.ManageReviewPageFragment;
     import com.google.android.material.tabs.TabLayout;
     
@@ -48,6 +49,8 @@
                         return new ManageReviewPageFragment();
                     case 2:
                         return new ManageUserReportsFragment();
+                    case 3:
+                        return new ApproveReviewListFragment();
                     default:
                         return null;
                 }
@@ -55,7 +58,7 @@
     
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
     
             @Nullable
@@ -68,6 +71,8 @@
                         return "Manage Review";
                     case 2:
                         return "Manage Reports";
+                    case 3:
+                        return "Approve Review";
                     default:
                         return null;
                 }

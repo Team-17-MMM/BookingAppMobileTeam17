@@ -38,7 +38,7 @@ public class RateHostActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(RateHostViewModel.class);
 
-        reviewAdapter = new HostReviewAdapter(this, getIntent().getLongExtra("user_id", 0));
+        reviewAdapter = new HostReviewAdapter(this, getIntent().getLongExtra("user_id", 0), getIntent().getLongExtra("host_id", 0));
         recyclerView.setAdapter(reviewAdapter);
 
         // Observe changes in hostReviewsLiveData
@@ -57,6 +57,8 @@ public class RateHostActivity extends AppCompatActivity {
         viewModel.loadHostReviews(hostUsername, binding.ratingBarHost);
 
         viewModel.loadUserInfo(getIntent().getStringExtra("host_username"), binding);
+
+        viewModel.setCommentVisibility(getIntent().getLongExtra("host_id", 0), getIntent().getLongExtra("user_id", 0), binding);
 
         if (getIntent().getLongExtra("user_id", 0) == 0) {
             binding.commentSection.setVisibility(View.GONE);

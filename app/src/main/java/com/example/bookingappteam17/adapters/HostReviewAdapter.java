@@ -31,11 +31,13 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
     private Context context;
     private List<HostReviewDTO> reviews;
     private final Long userID;
+    private final Long hostID;
 
-    public HostReviewAdapter(Context context, Long id) {
+    public HostReviewAdapter(Context context, Long userID, Long hostID) {
         this.context = context;
         this.reviews = new ArrayList<>();
-        this.userID = id;
+        this.userID = userID;
+        this.hostID = hostID;
     }
 
     public void setReviews(List<HostReviewDTO> reviews) {
@@ -58,7 +60,7 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
         holder.reviewDate.setText(review.getReviewDate());
         holder.reviewRating.setRating(review.getRating());
 
-        if (this.userID.equals(0L)){
+        if (this.userID.equals(this.hostID)){
             holder.reportButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.GONE);
         } else {
@@ -74,7 +76,6 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
             @Override
             public void onClick(View v) {
                 reportReview(review);
-                Toast.makeText(context, "Reported review", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -144,18 +145,21 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
                 if (response.isSuccessful()) {
 //                    reviews.removeIf(review1 -> review1.getReviewID().equals(review.getReviewID()));
 //                    notifyDataSetChanged();
-                    Log.e("Reported review", "Reported review");
+                    Toast.makeText(context, "Reported review", Toast.LENGTH_LONG).show();
                 } else {
-                    Log.e("Error reporting review", Objects.requireNonNull(response.errorBody()).toString());
-                }
+                    if (response.code() == 409) {
+                        Toast.makeText(context, "You already reported this review", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(context, "Error: " + response.code(), Toast.LENGTH_LONG).show();
+                    }
             }
 
+        }
             @Override
             public void onFailure(Call<ReportedReviewDTO> call, Throwable t) {
-                Log.e("Error reporting review", Objects.requireNonNull(t.getMessage()));
+
             }
         });
-
     }
 
 }

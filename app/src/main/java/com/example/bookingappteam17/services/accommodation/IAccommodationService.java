@@ -86,10 +86,13 @@ public interface IAccommodationService {
     @GET("accommodation/cardsI/{username}")
     Call<HashSet<AccommodationCardRDTO>> getHostAccommodationsCards(@Path("username") String username);
 
+    @GET("accommodation/activecardsI/{username}")
+    Call<HashSet<AccommodationCardRDTO>> getActiveHostAccommodationsCards(@Path("username") String username);
+
     @GET("accommodation/host/{id}")
     Call<HashSet<Long>> getHostAccommodationIDs(@Path("id") Long id);
 
-    @GET("accommodation/search")
+    @GET("accommodation/searchI")
     Call<HashSet<AccommodationCardRDTO>> searchAccommodations(
             @Query("searchLocation") String searchLocation,
             @Query("startDate") String startDate,

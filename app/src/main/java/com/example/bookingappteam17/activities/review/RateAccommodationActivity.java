@@ -44,7 +44,7 @@ public class RateAccommodationActivity extends AppCompatActivity {
         Long accommodationID = getIntent().getLongExtra("accommodation_id", 0);
         Long userID = getIntent().getLongExtra("user_id", 0);
 
-        reviewAdapter = new AccommodationReviewAdapter(this, userID, accommodationID);
+        reviewAdapter = new AccommodationReviewAdapter(this, userID, getIntent().getLongExtra("host_id", 0));
         recyclerView.setAdapter(reviewAdapter);
 
         // Observe changes in hostReviewsLiveData

@@ -181,16 +181,16 @@
             android:layout_marginVertical="5dp"
             android:layout_marginHorizontal="20dp"/>
 
-        <Button
-            android:id="@+id/btnHostReviews"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/host_reviews"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="20dp"
-            android:visibility="gone"/>
+<!--        <Button-->
+<!--            android:id="@+id/btnHostReviews"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/host_reviews"-->
+<!--            android:textSize="18dp"-->
+<!--            android:textStyle="bold"-->
+<!--            android:layout_marginVertical="5dp"-->
+<!--            android:layout_marginHorizontal="20dp"-->
+<!--            android:visibility="gone"/>-->
 
 
         <Button

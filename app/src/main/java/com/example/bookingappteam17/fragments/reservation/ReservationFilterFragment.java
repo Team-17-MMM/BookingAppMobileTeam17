@@ -137,7 +137,8 @@ public class ReservationFilterFragment extends BottomSheetDialogFragment {
         String accommodationName = editAccommodationName.getText().toString();
         String startDateString = editTextStartDate.getText().toString();
         String endDateString = editTextEndDate.getText().toString();
-        String selectedItem = spinner.getSelectedItem().toString();
+        String[] selectedItem = new String[1];
+        selectedItem[0] = spinner.getSelectedItem().toString();
 
         Call<HashSet<ReservationInfoDTO>> call = reservationService.filterReservationsFromList(new ReservationFilterRequestDTO(userID,editTextStartDate.getText().toString(),editTextEndDate.getText().toString(),accommodationName,selectedItem));
         call.enqueue(new Callback<HashSet<ReservationInfoDTO>>() {

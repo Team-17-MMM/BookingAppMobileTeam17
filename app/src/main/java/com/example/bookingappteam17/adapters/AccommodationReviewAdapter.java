@@ -30,14 +30,14 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
     private Context context;
     private List<AccommodationReviewDTO> reviews;
     private final Long userID;
-    private final Long accommodationID;
+    private final Long hostID;
 
 
-    public AccommodationReviewAdapter(Context context, Long id, Long accommodationID) {
+    public AccommodationReviewAdapter(Context context, Long id, Long hostID) {
         this.context = context;
         this.reviews = new ArrayList<>();
         this.userID = id;
-        this.accommodationID = accommodationID;
+        this.hostID = hostID;
     }
 
     public void setReviews(List<AccommodationReviewDTO> reviews) {
@@ -60,7 +60,7 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
         holder.reviewDate.setText(review.getReviewDate());
         holder.reviewRating.setRating(review.getGrade());
 
-        if (this.userID.equals(0L)){
+        if (this.userID.equals(this.hostID)){
             holder.reportButton.setVisibility(View.VISIBLE);
             holder.deleteButton.setVisibility(View.GONE);
         } else {
@@ -135,7 +135,7 @@ public class AccommodationReviewAdapter extends RecyclerView.Adapter<Accommodati
     private void reportReview(AccommodationReviewDTO review) {
         ReportedReviewDTO reportedReviewDTO = new ReportedReviewDTO();
         reportedReviewDTO.setReviewID(review.getReviewID());
-        reportedReviewDTO.setHostReview(true);
+        reportedReviewDTO.setHostReview(false);
         reportedReviewDTO.setApproved(true);
 
         Call<ReportedReviewDTO> call = ClientUtils.reviewService.reportHostReview(reportedReviewDTO);

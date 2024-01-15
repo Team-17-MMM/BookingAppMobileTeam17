@@ -68,17 +68,17 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
-        Button buttonReviews = view.findViewById(R.id.btnHostReviews);
-        if(role.equals("HOST")){
-            buttonReviews.setVisibility(View.VISIBLE);
-        }
-        buttonReviews.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), RateHostActivity.class);
-            intent.putExtra("user_id", 0);
-            intent.putExtra("host_username", userInfoDTO.getUsername());
-            intent.putExtra("host_id", userInfoDTO.getUserID());
-            startActivity(intent);
-        });
+//        Button buttonReviews = view.findViewById(R.id.btnHostReviews);
+//        if(role.equals("HOST")){
+//            buttonReviews.setVisibility(View.VISIBLE);
+//        }
+//        buttonReviews.setOnClickListener(v -> {
+//            Intent intent = new Intent(getActivity(), RateHostActivity.class);
+//            intent.putExtra("user_id", 0);
+//            intent.putExtra("host_username", userInfoDTO.getUsername());
+//            intent.putExtra("host_id", userInfoDTO.getUserID());
+//            startActivity(intent);
+//        });
 
         Button notificationsSettingsBtn = view.findViewById(R.id.btnNotificationsSettings);
         notificationsSettingsBtn.setOnClickListener(v -> {

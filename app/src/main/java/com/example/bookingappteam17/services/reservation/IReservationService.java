@@ -27,7 +27,7 @@ public interface IReservationService {
     @GET("reservation/{id}")
     Call<ReservationDTO> getReservation(@Path("id") Long id);
     @GET("reservation/user/{id}")
-    Call<HashSet<Reservation>> getUserReservations(@Path("id") Long id);
+    Call<HashSet<ReservationDTO>> getUserReservations(@Path("id") Long id);
 
 
     @POST("reservation")
@@ -52,6 +52,9 @@ public interface IReservationService {
     Call<HashSet<ReservationInfoDTO>> getUserInfoReservations(@Path("id") Long id);
     @GET("reservation/host/{id}")
     Call<HashSet<ReservationInfoDTO>> getHostReservations(@Path("id") Long id);
+
+    @GET("reservation/DTO/host/{id}")
+    Call<HashSet<ReservationDTO>> getHostReservationDTOs(@Path("id") Long id);
     @PUT("reservation/accept/{id}")
     Call<HashSet<ReservationDTO>> acceptReservation(@Body Long resId, @Path("id") Long id);
     @PUT("reservation/cancel/{id}")

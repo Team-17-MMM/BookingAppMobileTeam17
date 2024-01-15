@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,9 @@ import com.example.bookingappteam17.activities.accommodation.HostAccommodationDe
 import com.example.bookingappteam17.activities.home.HomeActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
+import com.example.bookingappteam17.dto.accommodation.AccommodationCardRDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
 import com.example.bookingappteam17.viewmodel.SharedViewModel;
 import com.github.mikephil.charting.charts.CombinedChart;
@@ -49,6 +52,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,45 +90,88 @@ public class AccommodationListAdapter extends ArrayAdapter<AccommodationCardDTO>
         TextView accommodationDescription = convertView.findViewById(R.id.accommodation_description);
         ImageView accommodationImage = convertView.findViewById(R.id.accommodation_image);
         TextView accommodationPrice = convertView.findViewById(R.id.accommodation_price);
+        RatingBar rating = convertView.findViewById(R.id.review_rating);
 
         if (accommodation != null) {
             accommodationName.setText(accommodation.getName());
             accommodationDescription.setText(accommodation.getDescription());
             accommodationImage.setImageBitmap(accommodation.getImage());
-            accommodationPrice.setText(String.valueOf(1000)); // You might want to update this based on the actual data
+            setAveragePrice(accommodation.getAccommodationID(), accommodationPrice);
+            rating.setRating(Float.parseFloat(String.valueOf(accommodation.getAverageGrade())));
         }
-
+        Button updateAccommodation = convertView.findViewById(R.id.update_accommodation);
         Button getReportAccommodation = convertView.findViewById(R.id.get_report_accommodation);
         if (sharedPreferences.getString("role", "").equals("HOST")) {
             getReportAccommodation.setVisibility(View.VISIBLE);
+            updateAccommodation.setVisibility(View.VISIBLE);
+
         } else {
             getReportAccommodation.setVisibility(View.GONE);
+            updateAccommodation.setVisibility(View.GONE);
         }
         getReportAccommodation.setOnClickListener(v -> {
             getReportData(accommodation.getAccommodationID());
+        });
+
+        updateAccommodation.setOnClickListener(v -> {
+            Long id = accommodation.getAccommodationID();
+            System.out.println("HOST");
+            Intent intent = new Intent(getContext(), HostAccommodationDetailActivity.class);
+            intent.putExtra("selected_accommodation", id);
+            getContext().startActivity(intent);
         });
 
         Button detailsButton = convertView.findViewById(R.id.accommodation_details);
         detailsButton.setOnClickListener(v -> {
             // get id of accommodation which is clicked
             Long id = accommodation.getAccommodationID();
-            String role = sharedPreferences.getString("role", "");
-            if (role.equals("HOST")) {
-                System.out.println("HOST");
-                Intent intent = new Intent(getContext(), HostAccommodationDetailActivity.class);
-                intent.putExtra("selected_accommodation", id);
-                getContext().startActivity(intent);
-//                AccommodationPageFragment.accommodations.clear();
-            }
-            else{
-                Intent intent = new Intent(getContext(), AccommodationDetailActivity.class);
-                intent.putExtra("selected_accommodation", id);
-                intent.putExtra("user_id", sharedPreferences.getLong("userId", 0));
-                getContext().startActivity(intent);
-            }
+            Intent intent = new Intent(getContext(), AccommodationDetailActivity.class);
+            intent.putExtra("selected_accommodation", id);
+            intent.putExtra("user_id", sharedPreferences.getLong("userId", 0));
+            getContext().startActivity(intent);
+
         });
 
         return convertView;
+    }
+
+    private void setAveragePrice(Long accommodationID, TextView accommodationPrice) {
+        Call<AccommodationDTO> call = accommodationService.getAccommodation(accommodationID);
+        call.enqueue(new Callback<AccommodationDTO>() {
+            @Override
+            public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                if (response.isSuccessful()) {
+                    int averagePrice = calculateAveragePrice(response.body().getAvailabilityPeriods());
+                    if(averagePrice == 0){
+                        accommodationPrice.setText("Not available");
+                    }else{
+                        String priceText = averagePrice + " RSD";
+                        accommodationPrice.setText(priceText);
+                    }
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                Log.d("Error", t.getMessage());
+
+            }
+        });
+    }
+
+    private int calculateAveragePrice(Set<AvailabilityPeriodDTO> availabilityPeriods) {
+        int totalPrice = 0;
+        int numberOfDays = 0;
+        for(AvailabilityPeriodDTO availabilityPeriodDTO: availabilityPeriods){
+            totalPrice += availabilityPeriodDTO.getPrice();
+            numberOfDays ++;
+        }
+        if(numberOfDays == 0){
+            return 0;
+        }else{
+            return (int) totalPrice/numberOfDays;
+        }
     }
 
     public void updateData(List<AccommodationCardDTO> newAccommodations) {
