@@ -2,6 +2,7 @@ package com.example.bookingappteam17.fragments.review;
 
 
 import static com.example.bookingappteam17.clients.ClientUtils.accommodationService;
+import static com.example.bookingappteam17.clients.ClientUtils.notificationService;
 import static com.example.bookingappteam17.clients.ClientUtils.userService;
 
 import android.content.Context;
@@ -20,8 +21,12 @@ import androidx.annotation.Nullable;
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationUsernamePostDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationDTO;
 import com.example.bookingappteam17.dto.review.AccommodationReviewDTO;
 import com.example.bookingappteam17.dto.user.UserUpdateDTO;
+import com.example.bookingappteam17.enums.notification.NotificationType;
 import com.example.bookingappteam17.model.user.User;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -38,7 +43,7 @@ public class ApproveReviewListAdapter extends ArrayAdapter<AccommodationReviewDT
     private Context context;
 
     public ApproveReviewListAdapter(Context context, List<AccommodationReviewDTO> reviews) {
-        super(context, R.layout.manage_review_card, reviews);
+        super(context, R.layout.approve_review_card, reviews);
         this.context = context;
         this.aReviews = reviews;
     }
@@ -71,11 +76,11 @@ public class ApproveReviewListAdapter extends ArrayAdapter<AccommodationReviewDT
             setGuestName(review.getReviewer(), username);
         }
 
-        Button deleteReportButton = convertView.findViewById(R.id.button_approve_review);
-        deleteReportButton.setOnClickListener(new View.OnClickListener() {
+        Button approveReviewButton = convertView.findViewById(R.id.button_approve_review);
+        approveReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                approveReview(Objects.requireNonNull(review));
+                approveReview(Objects.requireNonNull(review), accommodationHostName);
             }
         });
 
@@ -128,7 +133,7 @@ public class ApproveReviewListAdapter extends ArrayAdapter<AccommodationReviewDT
     }
 
 
-    private void approveReview(AccommodationReviewDTO review) {
+    private void approveReview(AccommodationReviewDTO review, TextInputEditText accommodationHostName) {
         review.setApproved(true);
         Call<AccommodationReviewDTO> call = ClientUtils.reviewService.updateReview(review.getReviewID(), review);
         call.enqueue(new Callback<AccommodationReviewDTO>() {
@@ -138,6 +143,7 @@ public class ApproveReviewListAdapter extends ArrayAdapter<AccommodationReviewDT
                     aReviews.removeIf(review -> review.getReviewID().equals(response.body().getReviewID()));
                     notifyDataSetChanged();
                     Toast.makeText(context, "Approved review!", Toast.LENGTH_SHORT).show();
+                    createNotificationFromAccommodationID(response.body().getAccommodationID());
                 }
             }
 
@@ -148,6 +154,42 @@ public class ApproveReviewListAdapter extends ArrayAdapter<AccommodationReviewDT
         });
     }
 
+    private void createNotificationFromAccommodationID(Long id){
+        Call<AccommodationDTO> call2 = accommodationService.getAccommodation(id);
+        call2.enqueue(new Callback<AccommodationDTO>() {
+              @Override
+              public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                  if (response.isSuccessful()) {
+                      createOwnerNotification(response.body().getOwner().getUserID());
+                  }
+              }
+
+              @Override
+              public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                  Log.d("Error", t.getMessage());
+              }
+          }
+        );
+    }
+    private void createOwnerNotification(Long ownerID){
+        NotificationDTO notification = new NotificationDTO(ownerID, NotificationType.CANCEL_RESERVATION, false);
+        Call<NotificationDTO> call = notificationService.createNotification(notification);
+        call.enqueue(new Callback<NotificationDTO>() {
+                 @Override
+                 public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                     if (response.isSuccessful()) {
+                         Log.d("Success",  response.body().toString());
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
+        );
+
+    }
     private void deleteReview(Long reviewID) {
         String path = "review/"  + reviewID;
         Call<Void> call = ClientUtils.reviewService.deleteReview(path);

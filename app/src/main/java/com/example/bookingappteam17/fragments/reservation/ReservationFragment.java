@@ -20,8 +20,12 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
 import com.example.bookingappteam17.dto.accommodation.AvailabilityPeriodDTO;
 import com.example.bookingappteam17.dto.accommodation.CapacityDTO;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationUsernamePostDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationDTO;
+import com.example.bookingappteam17.enums.notification.NotificationType;
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
+import com.example.bookingappteam17.services.notification.INotificationService;
 import com.example.bookingappteam17.services.reservation.IReservationService;
 import com.example.bookingappteam17.validators.ReservationDateValidator;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -58,6 +62,8 @@ public class ReservationFragment extends BottomSheetDialogFragment {
     private Spinner spinnerPeopleCount;
     private AccommodationDTO accommodation;
     private IReservationService reservationService = ClientUtils.reservationService;
+    private INotificationService notificationService = ClientUtils.notificationService;
+
     private Long userID;
 
     public ReservationFragment(AccommodationDTO accommodationDTO, Long userID){
@@ -254,6 +260,7 @@ public class ReservationFragment extends BottomSheetDialogFragment {
                      if (response.isSuccessful()) {
                          ReservationDTO reservation = response.body();
                          showLongToast(view.getContext(),"Successfully created reservation!");
+                         createNotification(view.getContext());
                          if(accommodation.getConfirmationType().equals("Auto Confirmation")){
                              approveReservation(view,reservation);
                          }
@@ -271,6 +278,29 @@ public class ReservationFragment extends BottomSheetDialogFragment {
         );
 
 
+
+    }
+
+    private void createNotification(Context context){
+        NotificationUsernamePostDTO notification = new NotificationUsernamePostDTO(accommodation.getOwner().getUsername(), NotificationType.CREATE_RESERVATION_REQUEST, false);
+        Call<NotificationDTO> call = notificationService.createNotificationsByUsername(notification);
+        call.enqueue(new Callback<NotificationDTO>() {
+                 @Override
+                 public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                     if (response.isSuccessful()) {
+                         showLongToast(context,"Notification sent to owner!");
+                         dismiss();
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                     showLongToast(context,"Error creating reservation!");
+                     dismiss();
+                 }
+             }
+        );
 
     }
 
