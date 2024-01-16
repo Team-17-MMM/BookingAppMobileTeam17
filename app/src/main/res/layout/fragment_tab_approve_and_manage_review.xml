@@ -2,6 +2,7 @@
 <androidx.viewpager.widget.ViewPager
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/approve_manage_review_view_pager"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,12 +14,30 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/approve" />
+            android:text="@string/approve"
+            app:tabTextAppearance="@style/TabTextStyle"
+            />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/manage_review" />
+            android:text="@string/manage_review"
+            app:tabTextAppearance="@style/TabTextStyle"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manage_review"
+            app:tabTextAppearance="@style/TabTextStyle"
+            />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/manage_review"
+            app:tabTextAppearance="@style/TabTextStyle"
+            />
 
     </com.google.android.material.tabs.TabLayout>
 

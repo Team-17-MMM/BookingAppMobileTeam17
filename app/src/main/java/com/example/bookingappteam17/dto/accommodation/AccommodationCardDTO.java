@@ -18,13 +18,15 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
     private String name;
     private String description;
     private Bitmap image;
+    private Double averageGrade = 0.0;
 
     public AccommodationCardDTO() {}
-    public AccommodationCardDTO(Long accommodationID, String name, String description, Bitmap image) {
+    public AccommodationCardDTO(Long accommodationID, String name, String description, Bitmap image, Double averageGrade) {
         this.accommodationID = accommodationID;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.averageGrade = averageGrade;
     }
 
     public AccommodationCardDTO(Accommodation accommodation) {
@@ -47,6 +49,7 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
 
         // Convert the byte array to a Bitmap
         this.image = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        this.averageGrade = accommodationCardRDTO.getAverageGrade();
     }
 
     protected AccommodationCardDTO(Parcel in) {
@@ -58,6 +61,7 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
         name = in.readString();
         description = in.readString();
         image = in.readParcelable(Bitmap.class.getClassLoader());
+        averageGrade = in.readDouble();
     }
 
     public static final Creator<AccommodationCardDTO> CREATOR = new Creator<AccommodationCardDTO>() {
@@ -102,6 +106,14 @@ public class AccommodationCardDTO implements Parcelable, Serializable {
 
     public void setImage(Bitmap image) {
         this.image = image;
+    }
+
+    public Double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public void setAverageGrade(Double averageGrade) {
+        this.averageGrade = averageGrade;
     }
 
     @Override

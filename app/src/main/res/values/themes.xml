@@ -9,4 +9,11 @@
 
     </style>
     <style name="Theme.BookingAppTeam17" parent="Base.Theme.BookingAppTeam17" />
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlActivated">@color/yellow</item>
+    </style>
+    <style name="TabTextStyle" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item> <!-- Set your desired text size here -->
+    </style>
 </resources>

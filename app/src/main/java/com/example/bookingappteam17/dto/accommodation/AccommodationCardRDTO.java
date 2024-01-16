@@ -11,14 +11,18 @@ public class AccommodationCardRDTO implements Parcelable, Serializable {
     private String name;
     private String description;
     private String image;
+    private Double averageGrade = 0.0;
+
 
     public AccommodationCardRDTO() {}
-    public AccommodationCardRDTO(Long accommodationID, String name, String description, String image) {
+    public AccommodationCardRDTO(Long accommodationID, String name, String description, String image, Double averageGrade) {
         this.accommodationID = accommodationID;
         this.name = name;
         this.description = description;
         this.image = image;
+        this.averageGrade = averageGrade;
     }
+
 
 
     public static final Creator<AccommodationCardDTO> CREATOR = new Creator<AccommodationCardDTO>() {
@@ -63,6 +67,14 @@ public class AccommodationCardRDTO implements Parcelable, Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public void setAverageGrade(Double averageGrade) {
+        this.averageGrade = averageGrade;
     }
 
     @Override

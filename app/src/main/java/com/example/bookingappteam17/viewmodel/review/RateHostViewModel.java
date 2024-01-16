@@ -1,7 +1,11 @@
 package com.example.bookingappteam17.viewmodel.review;
 
+import static com.example.bookingappteam17.clients.ClientUtils.notificationService;
+
 import android.util.Log;
+import android.view.View;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,8 +13,16 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityRateHostBinding;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationUsernamePostDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationDTO;
+import com.example.bookingappteam17.dto.reservation.ReservationInfoDTO;
 import com.example.bookingappteam17.dto.review.HostReviewDTO;
 import com.example.bookingappteam17.dto.user.UserInfoDTO;
+import com.example.bookingappteam17.enums.notification.NotificationType;
+import com.example.bookingappteam17.enums.reservation.ReservationStatus;
+import com.example.bookingappteam17.model.reservation.Reservation;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -53,7 +65,7 @@ public class RateHostViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Log.d("TAG", "onResponse: " + response.code());
+                    createNotification(review.getReviewedHost());
                 }
             }
 
@@ -62,6 +74,26 @@ public class RateHostViewModel extends ViewModel {
                 Log.e("ERROR", t.getMessage());
             }
         });
+    }
+
+    private void createNotification(Long ownerID){
+        NotificationDTO notification = new NotificationDTO(ownerID, NotificationType.RATE_USER, false);
+        Call<NotificationDTO> call = notificationService.createNotification(notification);
+        call.enqueue(new Callback<NotificationDTO>() {
+                 @Override
+                 public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                     if (response.isSuccessful()) {
+                         Log.d("Success","Notification sent!");
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
+        );
+
     }
 
     public void loadUserInfo(String username, ActivityRateHostBinding binding) {
@@ -93,5 +125,29 @@ public class RateHostViewModel extends ViewModel {
             rating += review.getRating();
         }
         return rating / hostReviews.size();
+    }
+
+    public void setCommentVisibility(long hostId, long userId, ActivityRateHostBinding binding) {
+        Call<HashSet<ReservationDTO>> call = ClientUtils.reservationService.getHostReservationDTOs(hostId);
+        call.enqueue(new Callback<HashSet<ReservationDTO>>() {
+            @Override
+            public void onResponse(Call<HashSet<ReservationDTO>> call, Response<HashSet<ReservationDTO>> response) {
+                if (response.isSuccessful()) {
+                    for(ReservationDTO reservationDTO: response.body()){
+                        if(reservationDTO.getUserID().equals(userId) && reservationDTO.getStatus().equals(ReservationStatus.COMPLETED)){
+                            binding.commentSection.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                    }
+                    binding.commentSection.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HashSet<ReservationDTO>> call, Throwable t) {
+                // Handle failure
+                Log.e("ERROR", t.getMessage());
+            }
+        });
     }
 }

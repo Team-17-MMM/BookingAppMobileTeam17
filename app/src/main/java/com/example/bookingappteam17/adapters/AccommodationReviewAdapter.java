@@ -1,4 +1,3 @@
-// HostReviewAdapter.java
 package com.example.bookingappteam17.adapters;
 
 import android.content.Context;
@@ -16,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
-import com.example.bookingappteam17.dto.review.HostReviewDTO;
+import com.example.bookingappteam17.dto.review.AccommodationReviewDTO;
 import com.example.bookingappteam17.dto.review.ReportedReviewDTO;
 
 import java.util.ArrayList;
@@ -27,38 +26,39 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.HostReviewViewHolder> {
+public class AccommodationReviewAdapter extends RecyclerView.Adapter<AccommodationReviewAdapter.AccommodationReviewViewHolder> {
     private Context context;
-    private List<HostReviewDTO> reviews;
+    private List<AccommodationReviewDTO> reviews;
     private final Long userID;
     private final Long hostID;
 
-    public HostReviewAdapter(Context context, Long userID, Long hostID) {
+
+    public AccommodationReviewAdapter(Context context, Long id, Long hostID) {
         this.context = context;
         this.reviews = new ArrayList<>();
-        this.userID = userID;
+        this.userID = id;
         this.hostID = hostID;
     }
 
-    public void setReviews(List<HostReviewDTO> reviews) {
+    public void setReviews(List<AccommodationReviewDTO> reviews) {
         this.reviews = reviews;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public HostReviewAdapter.HostReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AccommodationReviewAdapter.AccommodationReviewViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.review_card, parent, false);
-        return new HostReviewViewHolder(view);
+        return new AccommodationReviewViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull HostReviewAdapter.HostReviewViewHolder holder, int position) {
-        HostReviewDTO review = reviews.get(position);
+    public void onBindViewHolder(@NonNull AccommodationReviewAdapter.AccommodationReviewViewHolder holder, int position) {
+        AccommodationReviewDTO review = reviews.get(position);
 
         holder.reviewDescription.setText(review.getComment());
         holder.reviewDate.setText(review.getReviewDate());
-        holder.reviewRating.setRating(review.getRating());
+        holder.reviewRating.setRating(review.getGrade());
 
         if (this.userID.equals(this.hostID)){
             holder.reportButton.setVisibility(View.VISIBLE);
@@ -93,14 +93,14 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
         return reviews.size();
     }
 
-    static class HostReviewViewHolder extends RecyclerView.ViewHolder {
+    static class AccommodationReviewViewHolder extends RecyclerView.ViewHolder {
         TextView reviewDescription;
         TextView reviewDate;
         RatingBar reviewRating;
         Button reportButton;
         Button deleteButton;
 
-        public HostReviewViewHolder(@NonNull View itemView) {
+        public AccommodationReviewViewHolder(@NonNull View itemView) {
             super(itemView);
             reviewDescription = itemView.findViewById(R.id.review_description);
             reviewDate = itemView.findViewById(R.id.review_date);
@@ -111,7 +111,7 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
     }
 
     private void deleteReview(Long reviewID) {
-        String path = "review/host/" + reviewID;
+        String path = "review/" + reviewID;
         Call<Void> call = ClientUtils.reviewService.deleteReview(path);
         call.enqueue(new Callback<Void>() {
             @Override
@@ -132,10 +132,10 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
     }
 
 
-    private void reportReview(HostReviewDTO review) {
+    private void reportReview(AccommodationReviewDTO review) {
         ReportedReviewDTO reportedReviewDTO = new ReportedReviewDTO();
         reportedReviewDTO.setReviewID(review.getReviewID());
-        reportedReviewDTO.setHostReview(true);
+        reportedReviewDTO.setHostReview(false);
         reportedReviewDTO.setApproved(true);
 
         Call<ReportedReviewDTO> call = ClientUtils.reviewService.reportHostReview(reportedReviewDTO);
@@ -152,14 +152,16 @@ public class HostReviewAdapter extends RecyclerView.Adapter<HostReviewAdapter.Ho
                     } else {
                         Toast.makeText(context, "Error: " + response.code(), Toast.LENGTH_LONG).show();
                     }
+                }
             }
 
-        }
             @Override
             public void onFailure(Call<ReportedReviewDTO> call, Throwable t) {
-
+                Log.e("Error reporting review", Objects.requireNonNull(t.getMessage()));
             }
         });
+
     }
 
 }
+

@@ -1,4 +1,5 @@
 package com.example.bookingappteam17.fragments.reservation;
+import static com.example.bookingappteam17.clients.ClientUtils.notificationService;
 import static com.example.bookingappteam17.clients.ClientUtils.reservationService;
 import static com.example.bookingappteam17.clients.ClientUtils.accommodationService;
 
@@ -19,9 +20,12 @@ import com.example.bookingappteam17.R;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.dto.accommodation.AccommodationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationDTO;
+import com.example.bookingappteam17.dto.notification.NotificationUsernamePostDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationInfoDTO;
 import com.example.bookingappteam17.dto.reservation.ReservationReportDTO;
+import com.example.bookingappteam17.enums.notification.NotificationType;
 import com.example.bookingappteam17.enums.reservation.ReservationStatus;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -96,6 +100,9 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
             @Override
             public void onResponse(Call<HashSet<ReservationDTO>> call, Response<HashSet<ReservationDTO>> response) {
                 if (response.isSuccessful()) {
+                    for(ReservationDTO reservationDTO: response.body()){
+                        createNotification(reservationDTO);
+                    }
                     fragment.reloadReservations();
                     showShortToast(getContext(),"Successfully accepted reservation");
                 }
@@ -126,6 +133,7 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
                         if (response.isSuccessful()) {
                             fragment.reloadReservations();
                             showShortToast(getContext(),"Successfully rejected reservation");
+                            createNotification(response.body());
                         }else{
                             showLongToast(getContext(),"Can't reject this reservation");
                         }
@@ -146,6 +154,7 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
 
                             fragment.reloadReservations();
                             showShortToast(getContext(),"Successfully canceled reservation");
+                            createNotificationFromReservationID(response.body().getReservationID());
                         }else{
                             showLongToast(getContext(),"Can't cancel this reservation");
                         }
@@ -163,6 +172,81 @@ public class ReservationListAdapter extends ArrayAdapter<ReservationInfoDTO> {
 
 
         return convertView;
+    }
+
+    private void createNotification(ReservationDTO reservationDTO){
+        NotificationDTO notification = new NotificationDTO(reservationDTO.getUserID(), NotificationType.RESERVATION_REQUEST_RESPOND, false);
+        Call<NotificationDTO> call = notificationService.createNotification(notification);
+        call.enqueue(new Callback<NotificationDTO>() {
+                 @Override
+                 public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                     if (response.isSuccessful()) {
+                         Log.d("Success",  response.body().toString());
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
+        );
+
+    }
+
+    private void createNotificationFromReservationID(Long id){
+        Call<ReservationDTO> call = reservationService.getReservation(id);
+        call.enqueue(new Callback<ReservationDTO>() {
+                 @Override
+                 public void onResponse(Call<ReservationDTO> call, Response<ReservationDTO> response) {
+                     if (response.isSuccessful()) {
+                        createNotificationFromAccommodationID(response.body().getAccommodationID());
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<ReservationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
+        );
+    }
+
+    private void createNotificationFromAccommodationID(Long id){
+        Call<AccommodationDTO> call2 = accommodationService.getAccommodation(id);
+        call2.enqueue(new Callback<AccommodationDTO>() {
+              @Override
+              public void onResponse(Call<AccommodationDTO> call, Response<AccommodationDTO> response) {
+                  if (response.isSuccessful()) {
+                      createOwnerNotification(response.body().getOwner().getUserID());
+                  }
+              }
+
+              @Override
+              public void onFailure(Call<AccommodationDTO> call, Throwable t) {
+                  Log.d("Error", t.getMessage());
+              }
+          }
+        );
+    }
+    private void createOwnerNotification(Long ownerID){
+        NotificationDTO notification = new NotificationDTO(ownerID, NotificationType.CANCEL_RESERVATION, false);
+        Call<NotificationDTO> call = notificationService.createNotification(notification);
+        call.enqueue(new Callback<NotificationDTO>() {
+                 @Override
+                 public void onResponse(Call<NotificationDTO> call, Response<NotificationDTO> response) {
+                     if (response.isSuccessful()) {
+                         Log.d("Success",  response.body().toString());
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<NotificationDTO> call, Throwable t) {
+                     Log.d("Error", t.getMessage());
+                 }
+             }
+        );
+
     }
 
     private static void showShortToast(Context context, String message) {

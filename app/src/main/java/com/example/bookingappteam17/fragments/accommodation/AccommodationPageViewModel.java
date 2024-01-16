@@ -29,7 +29,7 @@ public class AccommodationPageViewModel extends ViewModel {
 
     public void loadAccommodations(String username, String role) {
         if (role.equals("HOST")){
-            Call<HashSet<AccommodationCardRDTO>> call = ClientUtils.accommodationService.getHostAccommodationsCards(username);
+            Call<HashSet<AccommodationCardRDTO>> call = ClientUtils.accommodationService.getActiveHostAccommodationsCards(username);
             call.enqueue(new Callback<HashSet<AccommodationCardRDTO>>() {
                 @Override
                 public void onResponse(Call<HashSet<AccommodationCardRDTO>> call, Response<HashSet<AccommodationCardRDTO>> response) {

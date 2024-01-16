@@ -182,50 +182,68 @@
             android:fontFamily="@font/righteous"/>
 
         <Button
-            android:id="@+id/accommodation_details_reservation_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_marginHorizontal="20sp"
-            android:layout_marginVertical="20sp"
-            android:fontFamily="@font/righteous"
-            android:text="Create reservation"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            tools2:layout_editor_absoluteX="20dp" />
-
-        <Button
             android:id="@+id/accommodation_details_add_favorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
             android:layout_marginHorizontal="20sp"
-            android:layout_marginVertical="20sp"
+            android:layout_marginVertical="5sp"
             android:fontFamily="@font/righteous"
-            android:text="Add to favorite"
+            android:text="Add to favorites"
+            android:visibility="gone"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            tools2:layout_editor_absoluteX="20dp"
-            android:visibility="gone"/>
+            />
 
-
-<!--        button for reviews-->
-        <Button
-            android:id="@+id/rate_host_button"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
+            android:orientation="horizontal"
             android:layout_marginHorizontal="20sp"
-            android:layout_marginVertical="20sp"
+            android:layout_marginVertical="5sp">
+            <Button
+                android:id="@+id/rate_accommodation_button"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/righteous"
+                android:text="Accommodation reviews"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                android:layout_marginEnd="10sp"
+                 />
+
+            <Button
+                android:id="@+id/rate_host_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:layout_weight="2"
+                android:fontFamily="@font/righteous"
+                android:text="@string/host_reviews"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="visible"
+                android:layout_marginStart="10sp"
+                 />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/accommodation_details_reservation_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20sp"
+            android:layout_marginVertical="5sp"
             android:fontFamily="@font/righteous"
-            android:text="@string/host_reviews"
+            android:text="Create reservation"
+            android:visibility="gone"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20sp"
-            tools2:layout_editor_absoluteX="20dp"
-            android:visibility="visible"/>
+            />
 
     </LinearLayout>
 

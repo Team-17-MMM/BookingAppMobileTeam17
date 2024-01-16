@@ -9,7 +9,7 @@ public class ReservationFilterRequestDTO {
     String startDate;
     String endDate;
     String accommodationName;
-    String status;
+    String[] statuses;
 
     public List<ReservationInfoDTO> getReservations() {
         return reservations;
@@ -43,12 +43,12 @@ public class ReservationFilterRequestDTO {
         this.accommodationName = accommodationName;
     }
 
-    public String getStatus() {
-        return status;
+    public String[] getStatuses() {
+        return statuses;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(String[] statuses) {
+        this.statuses = statuses;
     }
 
     public Long getUserID() {
@@ -61,20 +61,20 @@ public class ReservationFilterRequestDTO {
 
     public ReservationFilterRequestDTO(){}
 
-    public ReservationFilterRequestDTO(List<ReservationInfoDTO> reservations, Long userID, String startDate, String endDate, String accommodationName, String status) {
+    public ReservationFilterRequestDTO(List<ReservationInfoDTO> reservations, Long userID, String startDate, String endDate, String accommodationName, String[] status) {
         this.reservations = reservations;
         this.userID = userID;
         this.startDate = startDate;
         this.endDate = endDate;
         this.accommodationName = accommodationName;
-        this.status = status;
+        this.statuses = status;
     }
 
-    public ReservationFilterRequestDTO(Long userID, String startDate, String endDate, String accommodationName, String status) {
+    public ReservationFilterRequestDTO(Long userID, String startDate, String endDate, String accommodationName, String[] status) {
         this.userID = userID;
         this.startDate = startDate;
         this.endDate = endDate;
         this.accommodationName = accommodationName;
-        this.status = status;
+        this.statuses = status;
     }
 }

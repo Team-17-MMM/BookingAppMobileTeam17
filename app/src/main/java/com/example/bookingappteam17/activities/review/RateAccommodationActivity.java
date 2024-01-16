@@ -11,58 +11,57 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.adapters.AccommodationReviewAdapter;
 import com.example.bookingappteam17.adapters.HostReviewAdapter;
+import com.example.bookingappteam17.databinding.ActivityRateAccommodationBinding;
 import com.example.bookingappteam17.databinding.ActivityRateHostBinding;
+import com.example.bookingappteam17.dto.review.AccommodationReviewDTO;
 import com.example.bookingappteam17.dto.review.HostReviewDTO;
-import com.example.bookingappteam17.dto.user.UserInfoDTO;
+import com.example.bookingappteam17.viewmodel.review.RateAccommodationViewModel;
 import com.example.bookingappteam17.viewmodel.review.RateHostViewModel;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-public class RateHostActivity extends AppCompatActivity {
-    ActivityRateHostBinding binding;
+public class RateAccommodationActivity extends AppCompatActivity {
+    ActivityRateAccommodationBinding binding;
     private RecyclerView recyclerView;
-    private HostReviewAdapter reviewAdapter;
-    private RateHostViewModel viewModel;
+    private AccommodationReviewAdapter reviewAdapter;
+    private RateAccommodationViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRateHostBinding.inflate(getLayoutInflater());
+        binding = ActivityRateAccommodationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        recyclerView = binding.hostReviewsRecyclerView;
+        recyclerView = binding.accommodationReviewsRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        viewModel = new ViewModelProvider(this).get(RateHostViewModel.class);
+        viewModel = new ViewModelProvider(this).get(RateAccommodationViewModel.class);
 
-        reviewAdapter = new HostReviewAdapter(this, getIntent().getLongExtra("user_id", 0), getIntent().getLongExtra("host_id", 0));
+        Long accommodationID = getIntent().getLongExtra("accommodation_id", 0);
+        Long userID = getIntent().getLongExtra("user_id", 0);
+
+        reviewAdapter = new AccommodationReviewAdapter(this, userID, getIntent().getLongExtra("host_id", 0));
         recyclerView.setAdapter(reviewAdapter);
 
         // Observe changes in hostReviewsLiveData
-        viewModel.getHostReviewsLiveData().observe(this, new Observer<List<HostReviewDTO>>() {
+        viewModel.getAccommodationReviewsLiveData().observe(this, new Observer<List<AccommodationReviewDTO>>() {
             @Override
-            public void onChanged(List<HostReviewDTO> hostReviews) {
+            public void onChanged(List<AccommodationReviewDTO> accommodationReviewDTOS) {
                 // Update the UI with the new list of reviews
-                reviewAdapter.setReviews(hostReviews);
+                reviewAdapter.setReviews(accommodationReviewDTOS);
             }
         });
 
-//        get hostUsername from intent
-        String hostUsername = getIntent().getStringExtra("host_username");
-
         // Load host reviews when the activity is created
-        viewModel.loadHostReviews(hostUsername, binding.ratingBarHost);
+        viewModel.loadAccommodationReviews(accommodationID, binding);
 
-        viewModel.loadUserInfo(getIntent().getStringExtra("host_username"), binding);
+        viewModel.loadAccommodationInfo(accommodationID, binding);
 
-        viewModel.setCommentVisibility(getIntent().getLongExtra("host_id", 0), getIntent().getLongExtra("user_id", 0), binding);
-
-        if (getIntent().getLongExtra("user_id", 0) == 0) {
-            binding.commentSection.setVisibility(View.GONE);
-        }
+        viewModel.setCommentVisibility(accommodationID, userID, binding);
 
         Button submitReviewButton = binding.btnSubmitComment;
         submitReviewButton.setOnClickListener(v -> {
@@ -70,13 +69,14 @@ public class RateHostActivity extends AppCompatActivity {
                 binding.etCommentInput.setError("Please enter a comment and rating");
                 binding.ratingBar.setOutlineSpotShadowColor(getResources().getColor(R.color.red));
             } else {
-                HostReviewDTO review = new HostReviewDTO();
+                AccommodationReviewDTO review = new AccommodationReviewDTO();
                 review.setComment(binding.etCommentInput.getText().toString());
-                review.setRating((int) binding.ratingBar.getRating());
-                review.setReviewer(getIntent().getLongExtra("user_id", 0));
-                review.setReviewedHost(getIntent().getLongExtra("host_id", 0));
+                review.setGrade((int) binding.ratingBar.getRating());
+                review.setReviewer(userID);
+                review.setAccommodationID(accommodationID);
                 review.setReviewDate(LocalDate.now().toString());
-                viewModel.submitHostReview(review);
+                review.setApproved(false);
+                viewModel.submitAccommodationReview(review,this);
 
                 // clear the comment input field and rating bar and close error messages
                 binding.etCommentInput.setText("");
@@ -84,8 +84,10 @@ public class RateHostActivity extends AppCompatActivity {
                 binding.etCommentInput.setError(null);
 
                 // refresh the reviews
-                viewModel.loadHostReviews(hostUsername, binding.ratingBarHost);
+                viewModel.loadAccommodationReviews(accommodationID, binding);
             }
         });
     }
+
+
 }

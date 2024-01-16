@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.example.bookingappteam17.R;
+import com.example.bookingappteam17.activities.review.RateAccommodationActivity;
 import com.example.bookingappteam17.activities.review.RateHostActivity;
 import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.databinding.ActivityAccommodationsDetailsBinding;
@@ -98,6 +99,27 @@ public class AccommodationDetailActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        Button btnRateAccommoadtion = binding.rateAccommodationButton;
+        btnRateAccommoadtion.setOnClickListener(v -> {
+            Intent intent = new Intent(this, RateAccommodationActivity.class);
+            intent.putExtra("user_id", userID);
+            intent.putExtra("host_id", accommodation.getOwner().getUserID());
+            intent.putExtra("accommodation_id", accommodation.getAccommodationID());
+            startActivity(intent);
+        });
+
+
+        //set map view to location
+        Button btnReservation = binding.accommodationDetailsReservationButton;
+        btnReservation.setOnClickListener(v -> {
+            ReservationFragment reservationFragment = new ReservationFragment(accommodation,userID);
+            reservationFragment.show(getSupportFragmentManager().beginTransaction(), "ReservationFragmentTag");
+        });
+        if(role.equals("GUEST")){
+            btnReservation.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     private void addAccommodationToFavorite(){
@@ -133,12 +155,6 @@ public class AccommodationDetailActivity extends AppCompatActivity {
 
             createAmenitiesCheckboxes(view);
 
-            //set map view to location
-            Button btnReservation = binding.accommodationDetailsReservationButton;
-            btnReservation.setOnClickListener(v -> {
-                ReservationFragment reservationFragment = new ReservationFragment(accommodation,userID);
-                reservationFragment.show(getSupportFragmentManager().beginTransaction(), "ReservationFragmentTag");
-            });
 
         }
     }
