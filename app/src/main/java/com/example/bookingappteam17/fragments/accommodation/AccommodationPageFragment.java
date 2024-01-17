@@ -1,9 +1,13 @@
 package com.example.bookingappteam17.fragments.accommodation;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +29,14 @@ import com.example.bookingappteam17.clients.ClientUtils;
 import com.example.bookingappteam17.dto.accommodation.AccommodationCardDTO;
 import com.example.bookingappteam17.databinding.FragmentAccommodationsPageBinding;
 import com.example.bookingappteam17.fragments.FragmentTransition;
+import com.example.bookingappteam17.listener.ShakeDetector;
 import com.example.bookingappteam17.services.accommodation.IAccommodationService;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class AccommodationPageFragment extends Fragment {
+public class AccommodationPageFragment extends Fragment implements ShakeDetector.ShakeListener {
 
     private ArrayList<AccommodationCardDTO> accommodations = new ArrayList<>();
     private AccommodationPageViewModel accommodationsPageViewModel;
@@ -39,6 +44,8 @@ public class AccommodationPageFragment extends Fragment {
     private FragmentAccommodationsPageBinding binding;
     private SharedPreferences sharedPreferences;
     private IAccommodationService accommodationService = ClientUtils.accommodationService;
+    private ShakeDetector shakeDetector;
+    private boolean isAscendingOrder = true;
 
     public static AccommodationPageFragment newInstance() {
         return new AccommodationPageFragment();
@@ -60,6 +67,14 @@ public class AccommodationPageFragment extends Fragment {
         // Set up the adapter
         AccommodationListAdapter adapter = new AccommodationListAdapter(getActivity(), accommodations);
         accommodationListFragment.setListAdapter(adapter);
+
+        // ShakeDetector initialization
+        shakeDetector = new ShakeDetector(this);
+
+        // Register the ShakeDetector
+        SensorManager sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
+        Sensor accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensorManager.registerListener(shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Load data
         accommodationsPageViewModel.loadAccommodations(username,role);
@@ -153,6 +168,42 @@ public class AccommodationPageFragment extends Fragment {
         FragmentTransition.to(accommodationListFragment, getActivity(), false, R.id.scroll_products_list);
 
         return root;
+    }
+
+    // on shake sort by grade ascending, if already sorted by grade ascending sort by grade descending
+    @Override
+    public void onShake() {
+        // Update the data directly in the AccommodationListFragment's adapter
+        Log.d("Shake", "Shake detected");
+        if (accommodationListFragment != null) {
+            AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
+            if (adapter != null) {
+                // Toggle the sorting order
+                isAscendingOrder = !isAscendingOrder;
+
+                // Sort the adapter based on the current order
+                adapter.sort(new Comparator<AccommodationCardDTO>() {
+                    @Override
+                    public int compare(AccommodationCardDTO accommodation1, AccommodationCardDTO accommodation2) {
+                        if (isAscendingOrder) {
+                            return accommodation1.getAverageGrade().compareTo(accommodation2.getAverageGrade());
+                        } else {
+                            return accommodation2.getAverageGrade().compareTo(accommodation1.getAverageGrade());
+                        }
+                    }
+                });
+
+                // Notify the adapter to update the UI
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SensorManager sensorManager = (SensorManager) requireContext().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.unregisterListener(shakeDetector);
     }
 }
 
