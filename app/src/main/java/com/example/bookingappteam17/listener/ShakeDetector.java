@@ -24,24 +24,24 @@ public class ShakeDetector implements SensorEventListener {
         this.listener = listener;
     }
 
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            float x = event.values[0];
-            float y = event.values[1];
-            float z = event.values[2];
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        float x = event.values[0];
+        float y = event.values[1];
+        float z = event.values[2];
 
-            double acceleration = Math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH;
+        double acceleration = Math.sqrt(x * x + y * y + z * z) - SensorManager.GRAVITY_EARTH;
 //            Log.d("ACCELERATION", String.valueOf(acceleration));
-            acceleration = Math.abs(acceleration);
-            if (acceleration > SHAKE_THRESHOLD) {
-                long currentTime = System.currentTimeMillis();
+        acceleration = Math.abs(acceleration);
+        if (acceleration > SHAKE_THRESHOLD) {
+            long currentTime = System.currentTimeMillis();
 
-                if (lastShakeTime == 0 || (currentTime - lastShakeTime) > SHAKE_TIMEOUT) {
-                    lastShakeTime = currentTime;
-                    listener.onShake();
-                }
+            if (lastShakeTime == 0 || (currentTime - lastShakeTime) > SHAKE_TIMEOUT) {
+                lastShakeTime = currentTime;
+                listener.onShake();
             }
         }
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {

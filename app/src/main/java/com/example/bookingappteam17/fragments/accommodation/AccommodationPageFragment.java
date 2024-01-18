@@ -178,18 +178,10 @@ public class AccommodationPageFragment extends Fragment implements ShakeDetector
         if (accommodationListFragment != null) {
             AccommodationListAdapter adapter = accommodationListFragment.getAdapter();
             if (adapter != null) {
-                // Toggle the sorting order
-                isAscendingOrder = !isAscendingOrder;
-
-                // Sort the adapter based on the current order
                 adapter.sort(new Comparator<AccommodationCardDTO>() {
                     @Override
                     public int compare(AccommodationCardDTO accommodation1, AccommodationCardDTO accommodation2) {
-                        if (isAscendingOrder) {
-                            return accommodation1.getAverageGrade().compareTo(accommodation2.getAverageGrade());
-                        } else {
-                            return accommodation2.getAverageGrade().compareTo(accommodation1.getAverageGrade());
-                        }
+                        return accommodation1.getAverageGrade().compareTo(accommodation2.getAverageGrade());
                     }
                 });
 
