@@ -128,6 +128,10 @@ public class RateHostViewModel extends ViewModel {
     }
 
     public void setCommentVisibility(long hostId, long userId, ActivityRateHostBinding binding) {
+        if(userId == 0){
+            binding.commentSection.setVisibility(View.GONE);
+            return;
+        }
         Call<HashSet<ReservationDTO>> call = ClientUtils.reservationService.getHostReservationDTOs(hostId);
         call.enqueue(new Callback<HashSet<ReservationDTO>>() {
             @Override
